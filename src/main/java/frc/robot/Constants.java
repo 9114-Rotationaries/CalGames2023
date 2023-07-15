@@ -66,4 +66,36 @@ public final class Constants {
     public static final double TurnKs = 0;
     public static final double TurnKv = 0;
   }
+
+  public static class VisionConstants{
+    public static final double targetHeight = 0;
+    public static final double cameraHeight = 0;
+    public static final double cameraAngle = 0;
+
+    //MoveToTag Angle PID Constants
+    public static final double VAnglePIDp = 0.1;
+    public static final double VAnglePIDi = 0;
+    public static final double VAnglePIDd = 0;
+
+    //MoveToTag Drive PID Constants
+    public static final double VDrivePIDp = 0.1;
+    public static final double VDrivePIDi = 0;
+    public static final double VDrivePIDd = 0;
+
+    //MoveToTag Rot PID Constants
+    public static final double VRotPIDp = 0.1;
+    public static final double VRotPIDi = 0;
+    public static final double VRotPIDd = 0;
+
+    //Tag Setpoints
+    public static final double alignSetpoint = 0; //Center
+    public static final double driveSetpoint = 0; //Change to how far away from tag desired
+    public static final double rotSetpoint = 0; //Oriented
+
+    //Tolerances
+    public static final double angleTolerance = 0.02;
+    public static final double distanceTolerance = 0.02;
+    public static final double rotTolerance = 0.02;
+  }
+
 }
