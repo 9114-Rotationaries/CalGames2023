@@ -7,12 +7,12 @@ package frc.robot.commands.Arm;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.Arm;
 
 public class ArmControl extends CommandBase {
   XboxController controller;
   Arm arm;
+  double armDegree = 0;
   
   /** Creates a new ArmControl. */
   public ArmControl(XboxController controller, Arm arm) {
@@ -32,17 +32,18 @@ public class ArmControl extends CommandBase {
   @Override
   public void execute() {
     if(controller.getRightTriggerAxis() > 0.1){
-      arm.pivot(ArmConstants.pivotSpeed);
+      armDegree += controller.getRightTriggerAxis();
     }
 
     if(controller.getLeftTriggerAxis() > 0.1){
-      arm.pivot(-ArmConstants.pivotSpeed);
+      armDegree -= controller.getLeftTriggerAxis();
     }
 
     if(controller.getRightTriggerAxis() <= 0.1 && controller.getLeftTriggerAxis() <= 0.1){
       arm.stop();
     }
 
+    arm.pivot(armDegree);
     SmartDashboard.putNumber("Arm Angle", arm.getAngle());
   }
 
