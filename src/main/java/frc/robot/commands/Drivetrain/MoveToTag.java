@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.Drivetrain;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -12,15 +12,17 @@ import frc.robot.subsystems.Vision;
 
 public class MoveToTag extends CommandBase {
 
-  private Vision vision = new Vision();
-  private Drivetrain swerveDrive = new Drivetrain();
+  private Vision vision;
+  private Drivetrain swerveDrive;
 
   private PIDController angleController = new PIDController(VisionConstants.VAnglePIDp, VisionConstants.VAnglePIDi, VisionConstants.VAnglePIDd);
   private PIDController distanceController = new PIDController(VisionConstants.VDrivePIDp, VisionConstants.VDrivePIDi, VisionConstants.VDrivePIDd);
   private PIDController rotationController = new PIDController(VisionConstants.VRotPIDp, VisionConstants.VRotPIDi, VisionConstants.VRotPIDd);
 
   /** Creates a new MoveToTag. */
-  public MoveToTag() {
+  public MoveToTag(Vision vision, Drivetrain swerveDrive) {
+    this.vision = vision;
+    this.swerveDrive = swerveDrive;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(vision, swerveDrive);
   }
