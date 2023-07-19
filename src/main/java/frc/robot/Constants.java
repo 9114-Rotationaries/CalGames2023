@@ -36,9 +36,5 @@ public final class Constants {
     public static final int armMotorChannel = 4;
     public static final double pivotSpeed = 0.5;
     public static final double armRatio = 108;
-
-    public static final double p = 1;
-    public static final double i = 0;
-    public static final double d = 0;
   }
 }
