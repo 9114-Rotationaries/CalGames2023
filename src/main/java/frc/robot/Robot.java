@@ -5,15 +5,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Constants.ArmConstants;
-import frc.robot.Constants.IntakeConstants;
-import frc.robot.commands.Arm.ArmControl;
-import frc.robot.commands.Intake.IntakeControl;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Intake;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -23,14 +16,8 @@ import frc.robot.subsystems.Intake;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  private Command ArmControl;
-  private Command IntakeControl;
 
   private RobotContainer m_robotContainer;
-
-  private final XboxController m_controller = new XboxController(0);
-  private final Arm m_arm = new Arm(ArmConstants.armMotorChannel);
-  private final Intake m_intake = new Intake(IntakeConstants.indexMotorChannel, IntakeConstants.intake1Channel, IntakeConstants.intake2Channel);
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -90,16 +77,11 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    ArmControl = new ArmControl(m_controller, m_arm);
-    IntakeControl = new IntakeControl(m_controller, m_intake);
-    
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    ArmControl.schedule();
-    IntakeControl.schedule();
   }
 
   @Override

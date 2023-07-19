@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
@@ -34,7 +35,7 @@ public class Intake extends SubsystemBase {
     m_intake2.set(-intakeSpeed);
   }
 
-  public void startFlywheel(double speed){
+  public void startFlywheels(double speed){
     m_intake1.set(speed);
     m_intake2.set(-speed);
   }
@@ -59,6 +60,8 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Intake Flywheel Speed", getFlywheelSpeed());
+    SmartDashboard.putNumber("Intake Indexer Speed", getIndexSpeed());
     // This method will be called once per scheduler run
   }
 }
