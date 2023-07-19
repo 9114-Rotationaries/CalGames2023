@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.Drivetrain.JoystickDrive;
 import frc.robot.commands.Drivetrain.MoveToTag;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -35,6 +36,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+    drivetrain.setDefaultCommand(new JoystickDrive(m_driverController, drivetrain, true));
   }
 
   /**
@@ -51,8 +53,8 @@ public class RobotContainer {
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
     
-    new Trigger(m_driverController.b())
-        .onTrue(new MoveToTag(vision, drivetrain));
+    m_driverController.b().whileTrue(new MoveToTag(vision, drivetrain));
+
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.

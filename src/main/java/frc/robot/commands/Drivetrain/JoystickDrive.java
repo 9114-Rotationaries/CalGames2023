@@ -6,14 +6,14 @@ package frc.robot.commands.Drivetrain;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.Drivetrain;
 
 public class JoystickDrive extends CommandBase {
-  XboxController controller;
+  CommandXboxController controller;
   Drivetrain drive;
   boolean fieldRelative;
 
@@ -21,7 +21,7 @@ public class JoystickDrive extends CommandBase {
   private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3);
   private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);
 
-  public JoystickDrive(XboxController controller, Drivetrain drive, boolean fieldRelative) {
+  public JoystickDrive(CommandXboxController controller, Drivetrain drive, boolean fieldRelative) {
     this.controller = controller;
     this.drive=drive;
     this.fieldRelative = fieldRelative;

@@ -68,12 +68,12 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    joystickDrive = new JoystickDrive(m_controller, m_swerve, true);
+    // joystickDrive = new JoystickDrive(m_controller, m_swerve, true);
   }
 
   @Override
   public void teleopPeriodic() {
-    joystickDrive.schedule();
+    // joystickDrive.schedule();
   }
 
   @Override
