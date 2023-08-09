@@ -36,6 +36,7 @@ public class JoystickDrive extends CommandBase {
   @Override
   public void execute() {
     // Inverted X speed / Forwards and backwards
+    //System.out.println("Calculating");
     final double xSpeed =
         -m_xspeedLimiter.calculate(MathUtil.applyDeadband(controller.getLeftY(), 0.02))
             * DriveConstants.kMaxSpeed;
@@ -53,6 +54,7 @@ public class JoystickDrive extends CommandBase {
       SmartDashboard.putNumber("xSpeed", xSpeed);
       SmartDashboard.putNumber("ySpeed", ySpeed);
       SmartDashboard.putNumber("Rotation", rot);
+    //System.out.println(xSpeed);
 
     m_swerve.drive(xSpeed, ySpeed, rot, fieldRelative);
   }

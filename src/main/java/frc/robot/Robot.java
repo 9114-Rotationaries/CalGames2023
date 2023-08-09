@@ -76,7 +76,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    m_swerve.drive(1,0,0, false);
+  }
 
   @Override
   public void teleopInit() {
@@ -105,7 +107,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void simulationPeriodic() {
-    CommandScheduler.getInstance().schedule(drive);
+    // CommandScheduler.getInstance().schedule(drive);
+    drive.schedule();
     m_swerve.simulationPeriodic();
   }
 }
