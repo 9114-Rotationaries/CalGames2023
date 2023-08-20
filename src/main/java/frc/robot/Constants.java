@@ -22,24 +22,25 @@ public final class Constants {
     public static final double kMaxAngularSpeed = 12; // 12 radians? per second
 
     //FL-Front Left, DM-Driving Motor, TM-Turning Motor, TE-Turning Encoder
-    public static final int FLDMChannel = 12;
-    public static final int FLTMChannel = 11;
-    public static final int FLTEChannel = 13;
-    public static final double FLTEOffsetDegrees = 278.174;
 
-    public static final int FRDMChannel = 3;
-    public static final int FRTMChannel = 2;
-    public static final int FRTEChannel = 4;
+    public static final int FRDMChannel = 10;
+    public static final int FRTMChannel = 11;
+    public static final int FRTEChannel = 13;
     public static final double FRTEOffsetDegrees = 343.916;
 
-    public static final int BLDMChannel = 9;
-    public static final int BLTMChannel = 8;
-    public static final int BLTEChannel = 10;
+    public static final int FLDMChannel = 20;
+    public static final int FLTMChannel = 21;
+    public static final int FLTEChannel = 23;
+    public static final double FLTEOffsetDegrees = 278.174;
+
+    public static final int BLDMChannel = 30;
+    public static final int BLTMChannel = 31;
+    public static final int BLTEChannel = 33;
     public static final double BLTEOffsetDegrees = 119.707;
 
-    public static final int BRDMChannel = 6;
-    public static final int BRTMChannel = 5;
-    public static final int BRTEChannel = 7;
+    public static final int BRDMChannel = 40;
+    public static final int BRTMChannel = 41;
+    public static final int BRTEChannel = 43;
     public static final double BRTEOffsetDegrees = 181.494;
   }
   
