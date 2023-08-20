@@ -14,26 +14,30 @@ import frc.robot.Constants.ArmConstants;
 
 public class Arm extends SubsystemBase {
 
-  private final CANSparkMax m_motor;
-  private final RelativeEncoder encoder;
+  private final CANSparkMax m_motor1;
+  private final CANSparkMax m_motor2;
+  private final RelativeEncoder encoder1;
   // private final PIDController armPID = new PIDController(ArmConstants.p, ArmConstants.i, ArmConstants.d);
 
   /** Creates a new Arm. */
-  public Arm(int motorChannel) {
-    m_motor = new CANSparkMax(motorChannel, MotorType.kBrushless);
-    encoder = m_motor.getEncoder();
+  public Arm(int armMotor1Channel, int armMotor2Channel) {
+    m_motor1 = new CANSparkMax(armMotor1Channel, MotorType.kBrushless);
+    m_motor2 = new CANSparkMax(armMotor2Channel, MotorType.kBrushless);
+    encoder1 = m_motor1.getEncoder();
   }
 
-  public void pivot(double speed){
-    m_motor.set(speed);
+  public void pivot(double pivotSpeed){
+    m_motor1.set(pivotSpeed);
+    m_motor2.set(-pivotSpeed);
   }
 
   public void stop(){
-    m_motor.set(0);
+    m_motor1.set(0);
+    m_motor2.set(0);
   }
 
   public double getAngle(){
-    double angle = encoder.getPosition() / ArmConstants.armRatio;
+    double angle = encoder1.getPosition() / ArmConstants.armRatio;
     return angle;
   }
 

@@ -11,10 +11,9 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Arm.LowerArm;
 import frc.robot.commands.Arm.RaiseArm;
-import frc.robot.commands.Intake.IntakeObject;
-import frc.robot.commands.Intake.LaunchObject;
-import frc.robot.commands.Intake.OuttakeObject;
-import frc.robot.commands.Intake.RevFlywheels;
+import frc.robot.commands.Intake.Intake.IntakeCube;
+import frc.robot.commands.Intake.Launch.LaunchCube;
+import frc.robot.commands.Intake.Outtake.OuttakeCube;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 
@@ -26,13 +25,13 @@ import frc.robot.subsystems.Intake;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final Arm arm = new Arm(ArmConstants.armMotorChannel);
-  private final Intake intake = new Intake(IntakeConstants.indexMotorChannel, IntakeConstants.intake1Channel, IntakeConstants.intake2Channel);
+  private final Arm arm = new Arm(ArmConstants.armMotor1Channel, ArmConstants.armMotor2Channel);
+  private final Intake intake = new Intake(IntakeConstants.cubeIntakeChannel, IntakeConstants.coneIntakeChannel);
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController m_operatorController =
+      new CommandXboxController(OperatorConstants.kOperatorControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -42,15 +41,17 @@ public class RobotContainer {
   }
 
   private void configureIntakeBindings() {
-    m_driverController.a().whileTrue(new IntakeObject(intake));
-    m_driverController.y().whileTrue(new OuttakeObject(intake));
-    m_driverController.rightBumper().whileTrue(new RevFlywheels(intake));
-    m_driverController.leftBumper().whileTrue(new LaunchObject(intake));
+    m_operatorController.x().whileTrue(new IntakeCube(intake));
+    m_operatorController.y().whileTrue(new OuttakeCube(intake));
+    m_operatorController.leftBumper().whileTrue(new LaunchCube(intake));
+    // m_operatorController.a().whileTrue(new IntakeCone(intake));
+    // m_operatorController.b().whileTrue(new OuttakeCone(intake));
+    // m_operatorController.rightBumper().whileTrue(new LaunchCone(intake));
   }
 
   private void configureArmBindings() {
-    m_driverController.rightTrigger().whileTrue(new RaiseArm(arm));
-    m_driverController.leftTrigger().whileTrue(new LowerArm(arm));
+    m_operatorController.rightTrigger().whileTrue(new RaiseArm(arm));
+    m_operatorController.leftTrigger().whileTrue(new LowerArm(arm));
   }
 
   /**
