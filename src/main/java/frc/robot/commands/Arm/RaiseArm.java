@@ -26,7 +26,8 @@ public class RaiseArm extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    arm.pivot(ArmConstants.pivotSpeed);
+    //pivot speed based on right motor
+    arm.pivot(-ArmConstants.pivotSpeed);
   }
 
   // Called once the command ends or is interrupted.

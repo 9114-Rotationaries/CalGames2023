@@ -32,9 +32,9 @@ public final class Constants {
   }
 
   public static class ArmConstants {
-    public static final int armMotor1Channel = 50;
-    public static final int armMotor2Channel = 51;
-    public static final double pivotSpeed = 0.5;
+    public static final int rightArmChannel = 50;
+    public static final int leftArmChannel = 51;
+    public static final double pivotSpeed = 0.5; //pivot speed based on right motor
     public static final double armRatio = 108;
   }
 }

@@ -13,27 +13,28 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 
 public class Arm extends SubsystemBase {
-
-  private final CANSparkMax m_motor1;
-  private final CANSparkMax m_motor2;
+  //intake pointing away from you
+  private final CANSparkMax m_rightMotor;
+  private final CANSparkMax m_leftMotor;
   private final RelativeEncoder encoder1;
   // private final PIDController armPID = new PIDController(ArmConstants.p, ArmConstants.i, ArmConstants.d);
 
   /** Creates a new Arm. */
-  public Arm(int armMotor1Channel, int armMotor2Channel) {
-    m_motor1 = new CANSparkMax(armMotor1Channel, MotorType.kBrushless);
-    m_motor2 = new CANSparkMax(armMotor2Channel, MotorType.kBrushless);
-    encoder1 = m_motor1.getEncoder();
+  public Arm(int rightArmChannel, int leftArmChannel) {
+    m_rightMotor = new CANSparkMax(rightArmChannel, MotorType.kBrushless);
+    m_leftMotor = new CANSparkMax(leftArmChannel, MotorType.kBrushless);
+    encoder1 = m_rightMotor.getEncoder();
   }
 
   public void pivot(double pivotSpeed){
-    m_motor1.set(pivotSpeed);
-    m_motor2.set(-pivotSpeed);
+    //pivot speed based on right motor
+    m_rightMotor.set(pivotSpeed);
+    m_leftMotor.set(-pivotSpeed);
   }
 
   public void stop(){
-    m_motor1.set(0);
-    m_motor2.set(0);
+    m_rightMotor.set(0);
+    m_leftMotor.set(0);
   }
 
   public double getAngle(){
@@ -41,9 +42,15 @@ public class Arm extends SubsystemBase {
     return angle;
   }
 
+  public double getSpeed(){
+    double speed = m_rightMotor.get();
+    return speed;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Arm Angle", getAngle());
+    SmartDashboard.putNumber("Arm Speed (positive = down, negative = up)", getSpeed());
   }
 }
