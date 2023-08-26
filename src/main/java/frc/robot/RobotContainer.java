@@ -72,7 +72,6 @@ public class RobotContainer {
   private void configureArmBindings() {
     m_operatorController.rightTrigger().whileTrue(new RaiseArm(arm));
     m_operatorController.leftTrigger().whileTrue(new LowerArm(arm));
->>>>>>> Intake
   }
 
   /**
