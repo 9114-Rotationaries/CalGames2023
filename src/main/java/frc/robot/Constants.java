@@ -23,8 +23,8 @@ public final class Constants {
 
     //FL-Front Left, DM-Driving Motor, TM-Turning Motor, TE-Turning Encoder
 
-    public static final int FRDMChannel = 10;
-    public static final int FRTMChannel = 11;
+    public static final int FRDMChannel = 11;
+    public static final int FRTMChannel = 10;
     public static final int FRTEChannel = 13;
     public static final double FRTEOffsetDegrees = 343.916;
 

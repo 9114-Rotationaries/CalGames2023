@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Drivetrain.JoystickDrive;
 import frc.robot.subsystems.Drivetrain;
@@ -20,13 +22,13 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
   private Vision limelight;
 
-  private final XboxController m_controller = new XboxController(OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController m_controller = new CommandXboxController(OperatorConstants.kDriverControllerPort);
   private final Drivetrain m_swerve = new Drivetrain();
+  WaitCommand x = new WaitCommand(5);
   
 
   @Override
   public void robotInit() {
-    m_robotContainer = new RobotContainer();
     limelight = new Vision();
   }
 
@@ -40,7 +42,6 @@ public class Robot extends TimedRobot {
   
   @Override
   public void robotPeriodic() {
-    CommandScheduler.getInstance().run();
   }
 
   @Override
@@ -68,12 +69,15 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    // joystickDrive = new JoystickDrive(m_controller, m_swerve, true);
+    //CommandScheduler.getInstance().schedule(x);
+    joystickDrive = new JoystickDrive(m_controller, m_swerve, false);
   }
 
   @Override
   public void teleopPeriodic() {
-    // joystickDrive.schedule();
+    //CommandScheduler.getInstance().schedule(x);
+    CommandScheduler.getInstance().run();
+    joystickDrive.schedule();
   }
 
   @Override
