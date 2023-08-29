@@ -9,6 +9,28 @@ import edu.wpi.first.math.geometry.Translation2d;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
+  }
+
+  public static class IntakeConstants {
+    public static final int cubeIntakeChannel = 60;
+    public static final int coneIntakeChannel = 61;
+
+    public static final double cubeIntakeSpeed = 0.5;
+    public static final double coneIntakeSpeed = 0.5;
+
+    public static final double cubeOuttakeSpeed = -0.5;
+    public static final double coneOuttakeSpeed = -0.5;
+
+    public static final double cubeLaunchSpeed = -1;
+    public static final double coneLaunchSpeed = -1;
+  }
+
+  public static class ArmConstants {
+    public static final int rightArmChannel = 50;
+    public static final int leftArmChannel = 51;
+    public static final double pivotSpeed = 0.5; //pivot speed based on right motor
+    public static final double armRatio = 108;
   }
 
   public static class DriveConstants {
