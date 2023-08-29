@@ -46,16 +46,19 @@ public class RobotContainer {
   private final CommandXboxController m_operatorController =
       new CommandXboxController(OperatorConstants.kOperatorControllerPort);
 
+  private final CommandXboxController m_controller = new CommandXboxController(OperatorConstants.kDriverControllerPort);
+
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
 
     configureDrivetrainBindings();
-    drivetrain.setDefaultCommand(new JoystickDrive(m_operatorController, drivetrain, true));
+    drivetrain.setDefaultCommand(new JoystickDrive(m_controller, drivetrain, true));
   }
 
   private void configureDrivetrainBindings() {
-    m_operatorController.b().whileTrue(new MoveToTag(vision, drivetrain));
+    m_controller.b().whileTrue(new MoveToTag(vision, drivetrain));
     configureIntakeBindings();
     configureArmBindings();
   }

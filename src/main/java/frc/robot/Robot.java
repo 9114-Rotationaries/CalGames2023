@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -17,18 +18,18 @@ import frc.robot.subsystems.Vision;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  private Command joystickDrive;
+  //private Command joystickDrive;
 
   private RobotContainer m_robotContainer;
   private Vision limelight;
 
-  private final CommandXboxController m_controller = new CommandXboxController(OperatorConstants.kDriverControllerPort);
-  private final Drivetrain m_swerve = new Drivetrain();
+  //private final Drivetrain m_swerve = new Drivetrain();
   WaitCommand x = new WaitCommand(5);
   
 
   @Override
   public void robotInit() {
+    m_robotContainer = new RobotContainer();
     limelight = new Vision();
   }
 
@@ -70,14 +71,14 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     //CommandScheduler.getInstance().schedule(x);
-    joystickDrive = new JoystickDrive(m_controller, m_swerve, false);
+    //
   }
 
   @Override
   public void teleopPeriodic() {
     //CommandScheduler.getInstance().schedule(x);
     CommandScheduler.getInstance().run();
-    joystickDrive.schedule();
+    //joystickDrive.schedule();
   }
 
   @Override
