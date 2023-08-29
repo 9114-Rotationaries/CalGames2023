@@ -21,9 +21,6 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
   private Vision limelight;
-
-  private final CommandXboxController m_controller = new CommandXboxController(OperatorConstants.kDriverControllerPort);
-  private final Drivetrain m_swerve = new Drivetrain();
   WaitCommand x = new WaitCommand(5);
   
 
@@ -70,7 +67,6 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     //CommandScheduler.getInstance().schedule(x);
-    joystickDrive = new JoystickDrive(m_controller, m_swerve, false);
   }
 
   @Override
