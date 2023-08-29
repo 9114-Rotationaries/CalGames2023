@@ -54,6 +54,8 @@ public class RobotContainer {
     // Configure the trigger bindings
 
     configureDrivetrainBindings();
+    configureArmBindings();
+    configureIntakeBindings();
     drivetrain.setDefaultCommand(new JoystickDrive(m_controller, drivetrain, true));
   }
 
