@@ -174,4 +174,12 @@ public class SwerveModule extends SubsystemBase{
   public double getEncoderRate() {
     return m_driveEncoder.getVelocity();
   }
+
+  public SwerveModulePosition setPosition(int desiredPos) {
+    m_driveEncoder.setPosition(desiredPos);
+    m_turningEncoder.setPositionToAbsolute();
+
+    return new SwerveModulePosition(m_driveEncoder.getPosition(), 
+    new Rotation2d(m_turningEncoder.getPosition()));
+  } 
 }

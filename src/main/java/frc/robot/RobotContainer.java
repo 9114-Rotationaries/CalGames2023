@@ -52,6 +52,8 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
+    //drivetrain.resetPose(drivetrain.getPose());
+    System.out.println(drivetrain.getModule().getPosition());
 
     configureDrivetrainBindings();
     drivetrain.setDefaultCommand(new JoystickDrive(m_controller, drivetrain, true));
@@ -86,5 +88,9 @@ public class RobotContainer {
     // An example command will be run in autonomous
     // return Autos.exampleAuto(m_exampleSubsystem);
     return null;
+  }
+
+  public void resetPose() {
+    drivetrain.resetPose(drivetrain.getPose());
   }
 }
