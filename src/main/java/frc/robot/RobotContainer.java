@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
@@ -51,7 +52,9 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    //drivetrain.getFR().
     // Configure the trigger bindings
+    //System.out.println(drivetrain.getFRPosition());
 
     configureDrivetrainBindings();
     configureArmBindings();
@@ -88,5 +91,9 @@ public class RobotContainer {
     // An example command will be run in autonomous
     // return Autos.exampleAuto(m_exampleSubsystem);
     return null;
+  }
+
+  public SwerveModulePosition getFRPos() {
+    return drivetrain.getFRPosition();
   }
 }

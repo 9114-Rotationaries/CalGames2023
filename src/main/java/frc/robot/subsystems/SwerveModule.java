@@ -174,4 +174,8 @@ public class SwerveModule extends SubsystemBase{
   public double getEncoderRate() {
     return m_driveEncoder.getVelocity();
   }
+
+  public CANSparkMax getDrive() {
+    return m_driveMotor;
+  }
 }

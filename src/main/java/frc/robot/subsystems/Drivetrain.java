@@ -118,5 +118,12 @@ public class Drivetrain extends SubsystemBase{
   @Override
   public void periodic(){}
 
+  public SwerveModulePosition getFRPosition() {
+    return m_frontRight.getPosition();
+  }
+
+  public SwerveModule getFR() {
+    return m_frontRight;
+  }
 }
 

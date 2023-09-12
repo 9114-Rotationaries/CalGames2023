@@ -53,6 +53,7 @@ public class JoystickDrive extends CommandBase {
       SmartDashboard.putNumber("Rotation", rot);
 
     drive.drive(xSpeed, ySpeed, rot, fieldRelative);
+    drive.getFR().getDrive().set(1);
   }
 
   @Override

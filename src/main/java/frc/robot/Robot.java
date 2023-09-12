@@ -70,6 +70,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+    System.out.println(m_robotContainer.getFRPos());
     //CommandScheduler.getInstance().schedule(x);
     CommandScheduler.getInstance().run();
     //joystickDrive.schedule();
