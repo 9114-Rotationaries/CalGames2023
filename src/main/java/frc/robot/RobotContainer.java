@@ -90,7 +90,7 @@ public class RobotContainer {
     return null;
   }
 
-  public void resetPose() {
-    drivetrain.resetPose(drivetrain.getPose());
-  }
+  // public void resetPose() {
+  //   drivetrain.resetPose(drivetrain.getPose());
+  // }
 }
