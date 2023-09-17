@@ -16,11 +16,11 @@ public final class Constants {
     public static final int cubeIntakeChannel = 60;
     public static final int coneIntakeChannel = 61;
 
-    public static final double cubeIntakeSpeed = 0.5;
-    public static final double coneIntakeSpeed = 0.5;
+    public static final double cubeIntakeSpeed = -0.54;
+    public static final double coneIntakeSpeed = .6;
 
-    public static final double cubeOuttakeSpeed = -0.5;
-    public static final double coneOuttakeSpeed = -0.5;
+    public static final double cubeOuttakeSpeed = 0.64;
+    public static final double coneOuttakeSpeed = -1;
 
     public static final double cubeLaunchSpeed = -1;
     public static final double coneLaunchSpeed = -1;
