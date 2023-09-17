@@ -68,10 +68,10 @@ public class RobotContainer {
   private void configureIntakeBindings() {
     m_operatorController.x().whileTrue(new IntakeCube(intake));
     m_operatorController.y().whileTrue(new OuttakeCube(intake));
-    m_operatorController.leftBumper().whileTrue(new LaunchCube(intake));
+    m_operatorController.rightBumper().whileTrue(new LaunchCube(intake));
     // m_operatorController.a().whileTrue(new IntakeCone(intake));
     // m_operatorController.b().whileTrue(new OuttakeCone(intake));
-    // m_operatorController.rightBumper().whileTrue(new LaunchCone(intake));
+    m_operatorController.rightBumper().whileTrue(new LaunchCone(intake));
   }
 
   private void configureArmBindings() {
