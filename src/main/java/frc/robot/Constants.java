@@ -12,6 +12,13 @@ public final class Constants {
     public static final int kOperatorControllerPort = 1;
   }
 
+  public static class ForkliftConstants {
+    public static final int rightForkliftChannel = 70;
+    public static final int leftForkliftChannel = 71;
+
+    public static final int forkliftRatio = 251;
+  }
+
   public static class IntakeConstants {
     public static final int cubeIntakeChannel = 60;
     public static final int coneIntakeChannel = 61;
