@@ -12,6 +12,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -119,6 +120,15 @@ public class Drivetrain extends SubsystemBase{
   @Override
   public void periodic(){}
 
+  public void setModuleStates(SwerveModuleState[] desiredStates) {
+    SwerveDriveKinematics.desaturateWheelSpeeds(
+        desiredStates, DriveConstants.kMaxAngularSpeed);
+    m_frontLeft.setDesiredState(desiredStates[0]);
+    m_frontRight.setDesiredState(desiredStates[1]);
+    m_backLeft.setDesiredState(desiredStates[2]);
+    m_backRight.setDesiredState(desiredStates[3]);
+  }
+
   // public void resetPose(Pose2d pose) {
   //   m_odometry.resetPosition(ahrs.getRotation2d(), 
   //   new SwerveModulePosition[] {
@@ -128,6 +138,19 @@ public class Drivetrain extends SubsystemBase{
   //     m_backRight.setPosition(0)
   //   }, pose);
   // }
+  public void resetOdometry(Pose2d pose) {
+    m_odometry.resetPosition(ahrs.getRotation2d(), 
+    new SwerveModulePosition[] {
+      m_frontLeft.getPosition(),
+      m_backRight.getPosition(),
+      m_frontRight.getPosition(),
+      m_backLeft.getPosition()
+    }, pose);
+  }
+
+  public SwerveDriveKinematics getKinematics(){
+    return m_kinematics;
+  }
 
   public SwerveModule getModule() {
     return m_frontLeft;
