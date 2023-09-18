@@ -121,4 +121,9 @@ public final class Constants {
     public static final double rotTolerance = 0.02;
   }
 
+  public static class AutoConstants {
+    public static final double maxVelocity = 4.5;
+    public static final double maxAcceleration = 3;
+  }
+
 }
