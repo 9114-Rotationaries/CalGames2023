@@ -30,7 +30,7 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Arm.LowerArm;
 import frc.robot.commands.Arm.RaiseArm;
-import frc.robot.commands.Auto.GoForward;
+import frc.robot.commands.Auto.*;
 import frc.robot.commands.Intake.Intake.IntakeCube;
 import frc.robot.commands.Intake.Launch.LaunchCone;
 import frc.robot.commands.Intake.Launch.LaunchCube;
@@ -74,6 +74,7 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new JoystickDrive(m_controller, drivetrain, true));
 
     configureBuilder();
+    configureChooser();
   }
 
   private void configureDrivetrainBindings() {
@@ -111,27 +112,23 @@ public class RobotContainer {
     );
   }
 
-  public void setUpAutos(){
+  public void configureChooser(){
     autoChooser.setDefaultOption("Do Nothing", new WaitCommand(15));
     autoChooser.addOption("Go Forward", (Command) new GoForward(builder));
+    autoChooser.addOption("1CO1CU-B", (Command) new Co1Cu1B(builder));
+    autoChooser.addOption("1CO1CU-M", (Command) new Co1Cu1M(builder));
+    autoChooser.addOption("1CO1CU-T", (Command) new Co1Cu1T(builder));
+    autoChooser.addOption("2CO-M", (Command) new Co2M(builder));
+    autoChooser.addOption("2CO-T", (Command) new Co2T(builder));
+    autoChooser.addOption("2CO1CU-B", (Command) new Co2Cu1B(builder));
+    autoChooser.addOption("2CO1CU-M", (Command) new Co2Cu1M(builder));
+    autoChooser.addOption("2CO1CU-T", (Command) new Co2Cu1T(builder));
+    autoChooser.addOption("2CU-B", (Command) new Cu2B(builder));
+    autoChooser.addOption("2CU-M", (Command) new Cu2M(builder));
+    autoChooser.addOption("Score1HighCubeCleanNoBalance", (Command) new Cu1NB(builder));
+    autoChooser.addOption("2CU-T", (Command) new Cu2T(builder));
 
-    // autoChooser.setDefaultOption("1CO1CU-B", PathPlanner.loadPathGroup("1CO1CU-B", new PathConstraints(4.5, 3)));
-    // autoChooser.addOption("1CO1CU-M", PathPlanner.loadPathGroup("1CO1CU-M", new PathConstraints(4, 3)));
-    // autoChooser.addOption("1CO1CU-T", PathPlanner.loadPathGroup("1CO1CU-T", new PathConstraints(4, 3)));
-    // autoChooser.addOption("2CO-B", PathPlanner.loadPathGroup("2CO-B", new PathConstraints(4, 3)));
-    // autoChooser.addOption("2CO-M", PathPlanner.loadPathGroup("2CO-M", new PathConstraints(4, 3)));
-    // autoChooser.addOption("2CO-T", PathPlanner.loadPathGroup("2CO-T", new PathConstraints(4, 3)));
-    // autoChooser.addOption("2CO1CU-B", PathPlanner.loadPathGroup("2CO1CU-B", new PathConstraints(4, 3)));
-    // autoChooser.addOption("2CO1CU-M", PathPlanner.loadPathGroup("2CO1CU-M", new PathConstraints(4.5, 3)));
-    // autoChooser.addOption("2CO1CU-T", PathPlanner.loadPathGroup("2CO1CU-T", new PathConstraints(4.5, 3)));
-    // autoChooser.addOption("2CU-B", PathPlanner.loadPathGroup("2CU-B", new PathConstraints(4.5, 3)));
-    // autoChooser.addOption("2CU-M", PathPlanner.loadPathGroup("2CU-M", new PathConstraints(4.5, 3)));
-    // // autoChooser.addOption("Score1HighCubeCleanNoBalance", PathPlanner.loadPathGroup("ScoreHighCubeCleanNoBalance", new PathConstraints(4.5, 3)));
-    // autoChooser.addOption("2CU-T", PathPlanner.loadPathGroup("2CU-T", new PathConstraints(4.5, 3)));
-    // autoChooser.addOption("Go Forward", PathPlanner.loadPathGroup("Go Forward", new PathConstraints(0, 0)));
-    // autoChooser.addOption("NewPath", PathPlanner.loadPathGroup("NewPath", new PathConstraints(0, 0)));
-    // //autoChooser.addOption("charge station", chargestation);
-    // SmartDashboard.putData(autoChooser);
+    SmartDashboard.putData(autoChooser);
   }
 
   /**
