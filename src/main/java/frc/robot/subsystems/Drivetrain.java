@@ -76,7 +76,7 @@ public class Drivetrain extends SubsystemBase{
     m_backLeft.setDesiredState(swerveModuleStates[2]);
     m_backRight.setDesiredState(swerveModuleStates[3]);
     
-    SmartDashboard.putNumber("FL Speed", m_frontLeft.getModuleVelocity());
+/*     SmartDashboard.putNumber("FL Speed", m_frontLeft.getModuleVelocity());
     SmartDashboard.putNumber("FL D S", m_frontLeft.getDesiredVelocity());
     SmartDashboard.putNumber("FL Rotation", m_frontLeft.getModuleAngle());
     SmartDashboard.putNumber("FL D R U", swerveModuleStates[0].angle.getRadians());
@@ -99,6 +99,7 @@ public class Drivetrain extends SubsystemBase{
     SmartDashboard.putNumber("BR Rotation", m_backRight.getModuleAngle());
     SmartDashboard.putNumber("BR D R U", swerveModuleStates[3].angle.getRadians());
     SmartDashboard.putNumber("BR D R", m_backRight.getDesiredAngle());
+*/  
   }
 
   /** Updates the field relative position of the robot. */
