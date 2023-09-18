@@ -125,7 +125,7 @@ public class RobotContainer {
     autoChooser.addOption("2CO1CU-T", (Command) new Co2Cu1T(builder));
     autoChooser.addOption("2CU-B", (Command) new Cu2B(builder));
     autoChooser.addOption("2CU-M", (Command) new Cu2M(builder));
-    autoChooser.addOption("Score1HighCubeCleanNoBalance", (Command) new Cu1NB(builder));
+    //autoChooser.addOption("Score1HighCubeCleanNoBalance", (Command) new Cu1NB(builder));
     autoChooser.addOption("2CU-T", (Command) new Cu2T(builder));
 
     SmartDashboard.putData(autoChooser);
