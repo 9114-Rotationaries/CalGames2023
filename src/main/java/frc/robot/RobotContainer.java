@@ -55,7 +55,7 @@ public class RobotContainer {
   private final Intake intake = new Intake(IntakeConstants.cubeIntakeChannel, IntakeConstants.coneIntakeChannel);
   
   private SwerveAutoBuilder builder;
-  private final SendableChooser<Command> autoChooser = new SendableChooser<>();
+  SendableChooser<List<PathPlannerTrajectory>> autoChooser = new SendableChooser<>();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_operatorController =
@@ -113,15 +113,15 @@ public class RobotContainer {
   }
 
   public void configureChooser(){
-    autoChooser.setDefaultOption("Do Nothing", new WaitCommand(15));
-    autoChooser.addOption("Go Forward", (Command) new GoForward(builder));
-    autoChooser.addOption("1CO1CU-B", (Command) new Co1Cu1B(builder));
-    autoChooser.addOption("1CO1CU-M", (Command) new Co1Cu1M(builder));
-    autoChooser.addOption("1CO1CU-T", (Command) new Co1Cu1T(builder));
-    autoChooser.addOption("2CO-M", (Command) new Co2M(builder));
-    autoChooser.addOption("2CO-T", (Command) new Co2T(builder));
-    autoChooser.addOption("2CO1CU-B", (Command) new Co2Cu1B(builder));
-    autoChooser.addOption("2CO1CU-M", (Command) new Co2Cu1M(builder));
+    //autoChooser.setDefaultOption("Do Nothing", new WaitCommand(15));
+    autoChooser.addOption("Go Forward", PathPlanner.loadPathGroup("Score1LeftBalance", new PathConstraints(4, 3)));    autoChooser.addOption("1CO1CU-B", (Command) new Co1Cu1B(builder));
+    autoChooser.addOption("1CO1CU-M", PathPlanner.loadPathGroup("1CO1CU-M", new PathConstraints(4, 3)));
+    autoChooser.addOption("1CO1CU-B", PathPlanner.loadPathGroup("1CO1CU-B", new PathConstraints(4, 3)));
+    autoChooser.addOption("1CO1CU-T", PathPlanner.loadPathGroup("1CO1CU-T", new PathConstraints(4, 3)));
+    autoChooser.addOption("2CO-B", PathPlanner.loadPathGroup("2CO-B", new PathConstraints(4, 3)));
+    autoChooser.addOption("2CO-M", PathPlanner.loadPathGroup("2CO-M", new PathConstraints(4, 3)));
+    autoChooser.addOption("2CO-T", PathPlanner.loadPathGroup("2CO-T", new PathConstraints(4, 3)));
+    autoChooser.addOption("2CO1CU-B", PathPlanner.loadPathGroup("2CO1CU-B", new PathConstraints(4, 3)));
     autoChooser.addOption("2CO1CU-T", (Command) new Co2Cu1T(builder));
     autoChooser.addOption("2CU-B", (Command) new Cu2B(builder));
     autoChooser.addOption("2CU-M", (Command) new Cu2M(builder));
