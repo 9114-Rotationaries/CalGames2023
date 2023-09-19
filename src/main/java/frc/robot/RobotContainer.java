@@ -119,14 +119,14 @@ public class RobotContainer {
     m_chooser.addOption("Go Forward", new GoForward(builder, this));
     m_chooser.addOption("1CO1CU-M", new Co1Cu1M(builder));
     m_chooser.addOption("1CO1CU-T", new Co1Cu1T(builder));
-    m_chooser.addOption("2CO-M", new Co2M(builder));
     m_chooser.addOption("2CO-T", new Co2T(builder));
     m_chooser.addOption("2CO1CU-B", new Co2Cu1B(builder));
     m_chooser.addOption("2CO1CU-T", new Co2Cu1T(builder));
     m_chooser.addOption("2CU-B", new Cu2B(builder));
     m_chooser.addOption("2CU-M", new Cu2M(builder));
-    m_chooser.addOption("Score1HighCubeCleanNoBalance", new Cu1NB(builder));
     m_chooser.addOption("2CU-T", new Cu2T(builder));
+
+    SmartDashboard.putData(m_chooser);
   }
 
   /**
@@ -135,6 +135,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    SmartDashboard.putNumber("Working", 1);
     return m_chooser.getSelected();
   }
 
