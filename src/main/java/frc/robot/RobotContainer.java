@@ -113,7 +113,7 @@ public class RobotContainer {
 
   public void setUpAutos(){
     //autoChooser.setDefaultOption("Do Nothing", new WaitCommand(15));
-    autoChooser.addOption("Go Forward", PathPlanner.loadPathGroup("Score1LeftBalance", new PathConstraints(4, 3)));   
+    autoChooser.addOption("Go Forward", PathPlanner.loadPathGroup("Go Forward", new PathConstraints(4, 3)));   
     autoChooser.addOption("1CO1CU-M", PathPlanner.loadPathGroup("1CO1CU-M", new PathConstraints(4, 3)));
     autoChooser.addOption("1CO1CU-B", PathPlanner.loadPathGroup("1CO1CU-B", new PathConstraints(4, 3)));
     autoChooser.addOption("1CO1CU-T", PathPlanner.loadPathGroup("1CO1CU-T", new PathConstraints(4, 3)));
