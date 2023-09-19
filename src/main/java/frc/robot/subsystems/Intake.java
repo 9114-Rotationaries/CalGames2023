@@ -60,7 +60,7 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Cube Intake Speed", getCubeIntakeSpeed());
+    //SmartDashboard.putNumber("Cube Intake Speed", getCubeIntakeSpeed());
     // SmartDashboard.putNumber("Cone Intake Speed", getConeIntakeSpeed());
     // This method will be called once per scheduler run
   }
