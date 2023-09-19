@@ -28,6 +28,7 @@ import frc.robot.subsystems.Vision;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.Autos;
 import frc.robot.commands.Arm.LowerArm;
 import frc.robot.commands.Arm.RaiseArm;
 import frc.robot.commands.Auto.*;
@@ -55,7 +56,7 @@ public class RobotContainer {
   private final Intake intake = new Intake(IntakeConstants.cubeIntakeChannel, IntakeConstants.coneIntakeChannel);
   
   private SwerveAutoBuilder builder;
-  private final SendableChooser<Command> autoChooser = new SendableChooser<>();
+  private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_operatorController =
@@ -113,22 +114,19 @@ public class RobotContainer {
   }
 
   public void configureChooser(){
-    autoChooser.setDefaultOption("Do Nothing", new WaitCommand(15));
-    autoChooser.addOption("Go Forward", (Command) new GoForward(builder));
-    autoChooser.addOption("1CO1CU-B", (Command) new Co1Cu1B(builder));
-    autoChooser.addOption("1CO1CU-M", (Command) new Co1Cu1M(builder));
-    autoChooser.addOption("1CO1CU-T", (Command) new Co1Cu1T(builder));
-    autoChooser.addOption("2CO-M", (Command) new Co2M(builder));
-    autoChooser.addOption("2CO-T", (Command) new Co2T(builder));
-    autoChooser.addOption("2CO1CU-B", (Command) new Co2Cu1B(builder));
-    autoChooser.addOption("2CO1CU-M", (Command) new Co2Cu1M(builder));
-    autoChooser.addOption("2CO1CU-T", (Command) new Co2Cu1T(builder));
-    autoChooser.addOption("2CU-B", (Command) new Cu2B(builder));
-    autoChooser.addOption("2CU-M", (Command) new Cu2M(builder));
-    autoChooser.addOption("Score1HighCubeCleanNoBalance", (Command) new Cu1NB(builder));
-    autoChooser.addOption("2CU-T", (Command) new Cu2T(builder));
-
-    SmartDashboard.putData(autoChooser);
+    m_chooser.setDefaultOption("Do Nothing", new WaitCommand(15));
+    m_chooser.addOption("1CO1CU-B", new Co1Cu1B(builder));
+    m_chooser.addOption("Go Forward", new GoForward(builder, this));
+    m_chooser.addOption("1CO1CU-M", new Co1Cu1M(builder));
+    m_chooser.addOption("1CO1CU-T", new Co1Cu1T(builder));
+    m_chooser.addOption("2CO-M", new Co2M(builder));
+    m_chooser.addOption("2CO-T", new Co2T(builder));
+    m_chooser.addOption("2CO1CU-B", new Co2Cu1B(builder));
+    m_chooser.addOption("2CO1CU-T", new Co2Cu1T(builder));
+    m_chooser.addOption("2CU-B", new Cu2B(builder));
+    m_chooser.addOption("2CU-M", new Cu2M(builder));
+    m_chooser.addOption("Score1HighCubeCleanNoBalance", new Cu1NB(builder));
+    m_chooser.addOption("2CU-T", new Cu2T(builder));
   }
 
   /**
@@ -137,10 +135,14 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
+    return m_chooser.getSelected();
   }
 
   // public void resetPose() {
   //   drivetrain.resetPose(drivetrain.getPose());
   // }
+
+  public Intake getIntake() {
+    return intake;
+  }
 }
