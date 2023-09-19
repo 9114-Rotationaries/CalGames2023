@@ -31,6 +31,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_robotContainer = new RobotContainer();
     limelight = new Vision();
+    m_robotContainer.setUpAutos();
   }
 
   /**
@@ -78,7 +79,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     //CommandScheduler.getInstance().schedule(x);
-    CommandScheduler.getInstance().run();
+    //CommandScheduler.getInstance().run();
     //joystickDrive.schedule();
   }
 
