@@ -16,6 +16,7 @@ import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.Constants.OperatorConstants;
@@ -26,6 +27,7 @@ import frc.robot.subsystems.Vision;
 
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.commands.Balance;
 import frc.robot.commands.Arm.LowerArm;
 import frc.robot.commands.Arm.RaiseArm;
 import frc.robot.commands.Intake.Intake.IntakeCube;
@@ -50,7 +52,8 @@ public class RobotContainer {
 
   private final Arm arm = new Arm(ArmConstants.rightArmChannel, ArmConstants.leftArmChannel);
   private final Intake intake = new Intake(IntakeConstants.cubeIntakeChannel, IntakeConstants.coneIntakeChannel);
-  
+
+  private final Balance balance = new Balance(drivetrain);
   private static SwerveAutoBuilder builder;
   SendableChooser<List<PathPlannerTrajectory>> autoChooser = new SendableChooser<>();
 
@@ -139,8 +142,11 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return buildAuto(autoChooser.getSelected());
-  }
+    }
 
+  public Command balanceCode(){
+    return balance;
+  }
   // public void resetPose() {
   //   drivetrain.resetPose(drivetrain.getPose());
   // }

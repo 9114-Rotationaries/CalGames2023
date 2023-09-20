@@ -157,5 +157,16 @@ public class Drivetrain extends SubsystemBase{
     return m_frontLeft;
   }
 
+  public float getPitch(){
+    return ahrs.getPitch(); 
+  }
+
+  public float getYaw(){
+    return ahrs.getYaw(); 
+  }
+
+  public float getRoll(){
+    return ahrs.getRoll(); 
+  }
 }
 

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.Balance;
 import frc.robot.subsystems.Vision;
 
 public class Robot extends TimedRobot {
@@ -16,6 +17,7 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
   private Vision limelight;
+  private Command m_balance;
 
   //private final Drivetrain m_swerve = new Drivetrain();
   WaitCommand x = new WaitCommand(5);
@@ -51,10 +53,12 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_balance = m_robotContainer.balanceCode();
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    m_balance.schedule();
   }
 
   @Override
