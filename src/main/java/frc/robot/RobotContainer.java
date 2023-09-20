@@ -116,7 +116,7 @@ public class RobotContainer {
   public void configureChooser(){
     m_chooser.setDefaultOption("Do Nothing", new WaitCommand(15));
     m_chooser.addOption("1CO1CU-B", new Co1Cu1B(builder));
-    m_chooser.addOption("Go Forward", new GoForward(builder, this));
+    m_chooser.addOption("Go Forward", new GoForward(builder));
     m_chooser.addOption("1CO1CU-M", new Co1Cu1M(builder));
     m_chooser.addOption("1CO1CU-T", new Co1Cu1T(builder));
     m_chooser.addOption("2CO-T", new Co2T(builder));
@@ -135,8 +135,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    SmartDashboard.putNumber("Working", 1);
-    return m_chooser.getSelected();
+    //SmartDashboard.putNumber("Working", 1);
+    return new GoForward(builder);
   }
 
   // public void resetPose() {
