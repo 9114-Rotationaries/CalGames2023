@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.Constants.OperatorConstants;
@@ -30,6 +32,7 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.Balance;
 import frc.robot.commands.Arm.LowerArm;
 import frc.robot.commands.Arm.RaiseArm;
+import frc.robot.commands.Intake.Intake.IntakeCone;
 import frc.robot.commands.Intake.Intake.IntakeCube;
 import frc.robot.commands.Intake.Launch.LaunchCone;
 import frc.robot.commands.Intake.Launch.LaunchCube;
@@ -51,11 +54,14 @@ public class RobotContainer {
   private final Vision vision = new Vision();
 
   private final Arm arm = new Arm(ArmConstants.rightArmChannel, ArmConstants.leftArmChannel);
-  private final Intake intake = new Intake(IntakeConstants.cubeIntakeChannel, IntakeConstants.coneIntakeChannel);
+  private final static Intake intake = new Intake(IntakeConstants.cubeIntakeChannel, IntakeConstants.coneIntakeChannel);
 
   private final Balance balance = new Balance(drivetrain);
   private static SwerveAutoBuilder builder;
   SendableChooser<List<PathPlannerTrajectory>> autoChooser = new SendableChooser<>();
+
+  private static HashMap<String, Command> eventMap = new HashMap<>();
+
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_operatorController =
@@ -106,7 +112,7 @@ public class RobotContainer {
       new PIDConstants(0.7, 0.0001, 0.0),
       new PIDConstants(0.1, 0.0001, 0),
       drivetrain::setModuleStates,
-      new HashMap<String, Command>(),
+      eventMap,
       true,
       drivetrain
     );
@@ -130,6 +136,10 @@ public class RobotContainer {
     autoChooser.addOption("2CU-M", PathPlanner.loadPathGroup("2CU-M", new PathConstraints(4, 3)));
     autoChooser.addOption("2CU-T", PathPlanner.loadPathGroup("2CU-T", new PathConstraints(4, 3)));
     autoChooser.addOption("test", PathPlanner.loadPathGroup("test", new PathConstraints(4, 3)));
+
+    eventMap.put("event", new PrintCommand("Passed marker 1"));
+    eventMap.put("Balance", new Balance(drivetrain));
+    eventMap.put("IntakeCube", Commands.runOnce(() -> intake.cubeIntake(.2)));
 
 
     SmartDashboard.putData(autoChooser);
