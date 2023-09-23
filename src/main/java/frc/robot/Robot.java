@@ -27,7 +27,6 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_robotContainer = new RobotContainer();
     limelight = new Vision();
-    m_robotContainer.setUpAutos();
   }
 
   /**
