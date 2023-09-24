@@ -5,6 +5,7 @@
 package frc.robot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,6 +15,8 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -161,6 +164,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     List<PathPlannerTrajectory> pathGroup = PathPlanner.loadPathGroup("Go Forward", new PathConstraints(4, 3));
+    List<PathPlannerTrajectory> pathGroup1 = PathPlanner.loadPathGroup("Go Forward", 4, 3);
 
     HashMap<String, Command> eventMap = new HashMap<>();
     //eventMap.put("marker1", Commands.runOnce( () -> SmartDashboard.putNumber("test", 10)));
@@ -181,15 +185,17 @@ public class RobotContainer {
 
     // Command fullAuto = builder.fullAuto(pathGroup);
     // return fullAuto;
+    //SmartDashboard.putData("PathGroup", (Sendable) pathGroup);
     return Commands.sequence(
       builder.followPathWithEvents(pathGroup.get(0)),
-      Commands.runOnce( () -> intake.cubeIntake(0.5))
-      //builder.followPathWithEvents(pathGroup.get(1))
-    );
+      new IntakeCube(intake),
+      builder.followPathWithEvents(pathGroup1.get(0))
+      );
   }
 
   public Command balanceCode(){
     return balance;
+
   }
   // public void resetPose() {
   //   drivetrain.resetPose(drivetrain.getPose());
