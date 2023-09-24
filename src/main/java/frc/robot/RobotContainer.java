@@ -16,7 +16,9 @@ import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.Constants.OperatorConstants;
@@ -27,11 +29,10 @@ import frc.robot.subsystems.Vision;
 
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.IntakeConstants;
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
+//import frc.robot.commands.Balance;
 import frc.robot.commands.Arm.LowerArm;
 import frc.robot.commands.Arm.RaiseArm;
-import frc.robot.commands.Auto.*;
+import frc.robot.commands.Intake.Intake.IntakeCone;
 import frc.robot.commands.Intake.Intake.IntakeCube;
 import frc.robot.commands.Intake.Launch.LaunchCone;
 import frc.robot.commands.Intake.Launch.LaunchCube;
@@ -53,10 +54,14 @@ public class RobotContainer {
   private final Vision vision = new Vision();
 
   private final Arm arm = new Arm(ArmConstants.rightArmChannel, ArmConstants.leftArmChannel);
-  private final Intake intake = new Intake(IntakeConstants.cubeIntakeChannel, IntakeConstants.coneIntakeChannel);
-  
-  private SwerveAutoBuilder builder;
-  private final SendableChooser<Command> m_chooser = new SendableChooser<>();
+  private final static Intake intake = new Intake(IntakeConstants.cubeIntakeChannel, IntakeConstants.coneIntakeChannel);
+
+  //private final Balance balance = new Balance(drivetrain);
+  private static SwerveAutoBuilder builder;
+  SendableChooser<List<PathPlannerTrajectory>> autoChooser = new SendableChooser<>();
+
+  private static HashMap<String, Command> eventMap = new HashMap<>();
+
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_operatorController =
@@ -74,8 +79,8 @@ public class RobotContainer {
     configureDrivetrainBindings();
     drivetrain.setDefaultCommand(new JoystickDrive(m_controller, drivetrain, true));
 
-    configureBuilder();
-    configureChooser();
+    configureArmBindings();
+    configureIntakeBindings();
   }
 
   private void configureDrivetrainBindings() {
@@ -99,7 +104,7 @@ public class RobotContainer {
     m_operatorController.leftTrigger().whileTrue(new LowerArm(arm));
   }
 
-  public void configureBuilder() {
+  public static Command buildAuto(List<PathPlannerTrajectory> trajs) {
     builder = new SwerveAutoBuilder(
       drivetrain::getPose,
       drivetrain::resetOdometry,
@@ -107,26 +112,37 @@ public class RobotContainer {
       new PIDConstants(0.7, 0.0001, 0.0),
       new PIDConstants(0.1, 0.0001, 0),
       drivetrain::setModuleStates,
-      new HashMap<String, Command>(),
+      eventMap,
       true,
       drivetrain
     );
+
+    return builder.fullAuto(trajs);
   }
 
-  public void configureChooser(){
-    m_chooser.setDefaultOption("Do Nothing", new WaitCommand(15));
-    m_chooser.addOption("1CO1CU-B", new Co1Cu1B(builder));
-    m_chooser.addOption("Go Forward", new GoForward(builder));
-    m_chooser.addOption("1CO1CU-M", new Co1Cu1M(builder));
-    m_chooser.addOption("1CO1CU-T", new Co1Cu1T(builder));
-    m_chooser.addOption("2CO-T", new Co2T(builder));
-    m_chooser.addOption("2CO1CU-B", new Co2Cu1B(builder));
-    m_chooser.addOption("2CO1CU-T", new Co2Cu1T(builder));
-    m_chooser.addOption("2CU-B", new Cu2B(builder));
-    m_chooser.addOption("2CU-M", new Cu2M(builder));
-    m_chooser.addOption("2CU-T", new Cu2T(builder));
+  public void setUpAutos(){
+    //autoChooser.setDefaultOption("Do Nothing", new WaitCommand(15));
+    autoChooser.addOption("Go Forward", PathPlanner.loadPathGroup("Go Forward", new PathConstraints(4, 3)));   
+    autoChooser.addOption("1CO1CU-M", PathPlanner.loadPathGroup("1CO1CU-M", new PathConstraints(4, 3)));
+    autoChooser.addOption("1CO1CU-B", PathPlanner.loadPathGroup("1CO1CU-B", new PathConstraints(4, 3)));
+    autoChooser.addOption("1CO1CU-T", PathPlanner.loadPathGroup("1CO1CU-T", new PathConstraints(4, 3)));
+    autoChooser.addOption("2CO-B", PathPlanner.loadPathGroup("2CO-B", new PathConstraints(4, 3)));
+    autoChooser.addOption("2CO-M", PathPlanner.loadPathGroup("2CO-M", new PathConstraints(4, 3)));
+    autoChooser.addOption("2CO-T", PathPlanner.loadPathGroup("2CO-T", new PathConstraints(4, 3)));
+    autoChooser.addOption("2CO1CU-B", PathPlanner.loadPathGroup("2CO1CU-B", new PathConstraints(4, 3)));
+    autoChooser.addOption("2CO1CU-M", PathPlanner.loadPathGroup("2CO1CU-M", new PathConstraints(4, 3)));
+    autoChooser.addOption("2CO1CU-T", PathPlanner.loadPathGroup("2CO1CU-T", new PathConstraints(4, 3)));
+    autoChooser.addOption("2CU-B", PathPlanner.loadPathGroup("2CU-B", new PathConstraints(4, 3)));
+    autoChooser.addOption("2CU-M", PathPlanner.loadPathGroup("2CU-M", new PathConstraints(4, 3)));
+    autoChooser.addOption("2CU-T", PathPlanner.loadPathGroup("2CU-T", new PathConstraints(4, 3)));
+    autoChooser.addOption("test", PathPlanner.loadPathGroup("test", new PathConstraints(4, 3)));
 
-    SmartDashboard.putData(m_chooser);
+    //eventMap.put("event", new PrintCommand("Passed marker 1"));
+    //eventMap.put("Balance", new Balance(drivetrain));
+    //eventMap.put("IntakeCube", Commands.runOnce(() -> intake.cubeIntake(.2)));
+
+
+    SmartDashboard.putData(autoChooser);
   }
 
   /**
@@ -135,15 +151,13 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    //SmartDashboard.putNumber("Working", 1);
-    return new GoForward(builder);
-  }
+    return buildAuto(autoChooser.getSelected());
+    }
 
+  /*public Command balanceCode(){
+    return balance;
+  }*/
   // public void resetPose() {
   //   drivetrain.resetPose(drivetrain.getPose());
   // }
-
-  public Intake getIntake() {
-    return intake;
-  }
 }
