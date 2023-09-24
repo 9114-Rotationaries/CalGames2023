@@ -17,9 +17,9 @@ public class JoystickDrive extends CommandBase {
   Drivetrain drive;
   boolean fieldRelative;
 
-  private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3);
-  private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3);
-  private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);
+  private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(1.25);
+  private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(1.25);
+  private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(1.25);
 
   public JoystickDrive(CommandXboxController controller, Drivetrain drive, boolean fieldRelative) {
     this.controller = controller;

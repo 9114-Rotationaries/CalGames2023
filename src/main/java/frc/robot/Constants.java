@@ -74,12 +74,11 @@ public final class Constants {
     public static final double kModuleMaxAngularAcceleration = 5; // radians per second squared
 
     // drive PID constants
-    public static final double PIDp = 0.2;
-    public static final double PIDi = 0;
-    public static final double PIDd = 0.0;
-
+    public static final double PIDp = 0.45; //0.425
+    public static final double PIDi = 0.000;
+    public static final double PIDd = 0.0024;//0.002
     // turning PID constants 
-    public static final double ProfiledPIDp = 0.4;
+    public static final double ProfiledPIDp = 0.3;
     public static final double ProfiledPIDi = 0.0000000;
     public static final double ProfiledPIDd = 0.0001;
 
@@ -89,6 +88,7 @@ public final class Constants {
     public static final double TurnKs = 0;
     public static final double TurnKv = 0;
   }
+
 
   public static class VisionConstants{
     public static final double targetHeight = 0;
