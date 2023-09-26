@@ -101,14 +101,14 @@ public class SwerveModule extends SubsystemBase{
 
   public SwerveModuleState getState() {
 
-    double m_moduleAngleRadians = m_turningEncoder.getAbsolutePosition() * 2 * Math.PI / 360;
+    double m_moduleAngleRadians = m_turningEncoder.getPosition() * 2 * Math.PI / 360;
 
     return new SwerveModuleState(
         m_driveEncoder.getVelocity(), new Rotation2d(m_moduleAngleRadians));
   }
 
   public double getModuleAngle() {
-    return m_turningEncoder.getAbsolutePosition() * 2 * Math.PI / 360;
+    return m_turningEncoder.getPosition() * 2 * Math.PI / 360;
   }
   
 
@@ -120,7 +120,7 @@ public class SwerveModule extends SubsystemBase{
 
   public SwerveModulePosition getPosition() {
 
-    double m_moduleAngleRadians = m_turningEncoder.getAbsolutePosition() * 2 * Math.PI / 360;
+    double m_moduleAngleRadians = m_turningEncoder.getPosition() * 2 * Math.PI / 360;
 
     return new SwerveModulePosition(
         m_driveEncoder.getPosition(), new Rotation2d(m_moduleAngleRadians));
@@ -138,7 +138,7 @@ public class SwerveModule extends SubsystemBase{
    */
   
   public void setDesiredState(SwerveModuleState desiredState) {
-    double m_moduleAngleRadians = m_turningEncoder.getAbsolutePosition() * 2 * Math.PI / 360;
+    double m_moduleAngleRadians = m_turningEncoder.getPosition() * 2 * Math.PI / 360;
 
 
     // Optimize the reference state to avoid spinning further than 90 degrees
