@@ -16,14 +16,6 @@ import frc.robot.subsystems.Vision;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Arm.LowerArm;
-import frc.robot.commands.Arm.RaiseArm;
-import frc.robot.commands.Intake.Intake.IntakeCube;
-import frc.robot.commands.Intake.Launch.LaunchCone;
-import frc.robot.commands.Intake.Launch.LaunchCube;
-import frc.robot.commands.Intake.Outtake.OuttakeCube;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Intake;
 
 
 /**
@@ -37,9 +29,6 @@ public class RobotContainer {
 
   private final Drivetrain drivetrain = new Drivetrain();
   private final Vision vision = new Vision();
-
-  private final Arm arm = new Arm(ArmConstants.rightArmChannel, ArmConstants.leftArmChannel);
-  private final Intake intake = new Intake(IntakeConstants.cubeIntakeChannel, IntakeConstants.coneIntakeChannel);
 
 
 
@@ -62,24 +51,9 @@ public class RobotContainer {
 
   private void configureDrivetrainBindings() {
     m_controller.b().whileTrue(new MoveToTag(vision, drivetrain));
-    configureIntakeBindings();
-    configureArmBindings();
   }
 
-  private void configureIntakeBindings() {
-    m_operatorController.x().whileTrue(new IntakeCube(intake));
-    m_controller.rightTrigger().whileTrue(new IntakeCube(intake));
-    m_operatorController.y().whileTrue(new OuttakeCube(intake));
-    m_operatorController.rightBumper().whileTrue(new LaunchCube(intake));
-    // m_operatorController.a().whileTrue(new IntakeCone(intake));
-    // m_operatorController.b().whileTrue(new OuttakeCone(intake));
-    m_operatorController.leftBumper().whileTrue(new LaunchCone(intake));
-  }
 
-  private void configureArmBindings() {
-    m_operatorController.rightTrigger().whileTrue(new RaiseArm(arm));
-    m_operatorController.leftTrigger().whileTrue(new LowerArm(arm));
-  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
