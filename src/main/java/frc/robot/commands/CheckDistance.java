@@ -1,14 +1,11 @@
-package frc.robot.subsystems;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
+package frc.robot.commands;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Vision;
 
-public class CheckDistance extends CommandBase {
-    private Vision vision;
- 
+public class CheckDistance extends CommandBase { 
     public CheckDistance(Vision vision) { // Pass the Vision instance to the constructor
-        this.vision = vision;
         // You can initialize other variables or do additional setup here if needed.
         // limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
     }

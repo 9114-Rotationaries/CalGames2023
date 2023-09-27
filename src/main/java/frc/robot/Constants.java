@@ -13,6 +13,13 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    //limelight
+    public static class LimelightConstants {
+      public static final int TargetHeight = 0;
+      public static final int CameraHeight = 0;
+      public static final int Angle = 0;
+    }
+    //
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
