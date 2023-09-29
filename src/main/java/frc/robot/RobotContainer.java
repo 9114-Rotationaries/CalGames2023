@@ -32,6 +32,8 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_operatorController =
       new CommandXboxController(OperatorConstants.kOperatorControllerPort);
+  private final CommandXboxController m_driverController = 
+      new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -44,6 +46,7 @@ public class RobotContainer {
     m_operatorController.x().whileTrue(new IntakeCube(intake));
     m_operatorController.y().whileTrue(new OuttakeCube(intake));
     m_operatorController.leftBumper().whileTrue(new LaunchCube(intake));
+    m_driverController.leftTrigger().whileTrue(new IntakeCube(intake));
     // m_operatorController.a().whileTrue(new IntakeCone(intake));
     // m_operatorController.b().whileTrue(new OuttakeCone(intake));
     // m_operatorController.rightBumper().whileTrue(new LaunchCone(intake));
@@ -52,6 +55,8 @@ public class RobotContainer {
   private void configureArmBindings() {
     m_operatorController.rightTrigger().whileTrue(new RaiseArm(arm));
     m_operatorController.leftTrigger().whileTrue(new LowerArm(arm));
+    m_driverController.leftBumper().whileTrue(new LowerArm(arm));
+    m_driverController.rightBumper().whileTrue(new RaiseArm(arm));
   }
 
   /**
