@@ -32,6 +32,18 @@ public class Arm extends SubsystemBase {
     m_leftMotor.set(-pivotSpeed);
   }
 
+  public void autoDown(){ //test bc might be other way around
+    //pivot speed based on right motor
+    m_rightMotor.set(.5); 
+    m_leftMotor.set(-.5);
+  }
+
+  public void autoUp(){
+    //pivot speed based on right motor
+    m_rightMotor.set(-.5);
+    m_leftMotor.set(.5);
+  }
+
   public void stop(){
     m_rightMotor.set(0);
     m_leftMotor.set(0);

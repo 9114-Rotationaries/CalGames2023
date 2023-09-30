@@ -7,11 +7,13 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
   private final CANSparkMax m_cubeIntake;
+  private final Timer timer = new Timer();
   // private final CANSparkMax m_coneIntake;
 
   /** Creates a new Intake. */
@@ -36,6 +38,17 @@ public class Intake extends SubsystemBase {
     return m_cubeIntake.get();
   }
 
+  public void autoCubeOut(){
+    timer.start();
+    while(timer.get() <= 2){
+      m_cubeIntake.set(.8);
+    }
+  }
+
+  public void autoCubeIn(){
+    m_cubeIntake.set(-.8);
+  }
+  
   // public void coneIntake(double coneIntakeSpeed){
   //   m_cubeIntake.set(coneIntakeSpeed);
   // }
