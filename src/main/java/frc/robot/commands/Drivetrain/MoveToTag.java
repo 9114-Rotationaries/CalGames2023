@@ -17,7 +17,7 @@ public class MoveToTag extends CommandBase {
 
   private PIDController angleController = new PIDController(VisionConstants.VAnglePIDp, VisionConstants.VAnglePIDi, VisionConstants.VAnglePIDd);
   private PIDController distanceController = new PIDController(VisionConstants.VDrivePIDp, VisionConstants.VDrivePIDi, VisionConstants.VDrivePIDd);
-  private PIDController rotationController = new PIDController(VisionConstants.VRotPIDp, VisionConstants.VRotPIDi, VisionConstants.VRotPIDd);
+  private PIDController rotationController = new PIDController(VisionConstants.ProfiledVRotPIDp, VisionConstants.ProfiledVRotPIDi, VisionConstants.ProfiledVRotPIDd);
 
   /** Creates a new MoveToTag. */
   public MoveToTag(Vision vision, Drivetrain swerveDrive) {
@@ -50,7 +50,7 @@ public class MoveToTag extends CommandBase {
     double distanceCorrection = distanceController.calculate(distanceError);
     double rotationCorrection = rotationController.calculate(rotationError);
 
-    swerveDrive.drive(distanceCorrection, angleCorrection, rotationCorrection, false);
+    swerveDrive.drive(-distanceCorrection, angleCorrection, rotationCorrection, false);
   }
 
   // Called once the command ends or is interrupted.

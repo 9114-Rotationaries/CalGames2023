@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.Drivetrain;
 
-public class JoystickDrive extends CommandBase {
+public class SlowDriveCommunity extends CommandBase {
   CommandXboxController controller;
   Drivetrain drive;
   boolean fieldRelative;
@@ -21,7 +21,7 @@ public class JoystickDrive extends CommandBase {
   private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(1.25);
   private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(1.25);
 
-  public JoystickDrive(CommandXboxController controller, Drivetrain drive, boolean fieldRelative) {
+  public SlowDriveCommunity(CommandXboxController controller, Drivetrain drive, boolean fieldRelative) {
     this.controller = controller;
     this.drive=drive;
     this.fieldRelative = fieldRelative;
@@ -36,17 +36,17 @@ public class JoystickDrive extends CommandBase {
     // Inverted X speed / Forwards and backwards
     final double xSpeed =
         -m_xspeedLimiter.calculate(MathUtil.applyDeadband(controller.getLeftY(), 0.02))
-            * DriveConstants.kMaxSpeed;
+            * DriveConstants.kCommunityAngularSpeed;
 
     // Inverted Y speed / Strafe speed
     final double ySpeed =
         -m_yspeedLimiter.calculate(MathUtil.applyDeadband(controller.getLeftX(), 0.02))
-            * DriveConstants.kMaxSpeed;
+            * DriveConstants.kCommunitySpeed;
 
     // Inverted angular rotation value
     double rot =
         -m_rotLimiter.calculate(MathUtil.applyDeadband(controller.getRightX(), 0.02))
-            * DriveConstants.kMaxAngularSpeed;
+            * DriveConstants.kCommunityAngularSpeed;
   
       
       SmartDashboard.putNumber("xSpeed", xSpeed);

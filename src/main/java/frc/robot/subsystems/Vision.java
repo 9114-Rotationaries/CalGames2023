@@ -11,10 +11,14 @@ import org.opencv.imgcodecs.Imgcodecs;
 import edu.wpi.first.apriltag.AprilTagDetection;
 import edu.wpi.first.apriltag.AprilTagDetector;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
 
@@ -33,8 +37,18 @@ public class Vision extends SubsystemBase {
 
   public Vision() {
     
+
     UsbCamera limelight = CameraServer.startAutomaticCapture();
     limelight.setBrightness(20);
+    new Thread(() -> {
+      CvSink video = CameraServer.getVideo();
+      CvSource outputStream = CameraServer.putVideo("camera stream", 320, 420);
+      Mat source = new Mat();
+      while(!Thread.interrupted()){
+        video.grabFrame(source);
+        outputStream.putFrame(source);
+      }
+    }).start();
 
     limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
    // tx = limelightTable.getEntry("tx");

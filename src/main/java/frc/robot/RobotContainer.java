@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Drivetrain.JoystickDrive;
 import frc.robot.commands.Drivetrain.MoveToTag;
+import frc.robot.commands.Drivetrain.SlowDriveCommunity;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;                            
 
@@ -54,7 +55,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     //drivetrain.resetPose(drivetrain.getPose());
-    System.out.println(drivetrain.getModule().getPosition());
+    //System.out.println(drivetrain.getModule().getPosition());
 
     configureDrivetrainBindings();
     drivetrain.setDefaultCommand(new JoystickDrive(m_controller, drivetrain, true));
@@ -64,21 +65,25 @@ public class RobotContainer {
     m_controller.b().whileTrue(new MoveToTag(vision, drivetrain));
     configureIntakeBindings();
     configureArmBindings();
+    m_controller.button(9).whileTrue(new SlowDriveCommunity(m_controller, drivetrain, true));
   }
 
   private void configureIntakeBindings() {
-    m_operatorController.x().whileTrue(new IntakeCube(intake));
+    m_operatorController.leftBumper().whileTrue(new IntakeCube(intake));
     m_controller.rightTrigger().whileTrue(new IntakeCube(intake));
-    m_operatorController.y().whileTrue(new OuttakeCube(intake));
-    m_operatorController.rightBumper().whileTrue(new LaunchCube(intake));
+    m_controller.leftTrigger().whileTrue(new OuttakeCube(intake));
+    m_operatorController.rightBumper().whileTrue(new OuttakeCube(intake));
+    //m_operatorController.rightBumper().whileTrue(new LaunchCube(intake));
     // m_operatorController.a().whileTrue(new IntakeCone(intake));
     // m_operatorController.b().whileTrue(new OuttakeCone(intake));
-    m_operatorController.leftBumper().whileTrue(new LaunchCone(intake));
+    //m_operatorController.leftBumper().whileTrue(new LaunchCone(intake));
   }
 
   private void configureArmBindings() {
     m_operatorController.rightTrigger().whileTrue(new RaiseArm(arm));
     m_operatorController.leftTrigger().whileTrue(new LowerArm(arm));
+    m_controller.leftBumper().whileTrue(new LowerArm(arm));
+    m_controller.rightBumper().whileTrue(new RaiseArm(arm));
   }
 
   /**
