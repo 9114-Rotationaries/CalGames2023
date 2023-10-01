@@ -1,142 +1,85 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfByte;
-import org.opencv.imgcodecs.Imgcodecs;
-
-import edu.wpi.first.apriltag.AprilTagDetection;
-import edu.wpi.first.apriltag.AprilTagDetector;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.CvSink;
-import edu.wpi.first.cscore.CvSource;
-import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
 
-
-
-
 public class Vision extends SubsystemBase {
-  /** Creates a new Vision. */
+    private edu.wpi.first.cscore.UsbCamera limelightCamera;
+    private NetworkTable limelightTable;
 
+    // Define constants for network table keys
+    private static final String LIMELIGHT_TABLE_NAME = "limelight";
+    private static final String TARGET_VALID_KEY = "tv";
+    private static final String HORIZONTAL_OFFSET_KEY = "tx";
+    private static final String VERTICAL_OFFSET_KEY = "ty";
+    private static final String TARGET_AREA_KEY = "ta";
 
-  private NetworkTable limelightTable;
-  private double tx;
-  private double ty;
-  private double ta;
-  private double ts;
+    public Vision() {
+        // Initialize the Limelight network table
+        limelightTable = NetworkTableInstance.getDefault().getTable(LIMELIGHT_TABLE_NAME);
 
-  public Vision() {
-    
+        // Create a new USB camera instance for the Limelight
+        limelightCamera = CameraServer.startAutomaticCapture();
+        
+        // Set camera properties, e.g., brightness
+        limelightCamera.setBrightness(100); // Set brightness to 100 (maximum)
 
-    UsbCamera limelight = CameraServer.startAutomaticCapture();
-    limelight.setBrightness(20);
-    new Thread(() -> {
-      CvSink video = CameraServer.getVideo();
-      CvSource outputStream = CameraServer.putVideo("camera stream", 320, 420);
-      Mat source = new Mat();
-      while(!Thread.interrupted()){
-        video.grabFrame(source);
-        outputStream.putFrame(source);
-      }
-    }).start();
-
-    limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
-   // tx = limelightTable.getEntry("tx");
-   // ty = limelightTable.getEntry("ty");
-   // ta = limelightTable.getEntry("ta");
-    
-
-  }
-
-  public double getTX(){
-    limelightTable.getEntry("pipeline").setNumber(0);
-    tx = limelightTable.getEntry("tx").getDouble(0.0);
-    return tx;
-  }
-
-  public double getTY(){
-    limelightTable.getEntry("pipeline").setNumber(0);
-    ty = limelightTable.getEntry("ty").getDouble(0.0);
-    return ty;
-  }
-
-  public double getTA(){
-    limelightTable.getEntry("pipeline").setNumber(0);
-    ta = limelightTable.getEntry("ta").getDouble(0.0);
-    return ta;
-  }
-
-  public double getDistance(){
-    double angle = Math.toRadians(VisionConstants.cameraAngle + ty);
-    double height = VisionConstants.targetHeight - VisionConstants.cameraHeight;
-    double distance = height / Math.tan(angle);
-    return distance;
-  }
-
-  public double getTS(){
-    limelightTable.getEntry("pipelines").setNumber(0);
-    ts = limelightTable.getEntry("ts0").getDouble(0);
-    return ts;
-  }
-
-  public double getTV(){
-    double[] tcornxy = limelightTable.getEntry("tcornxy").getDoubleArray(new double[8]);
-
-    if (tcornxy.length >= 8) {
-      double x0 = tcornxy[0];
-      double y0 = tcornxy[1];
-      double x1 = tcornxy[2];
-      double y1 = tcornxy[3];
-      double x2 = tcornxy[4];
-      double y2 = tcornxy[5];
-      double x3 = tcornxy[6];
-      double y3 = tcornxy[7];
-
-      double leftSlope = (y2 - y0) / (x2 - x0); //Tag Left edge slope 
-      double rightSlope = (y3 - y1) / (x3 - x1); //Tag Right edge slope
-    
-      double avgSlope = (leftSlope + rightSlope) / 2; //Tag avgS slope
-
-      double tilt = Math.toDegrees(Math.atan(avgSlope));
-
-      return tilt;
-    } else {
-      return 0;
+        // Set the Limelight LED mode to "off" initially
+        limelightTable.getEntry("ledMode").setNumber(1); // 0: Off, 1: On, 2: Blinking
     }
 
-    
-    
+    // Check if Limelight has any valid targets (0 or 1)
+    public boolean isTargetValid() {
+        return limelightTable.getEntry(TARGET_VALID_KEY).getDouble(0) == 1;
+    }
+
+    // Get the horizontal offset (tx) from the crosshair to the target
+    public double getHorizontalOffset() {
+        return limelightTable.getEntry(HORIZONTAL_OFFSET_KEY).getDouble(0);
+    }
+
+    public double getOrientation() {
+      // Get the horizontal offset (tx) from the limelight
+      NetworkTableEntry txEntry = limelightTable.getEntry("tx");
+      double tx = txEntry.getDouble(0.0);
+
+      // Return the horizontal offset as the orientation
+      return tx;
+  }
+    // Get the vertical offset (ty) from the crosshair to the target
+    public double getVerticalOffset() {
+        return limelightTable.getEntry(VERTICAL_OFFSET_KEY).getDouble(0);
+    }
+
+    // Get the target area (ta)
+    public double getTargetArea() {
+        return limelightTable.getEntry(TARGET_AREA_KEY).getDouble(0);
+    }
+
+    public double getDistance() {
+      // Get the vertical offset (ty) from the limelight
+      NetworkTableEntry tyEntry = limelightTable.getEntry("ty");
+      double ty = tyEntry.getDouble(0.0);
+
+      // Calculate the distance based on ty and camera angle
+      double angle = Math.toRadians(VisionConstants.cameraAngle + ty);
+      double height = VisionConstants.targetHeight - VisionConstants.cameraHeight;
+      double distance = height / Math.tan(angle);
+
+      return distance;
   }
 
-  public AprilTagDetection[] getAprilTag(){
-    AprilTagDetector detector = new AprilTagDetector();
-
-    NetworkTableEntry imageEntry = limelightTable.getEntry("image");
-    byte[] imageBytes = imageEntry.getRaw(new byte[0]);
-    Mat image = Imgcodecs.imdecode(new MatOfByte(imageBytes),Imgcodecs.IMREAD_UNCHANGED); //flags???
-
-    return detector.detect(image);
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-    // double x = tx.getDouble(0.0);
-    // double y = ty.getDouble(0.0);
-    // double area = ta.getDouble(0.0);
-
-    // SmartDashboard.putNumber("LimelightX", x);
-    // SmartDashboard.putNumber("LimelightY", y);
-    // SmartDashboard.putNumber("LimelightArea", area);
-  }
+    @Override
+    public void periodic() {
+        // Update values on the SmartDashboard (optional)
+        SmartDashboard.putBoolean("Target Valid", isTargetValid());
+        SmartDashboard.putNumber("Horizontal Offset (tx)", getHorizontalOffset());
+        SmartDashboard.putNumber("Vertical Offset (ty)", getVerticalOffset());
+        SmartDashboard.putNumber("Target Area (ta)", getTargetArea());
+    }
 }
