@@ -4,7 +4,6 @@
 
 package frc.robot.commands.Intake.Intake;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.Intake;
@@ -39,6 +38,6 @@ public class IntakeCube extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Timer.getFPGATimestamp() == 5;
+    return false;
   }
 }

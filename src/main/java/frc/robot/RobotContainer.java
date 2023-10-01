@@ -4,10 +4,11 @@
 
 package frc.robot;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
+
+import javax.swing.plaf.TreeUI;
 
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
@@ -15,17 +16,13 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.Constants.OperatorConstants;
@@ -58,13 +55,13 @@ import frc.robot.subsystems.Intake;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  private final static Drivetrain drivetrain = new Drivetrain();
+  public final static Drivetrain drivetrain = new Drivetrain();
   private final Vision vision = new Vision();
 
   private final Arm arm = new Arm(ArmConstants.rightArmChannel, ArmConstants.leftArmChannel);
-  private final Intake intake = new Intake(IntakeConstants.cubeIntakeChannel, IntakeConstants.coneIntakeChannel);
+  private final static Intake intake = new Intake(IntakeConstants.cubeIntakeChannel, IntakeConstants.coneIntakeChannel);
 
-  private final Balance balance = new Balance(drivetrain);
+  final Balance balance = new Balance();
   private static SwerveAutoBuilder builder;
   SendableChooser<List<PathPlannerTrajectory>> autoChooser = new SendableChooser<>();
 
@@ -89,9 +86,6 @@ public class RobotContainer {
 
     configureArmBindings();
     configureIntakeBindings();
-
-    //setUpAutos();
-    //createHashMap();
   }
 
   private void configureDrivetrainBindings() {
@@ -115,7 +109,7 @@ public class RobotContainer {
     m_operatorController.leftTrigger().whileTrue(new LowerArm(arm));
   }
 
-  public Command buildAuto(List<PathPlannerTrajectory> trajs) {
+  public static Command buildAuto(List<PathPlannerTrajectory> trajs) {
     builder = new SwerveAutoBuilder(
       drivetrain::getPose,
       drivetrain::resetOdometry,
@@ -131,34 +125,35 @@ public class RobotContainer {
     return builder.fullAuto(trajs);
   }
 
-   public void setUpAutos(){
-     //autoChooser.addOption("Do Nothing", new WaitCommand(15));
-     autoChooser.addOption("Go Forward", PathPlanner.loadPathGroup("Go Forward", new PathConstraints(4, 3)));   
-     autoChooser.addOption("1CO1CU-M", PathPlanner.loadPathGroup("1CO1CU-M", new PathConstraints(4, 3)));
-     autoChooser.addOption("1CO1CU-B", PathPlanner.loadPathGroup("1CO1CU-B", new PathConstraints(4, 3)));
-     autoChooser.addOption("1CO1CU-T", PathPlanner.loadPathGroup("1CO1CU-T", new PathConstraints(4, 3)));
-     autoChooser.addOption("2CO-B", PathPlanner.loadPathGroup("2CO-B", new PathConstraints(4, 3)));
-     autoChooser.addOption("2CO-M", PathPlanner.loadPathGroup("2CO-M", new PathConstraints(4, 3)));
-     autoChooser.addOption("2CO-T", PathPlanner.loadPathGroup("2CO-T", new PathConstraints(4, 3)));
-     autoChooser.addOption("2CO1CU-B", PathPlanner.loadPathGroup("2CO1CU-B", new PathConstraints(4, 3)));
-     autoChooser.addOption("2CO1CU-M", PathPlanner.loadPathGroup("2CO1CU-M", new PathConstraints(4, 3)));
-     autoChooser.addOption("2CO1CU-T", PathPlanner.loadPathGroup("2CO1CU-T", new PathConstraints(4, 3)));
-     autoChooser.addOption("2CU-B", PathPlanner.loadPathGroup("2CU-B", new PathConstraints(4, 3)));
-     autoChooser.addOption("2CU-M", PathPlanner.loadPathGroup("2CU-M", new PathConstraints(4, 3)));
-     autoChooser.addOption("2CU-T", PathPlanner.loadPathGroup("2CU-T", new PathConstraints(4, 3)));
-     autoChooser.addOption("test", PathPlanner.loadPathGroup("test", new PathConstraints(4, 3)));
-     
-     SmartDashboard.putData(autoChooser);
-     eventMap.put("InCube", new InstantCommand(intake::autoCubeIn, intake));
-     eventMap.put("OutCube", new InstantCommand(intake::autoCubeOut, intake));
-     eventMap.put("ArmUp", new InstantCommand(arm::autoUp, arm));
-     eventMap.put("ArmDown", new InstantCommand(arm::autoDown, arm));
+  public void setUpAutos(){
+    //autoChooser.setDefaultOption("Do Nothing", new WaitCommand(15));
+    autoChooser.addOption("Go Forward", PathPlanner.loadPathGroup("Go Forward", new PathConstraints(10, 3)));   
+    autoChooser.addOption("1CO1CU-M", PathPlanner.loadPathGroup("1CO1CU-M", new PathConstraints(4, 3)));
+    autoChooser.addOption("1CO1CU-B", PathPlanner.loadPathGroup("1CO1CU-B", new PathConstraints(4, 3)));
+    autoChooser.addOption("1CO1CU-T", PathPlanner.loadPathGroup("1CO1CU-T", new PathConstraints(4, 3)));
+    autoChooser.addOption("2CO-B", PathPlanner.loadPathGroup("2CO-B", new PathConstraints(10, 6)));
+    autoChooser.addOption("2CO-M", PathPlanner.loadPathGroup("2CO-M", new PathConstraints(4, 3)));
+    autoChooser.addOption("2CO-T", PathPlanner.loadPathGroup("2CO-T", new PathConstraints(4, 3)));
+    autoChooser.addOption("2CO1CU-B", PathPlanner.loadPathGroup("2CO1CU-B", new PathConstraints(4, 3)));
+    autoChooser.addOption("2CO1CU-M", PathPlanner.loadPathGroup("2CO1CU-M", new PathConstraints(4, 3)));
+    autoChooser.addOption("2CO1CU-T", PathPlanner.loadPathGroup("2CO1CU-T", new PathConstraints(4, 3)));
+    autoChooser.addOption("2CU-B", PathPlanner.loadPathGroup("2CU-B", new PathConstraints(4, 3)));
+    autoChooser.addOption("2CU-M", PathPlanner.loadPathGroup("2CU-M", new PathConstraints(4, 3)));
+    autoChooser.addOption("2CU-T", PathPlanner.loadPathGroup("2CU-T", new PathConstraints(4, 3)));
+    autoChooser.addOption("test", PathPlanner.loadPathGroup("test", new PathConstraints(4, 3)));
+    autoChooser.addOption("PathWithStuff", PathPlanner.loadPathGroup("PathWithStuff", new PathConstraints(4, 3)));
 
-   }
 
-  /*public void createHashMap() {
-    eventMap.put("IntakeCube", Commands.runOnce(() -> intake.cubeIntake(.2)));
-  }*/
+    eventMap.put("event", new PrintCommand("Passed marker 1"));
+    //eventMap.put("Balance",  balance);
+    eventMap.put("OutCube", new InstantCommand(intake::cOut, intake));
+    eventMap.put("InCube", new InstantCommand(intake::cInt, intake)); //cInt = cubeIntake without needing parameter
+    eventMap.put("ArmUp", new InstantCommand(intake::cInt, intake)); //cInt = cubeIntake without needing parameter
+    eventMap.put("ArmDown", new InstantCommand(intake::cInt, intake)); 
+
+
+    SmartDashboard.putData(autoChooser);
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -166,13 +161,12 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-     return buildAuto(autoChooser.getSelected());
-    //SmartDashboard.putData("PathGroup", (Sendable) pathGroup);
-  }
+    return buildAuto(autoChooser.getSelected());
+    }
 
   public Command balanceCode(){
-    return balance;
-
+  return balance;
+    //CommandScheduler.getInstance().schedule(balance); 
   }
   // public void resetPose() {
   //   drivetrain.resetPose(drivetrain.getPose());

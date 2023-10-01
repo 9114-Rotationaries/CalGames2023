@@ -66,8 +66,8 @@ public class SwerveModule extends SubsystemBase{
     m_turningEncoder = new CANCoder(turningEncoderChannel);
 
     // Distance per pulse
-    m_driveEncoder.setPositionConversionFactor(2 * Math.PI * SwerveConstants.kWheelRadius / 6.75);
-    m_driveEncoder.setVelocityConversionFactor(2 * Math.PI * SwerveConstants.kWheelRadius / 6.75 / 60); // 60 seconds per minute
+    m_driveEncoder.setPositionConversionFactor(1/(Math.PI * .0508 * 2 * 6.75));
+    m_driveEncoder.setVelocityConversionFactor((1/(Math.PI * .0508 * 2 * 6.75))/ 60); // 60 seconds per minute
 
     // Radians per pulse
      //m_turningEncoder.setDistancePerPulse(2 * Math.PI / SwerveConstants.kEncoderResolution);

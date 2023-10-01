@@ -27,6 +27,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_robotContainer = new RobotContainer();
     limelight = new Vision();
+    m_robotContainer.setUpAutos();
   }
 
   /**
@@ -55,8 +56,10 @@ public class Robot extends TimedRobot {
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
-      //m_balance.schedule();
     }
+    //m_robotContainer.balance.execute();
+    //CommandScheduler.getInstance().schedule(m_robotContainer.balanceCode());
+  
   }
 
   @Override

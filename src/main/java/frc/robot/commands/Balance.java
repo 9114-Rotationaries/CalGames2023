@@ -9,15 +9,15 @@ import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Drivetrain;
 
 public class Balance extends CommandBase {
   /** Creates a new Balance. */
-  Drivetrain m_drive;
+  Drivetrain m_drive=RobotContainer.drivetrain;;
   PIDController controller = new PIDController(0.05, 0, 0);
 
-  public Balance(Drivetrain m_drive) {
-    this.m_drive = m_drive;
+  public Balance() {
     addRequirements(m_drive);
     // Use addRequirements() here to declare subsystem dependencies.
   }
