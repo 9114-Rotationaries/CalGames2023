@@ -12,11 +12,13 @@ import com.revrobotics.SparkMaxRelativeEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.SwerveConstants;
 
 public class SwerveModule extends SubsystemBase{
@@ -29,6 +31,16 @@ public class SwerveModule extends SubsystemBase{
   // Gains are for example purposes only - must be determined for your own robot!
   private final PIDController m_drivePIDController = new PIDController(SwerveConstants.PIDp, SwerveConstants.PIDi, SwerveConstants.PIDd);
 
+  // private final ProfiledPIDController m_drivePIDController = 
+  //   new ProfiledPIDController(
+  //             SwerveConstants.PIDp,
+  //             SwerveConstants.PIDi,
+  //             SwerveConstants.PIDd,
+  //             new TrapezoidProfile.Constraints(
+  //                 DriveConstants.kMaxSpeed, DriveConstants.kMaxAngularSpeed));
+
+//  private final PIDController m_turningPIDController = new PIDController(SwerveConstants.ProfiledPIDd, SwerveConstants.ProfiledPIDi, SwerveConstants.ProfiledPIDd);
+
   // Gains are for example purposes only - must be determined for your own robot!
   private final ProfiledPIDController m_turningPIDController =
       new ProfiledPIDController(
@@ -39,8 +51,8 @@ public class SwerveModule extends SubsystemBase{
               SwerveConstants.kModuleMaxAngularVelocity, SwerveConstants.kModuleMaxAngularAcceleration));
 
   // Gains are for example purposes only - must be determined for your own robot!
-  // private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(SwerveConstants.DriveKs, SwerveConstants.DriveKv);
-  // private final SimpleMotorFeedforward m_turnFeedforward = new SimpleMotorFeedforward(SwerveConstants.TurnKs, SwerveConstants.TurnKv);
+  private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(SwerveConstants.DriveKs, SwerveConstants.DriveKv);
+  private final SimpleMotorFeedforward m_turnFeedforward = new SimpleMotorFeedforward(SwerveConstants.TurnKs, SwerveConstants.TurnKv);
 
   /**
    * Constructs a SwerveModule with a drive motor, turning motor, and turning encoder.
@@ -149,14 +161,14 @@ public class SwerveModule extends SubsystemBase{
         m_drivePIDController.calculate(m_driveEncoder.getVelocity(), state.speedMetersPerSecond);
     
     
-    // final double driveFeedforward = m_driveFeedforward.calculate(state.speedMetersPerSecond);
+    final double driveFeedforward = m_driveFeedforward.calculate(state.speedMetersPerSecond);
 
     // Calculate the turning motor output from the turning PID controller.
     final double turnOutput =
         m_turningPIDController.calculate(m_moduleAngleRadians, state.angle.getRadians());
 
-    // final double turnFeedforward =
-    //     m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
+    final double turnFeedforward =
+        m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
 
     m_turningMotor.set(turnOutput);
     m_driveMotor.set(driveOutput);
