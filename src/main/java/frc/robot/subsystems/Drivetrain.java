@@ -119,7 +119,11 @@ public class Drivetrain extends SubsystemBase{
   }
 
   @Override
-  public void periodic(){}
+  public void periodic(){
+    SmartDashboard.putString("encodervalues", m_odometry.getPoseMeters().toString());
+    SmartDashboard.updateValues();
+    //();;
+  }
 
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     SwerveDriveKinematics.desaturateWheelSpeeds(

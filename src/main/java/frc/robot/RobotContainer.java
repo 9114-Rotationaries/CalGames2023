@@ -114,11 +114,11 @@ public class RobotContainer {
       drivetrain::getPose,
       drivetrain::resetOdometry,
       drivetrain.getKinematics(),
-      new PIDConstants(SwerveConstants.PIDp, SwerveConstants.PIDi, SwerveConstants.PIDd),
-      new PIDConstants(SwerveConstants.ProfiledPIDp, SwerveConstants.ProfiledPIDi, SwerveConstants.ProfiledPIDd),
+      new PIDConstants(0.2, 0, 0),
+      new PIDConstants(0, 0, 0),
       drivetrain::setModuleStates,
       eventMap,
-      true,
+      false,
       drivetrain
     );
 
@@ -127,7 +127,7 @@ public class RobotContainer {
 
   public void setUpAutos(){
     //autoChooser.setDefaultOption("Do Nothing", new WaitCommand(15));
-    autoChooser.addOption("Go Forward", PathPlanner.loadPathGroup("Go Forward", new PathConstraints(10, 3)));   
+    autoChooser.addOption("Go Forward", PathPlanner.loadPathGroup("Go Forward", new PathConstraints(3, 3)));   
     autoChooser.addOption("1CO1CU-M", PathPlanner.loadPathGroup("1CO1CU-M", new PathConstraints(4, 3)));
     autoChooser.addOption("1CO1CU-B", PathPlanner.loadPathGroup("1CO1CU-B", new PathConstraints(4, 3)));
     autoChooser.addOption("1CO1CU-T", PathPlanner.loadPathGroup("1CO1CU-T", new PathConstraints(4, 3)));
@@ -142,6 +142,7 @@ public class RobotContainer {
     autoChooser.addOption("2CU-T", PathPlanner.loadPathGroup("2CU-T", new PathConstraints(4, 3)));
     autoChooser.addOption("test", PathPlanner.loadPathGroup("test", new PathConstraints(4, 3)));
     autoChooser.addOption("PathWithStuff", PathPlanner.loadPathGroup("PathWithStuff", new PathConstraints(4, 3)));
+    autoChooser.addOption("SwerveTest", PathPlanner.loadPathGroup("TestingSwerve", new PathConstraints(4, 3)));
 
 
     eventMap.put("event", new PrintCommand("Passed marker 1"));
