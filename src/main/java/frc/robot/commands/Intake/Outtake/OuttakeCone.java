@@ -7,8 +7,12 @@ package frc.robot.commands.Intake.Outtake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.Intake;
+import edu.wpi.first.wpilibj.AnalogOutput;
 
 public class OuttakeCone extends CommandBase {
+  private AnalogOutput analogOutput;
+  private double voltage = 4; // white
+
   private Intake intake;
   /** Creates a new OuttakeObject. */
   public OuttakeCone(Intake intake) {
@@ -20,7 +24,12 @@ public class OuttakeCone extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    analogOutput = new AnalogOutput(0); //change depending on channel later
     intake.stop();
+  }
+
+  public void LEDChange() {
+    analogOutput.setVoltage(voltage);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -4,11 +4,15 @@
 
 package frc.robot.commands.Intake.Intake;
 
+import edu.wpi.first.wpilibj.AnalogOutput;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.Intake;
 
 public class IntakeCube extends CommandBase {
+  private AnalogOutput analogOutput;
+  private double voltage = 1; // red
+
   private Intake intake;
   /** Creates a new IntakeObject. */
   public IntakeCube(Intake intake) {
@@ -20,7 +24,12 @@ public class IntakeCube extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    analogOutput = new AnalogOutput(0); //change depending on channel later
     intake.stop();
+  }
+
+  public void LEDChange() {
+    analogOutput.setVoltage(voltage);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
