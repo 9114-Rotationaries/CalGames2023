@@ -193,4 +193,9 @@ public class SwerveModule extends SubsystemBase{
     return new SwerveModulePosition(m_driveEncoder.getPosition(), 
     new Rotation2d(m_turningEncoder.getPosition()));
   } 
+
+  public void resetDriveEncoder() {
+    // Reset the drive encoder to zero counts
+    m_driveEncoder.setPosition(0);
+}
 }
