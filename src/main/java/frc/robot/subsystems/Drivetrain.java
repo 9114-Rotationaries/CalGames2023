@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.SwerveConstants;
 
 public class Drivetrain extends SubsystemBase{
   
@@ -132,6 +133,25 @@ public class Drivetrain extends SubsystemBase{
   public SwerveModule getModule() {
     return m_frontLeft;
   }
+
+  public double getDistancePerPulse() {
+    // Return the conversion factor for distance per pulse
+    return 2 * Math.PI * SwerveConstants.kWheelRadius / 6.75;
+}
+
+public double getEncoderCounts() {
+    // Implement code to get encoder counts (sum of counts from all modules)
+    // Return the total encoder counts
+    return m_backRight.getDriveEncoderValues();
+}
+
+public void resetEncoders() {
+  // Reset the encoders for all swerve modules
+  m_frontRight.resetDriveEncoder();
+  m_frontLeft.resetDriveEncoder();
+  m_backLeft.resetDriveEncoder();
+  m_backRight.resetDriveEncoder();
+}
 
 }
 
