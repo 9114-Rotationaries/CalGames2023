@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
@@ -17,6 +18,7 @@ public class Arm extends SubsystemBase {
   private final CANSparkMax m_rightMotor;
   private final CANSparkMax m_leftMotor;
   private final RelativeEncoder encoder1;
+  private final Timer timer = new Timer();
   // private final PIDController armPID = new PIDController(ArmConstants.p, ArmConstants.i, ArmConstants.d);
 
   /** Creates a new Arm. */
@@ -45,6 +47,22 @@ public class Arm extends SubsystemBase {
   public double getSpeed(){
     double speed = m_rightMotor.get();
     return speed;
+  }
+
+  public void armUp(){
+    timer.start();
+    while (timer.get() < 5){
+      m_rightMotor.set(.9);
+      m_leftMotor.set(-.9);     
+    }
+  }
+
+  public void armDown(){
+    timer.start();
+    while (timer.get() < 5){
+      m_rightMotor.set(-.9);
+      m_leftMotor.set(.9);     
+    }
   }
 
   @Override
