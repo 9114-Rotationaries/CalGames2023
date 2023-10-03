@@ -43,7 +43,8 @@ public class Robot extends TimedRobot {
   
   @Override
   public void robotPeriodic() {
-    
+    CommandScheduler.getInstance().run();
+
   }
 
   @Override
@@ -78,7 +79,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     //CommandScheduler.getInstance().schedule(x);
-    CommandScheduler.getInstance().run();
     //joystickDrive.schedule();
   }
 
@@ -96,3 +96,4 @@ public class Robot extends TimedRobot {
   @Override
   public void simulationPeriodic() {}
 }
+
