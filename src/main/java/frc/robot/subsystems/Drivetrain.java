@@ -120,8 +120,8 @@ public class Drivetrain extends SubsystemBase{
 
   @Override
   public void periodic(){
-    SmartDashboard.putString("encodervalues", m_odometry.getPoseMeters().toString());
-    SmartDashboard.updateValues();
+    //SmartDashboard.putString("encodervalues", m_backRight.getDriveEncoderValues());
+    SmartDashboard.putNumber("encoders", m_backRight.getDriveEncoderValues());
     //();;
   }
 
