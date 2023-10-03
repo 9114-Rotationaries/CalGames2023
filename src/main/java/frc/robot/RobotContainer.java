@@ -63,7 +63,7 @@ public class RobotContainer {
 
   final Balance balance = new Balance();
   private static SwerveAutoBuilder builder;
-  SendableChooser<List<PathPlannerTrajectory>> autoChooser = new SendableChooser<>();
+  static SendableChooser<List<PathPlannerTrajectory>> autoChooser = new SendableChooser<>();
 
   private static HashMap<String, Command> eventMap = new HashMap<>();
 
@@ -110,18 +110,34 @@ public class RobotContainer {
   }
 
   public static Command buildAuto(List<PathPlannerTrajectory> trajs) {
+        //print trajs
+        System.out.println("Selected Trajectory: " + autoChooser.getSelected());
+        //check initial odometry
+        System.out.println("Initial Odometry: " + drivetrain.getPose());
+    
     builder = new SwerveAutoBuilder(
+      
       drivetrain::getPose,
       drivetrain::resetOdometry,
       drivetrain.getKinematics(),
       new PIDConstants(0.2, 0, 0),
       new PIDConstants(0, 0, 0),
-      drivetrain::setModuleStates,
+      //drivetrain::setModuleStates,
+      (desiredStates) -> {
+            // Print statement to check if setModuleStates is being called
+            System.out.println("setModuleStates method called");
+            drivetrain.setModuleStates(desiredStates); // Invoke the actual method
+      },
       eventMap,
       false,
       drivetrain
+      
     );
+    //check if odometry resetting properly
+    System.out.println("Odometry Reset to: " + drivetrain.getPose());
+      
 
+    
     return builder.fullAuto(trajs);
   }
 
