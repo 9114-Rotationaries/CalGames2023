@@ -17,6 +17,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.SwerveConstants;
@@ -77,7 +78,7 @@ public class SwerveModule extends SubsystemBase{
     m_turningEncoder = new CANCoder(turningEncoderChannel);
 
     // Distance per pulse
-    m_driveEncoder.setPositionConversionFactor(2 * Math.PI * SwerveConstants.kWheelRadius / 6.75);
+    m_driveEncoder.setPositionConversionFactor(6.75/2 * Math.PI * SwerveConstants.kWheelRadius);
     m_driveEncoder.setVelocityConversionFactor(2 * Math.PI * SwerveConstants.kWheelRadius / 6.75 / 60); // 60 seconds per minute
 
     // Radians per pulse
@@ -122,6 +123,10 @@ public class SwerveModule extends SubsystemBase{
     return m_turningEncoder.getAbsolutePosition() * 2 * Math.PI / 360;
   }
   
+  public double getEncoderCountsPerRev(){
+    SmartDashboard.putNumber("counterPerRevDrive", m_driveEncoder.getCountsPerRevolution());
+    return m_driveEncoder.getCountsPerRevolution();
+  }
 
   /**
    * Returns the current position of the module.
@@ -172,9 +177,9 @@ public class SwerveModule extends SubsystemBase{
 
     m_turningMotor.set(turnOutput);
     m_driveMotor.set(driveOutput);
-  }
+  } 
 
-  public double getDriveEncoderValues() {
+  public double   getDriveEncoderValues() {
     return m_driveEncoder.getPosition();
   }
 
@@ -182,7 +187,7 @@ public class SwerveModule extends SubsystemBase{
     return m_turningEncoder.getPosition();
   }
 
-  public double getEncoderRate() {
+  public double getEncoderRate0() {
     return m_driveEncoder.getVelocity();
   }
 
