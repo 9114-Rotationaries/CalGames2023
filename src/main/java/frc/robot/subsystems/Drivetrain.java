@@ -76,29 +76,7 @@ public class Drivetrain extends SubsystemBase{
     m_backLeft.setDesiredState(swerveModuleStates[2]);
     m_backRight.setDesiredState(swerveModuleStates[3]);
     
-    SmartDashboard.putNumber("FL Speed", m_frontLeft.getModuleVelocity());
-    SmartDashboard.putNumber("FL D S", m_frontLeft.getDesiredVelocity());
-    SmartDashboard.putNumber("FL Rotation", m_frontLeft.getModuleAngle());
-    SmartDashboard.putNumber("FL D R U", swerveModuleStates[0].angle.getRadians());
-    SmartDashboard.putNumber("FL D R", m_frontLeft.getDesiredAngle());
-
-    SmartDashboard.putNumber("FR Speed", m_frontRight.getModuleVelocity());
-    SmartDashboard.putNumber("FR D S", m_frontRight.getDesiredVelocity());
-    SmartDashboard.putNumber("FR Rotation", m_frontRight.getModuleAngle());
-    SmartDashboard.putNumber("FR D R U", swerveModuleStates[1].angle.getRadians());
-    SmartDashboard.putNumber("FR D R", m_frontRight.getDesiredAngle());
-
-    SmartDashboard.putNumber("BL Speed", m_backLeft.getModuleVelocity());
-    SmartDashboard.putNumber("BL D S", m_backLeft.getDesiredVelocity());
-    SmartDashboard.putNumber("BL Rotation", m_backLeft.getModuleAngle());
-    SmartDashboard.putNumber("BL D R U", swerveModuleStates[2].angle.getRadians());
-    SmartDashboard.putNumber("BL D R", m_backLeft.getDesiredAngle());
-
-    SmartDashboard.putNumber("BR Speed", m_backRight.getModuleVelocity());
-    SmartDashboard.putNumber("BR D S", m_backRight.getDesiredVelocity());
-    SmartDashboard.putNumber("BR Rotation", m_backRight.getModuleAngle());
-    SmartDashboard.putNumber("BR D R U", swerveModuleStates[3].angle.getRadians());
-    SmartDashboard.putNumber("BR D R", m_backRight.getDesiredAngle());
+    SmartDashboard.putNumber("Encodercounts", getEncoderCounts());
   }
 
   /** Updates the field relative position of the robot. */
@@ -119,7 +97,7 @@ public class Drivetrain extends SubsystemBase{
 
   @Override
   public void periodic(){}
-
+    
   // public void resetPose(Pose2d pose) {
   //   m_odometry.resetPosition(ahrs.getRotation2d(), 
   //   new SwerveModulePosition[] {
@@ -136,8 +114,12 @@ public class Drivetrain extends SubsystemBase{
 
   public double getDistancePerPulse() {
     // Return the conversion factor for distance per pulse
-    return 2 * Math.PI * SwerveConstants.kWheelRadius / 6.75;
+    return 4096 *6.75 /((2 * Math.PI * SwerveConstants.kWheelRadius / 1)*(2 * Math.PI * SwerveConstants.kWheelRadius / 1));//0.39
 }
+
+  public double getCountsPerRev(){
+    return m_backRight.getEncoderCountsPerRev();
+  }
 
 public double getEncoderCounts() {
     // Implement code to get encoder counts (sum of counts from all modules)
