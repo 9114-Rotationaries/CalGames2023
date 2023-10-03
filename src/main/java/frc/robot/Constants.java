@@ -43,8 +43,8 @@ public final class Constants {
 
     public static final double kCommunitySpeed = 1;
     public static final double kCommunityAngularSpeed = 3;
-    public static final double kMaxSpeed = 4; // 1 meters per second
-    public static final double kMaxAngularSpeed = 6; // 12 radians? per second
+    public static final double kMaxSpeed = 2; // 1 meters per second
+    public static final double kMaxAngularSpeed = 4; // 12 radians? per second
 
     //FL-Front Left, DM-Driving Motor, TM-Turning Motor, TE-Turning Encoder
 
@@ -78,13 +78,12 @@ public final class Constants {
 
     // drive PID constants
     public static final double PIDp = 0.425; //0.425
-
     public static final double PIDi = 0.000;
-    public static final double PIDd = 0.004225;//0.002
+    public static final double PIDd = 0.002225;//0.002
     // turning PID constants 
     public static final double ProfiledPIDp = 0.8;
     public static final double ProfiledPIDi = 0.0000000;
-    public static final double ProfiledPIDd = 0.02;
+    public static final double ProfiledPIDd = 0.01;
 
     public static final double DriveKs = 0;
     public static final double DriveKv = 0;
@@ -95,9 +94,9 @@ public final class Constants {
 
 
   public static class VisionConstants{
-    public static final double targetHeight = 23.5;
-    public static final double cameraHeight = 9;  
-    public static final double cameraAngle = 0;
+    public static final double targetHeight = 0.5969;
+    public static final double cameraHeight = 0.2286;  
+    public static final double cameraAngle = 5;
 
     //MoveToTag Angle PID Constants
     public static final double VAnglePIDp = 0.555;
