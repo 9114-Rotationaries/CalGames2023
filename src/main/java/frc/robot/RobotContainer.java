@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Drivetrain.JoystickDrive;
+import frc.robot.commands.Drivetrain.MoveDistance;
 import frc.robot.commands.Drivetrain.MoveToTag;
 import frc.robot.commands.Drivetrain.SlowDriveCommunity;
 import frc.robot.subsystems.Drivetrain;
@@ -94,7 +95,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     // return Autos.exampleAuto(m_exampleSubsystem);
-    return null;
+    return new MoveDistance(drivetrain, 0.3191858136);
   }
 
   // public void resetPose() {
