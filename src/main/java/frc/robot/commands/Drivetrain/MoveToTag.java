@@ -68,11 +68,14 @@ public class MoveToTag extends CommandBase {
         // Use control outputs to drive the robot
         
         
-        if (visionSubsystem.isTargetValid() == true){
+        if (!distanceController.atSetpoint() && visionSubsystem.isTargetValid()) {
           drivetrainSubsystem.drive(distanceOutput, 0, 0, false);
-        } else {
+        }
+        else {
           drivetrainSubsystem.drive(0,0,0,true);
         }
+        drivetrainSubsystem.drive(0,horizontalOffsetOutput,0,false);
+        
         // Optional: You can also check if you're close enough to the desired distance
         
 
