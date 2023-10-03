@@ -3,6 +3,7 @@
 package frc.robot.commands.Drivetrain;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
@@ -17,9 +18,9 @@ public class MoveDistance extends CommandBase {
         
         // Create a PID controller for distance control
         distanceController = new PIDController(
-            0.1, 0.0, 0.0); // Set your PID constants here
+            0.425, 0.0, 0.002225); // Set your PID constants here
         
-        distanceController.setTolerance(0.02); // Set your tolerance value here
+        //distanceController.setTolerance(0.02); // Set your tolerance value here
         
         addRequirements(drivetrain);
     }
@@ -36,13 +37,40 @@ public class MoveDistance extends CommandBase {
     @Override
     public void execute() {
         // Calculate the current distance using encoder counts and the conversion factor
+        
+       // SmartDashboard.putNumber("current distance", currentDistance);
+        SmartDashboard.putNumber("encoder counts", drivetrain.getEncoderCounts());
+        SmartDashboard.putNumber("countsperrev br", drivetrain.getCountsPerRev());
+
         double currentDistance = drivetrain.getEncoderCounts() * drivetrain.getDistancePerPulse();
-        
-        // Calculate the control output using the distance controller
+        // // Calculate the control output using the distance controller
         double output = distanceController.calculate(currentDistance);
+        //drivetrain.drive(output, 0,0, false);
+        //SmartDashboard.putNumber("current otuput", output);
+
+        drivetrain.drive(0.6,0,0,false);
+        // while(drivetrain.getEncoderCounts() <= 1){
+        //     drivetrain.drive(0.15, 0,0, false);
+        //     SmartDashboard.putNumber("Distance", currentDistance);
+        // }
+
+        //drivetrain.drive(output, 0.0, 0.0, false);
+        // while(drivetrain.getEncoderCounts() <= 1){
+        //     drivetrain.drive(0.15,0,0, false);
+        //     double currentDistance = drivetrain.getEncoderCounts() * drivetrain.getDistancePerPulse();
+        //     SmartDashboard.putNumber("distance", currentDistance);
+        // }
         
-        // Drive the robot using the calculated output as xSpeed
-        drivetrain.drive(output, 0.0, 0.0, false);
+        
+        //drivetrain.drive(0, 0.0, 0.0, false);
+        // // Drive the robot using the calculated output as xSpeed
+            
+
+        // while(Math.abs(drivetrain.getEncoderCounts()) < 1){
+        //     drivetrain.drive(0.1, 0, 0,false);
+        // }
+        // drivetrain.drive(0,0,0, false);
+
     }
 
     @Override
