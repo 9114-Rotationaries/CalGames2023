@@ -143,8 +143,9 @@ public class Drivetrain extends SubsystemBase{
   //     m_backRight.setPosition(0)
   //   }, pose);
   // }
+
   public void resetOdometry(Pose2d pose) {
-    m_odometry.resetPosition(ahrs.getRotation2d(), 
+    m_odometry.resetPosition(new Rotation2d(ahrs.getRotation2d().getDegrees()-180), 
     new SwerveModulePosition[] {
       m_frontLeft.getPosition(),
       m_backRight.getPosition(),

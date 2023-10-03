@@ -108,7 +108,7 @@ public class SwerveModule extends SubsystemBase{
   }
 
   public double getModuleAngle() {
-    return m_turningEncoder.getAbsolutePosition() * 2 * Math.PI / 360;
+    return m_turningEncoder.getAbsolutePosition() * 3;
   }
   
 

@@ -79,9 +79,9 @@ public final class Constants {
     public static final double PIDd = 0.002225;
 
     // turning PID constants 
-    public static final double ProfiledPIDp = 0.4;
-    public static final double ProfiledPIDi = 0.0000000;
-    public static final double ProfiledPIDd = 0.0001;
+    public static final double ProfiledPIDp = 0.8;
+    public static final double ProfiledPIDi = 0;
+    public static final double ProfiledPIDd = 0.01;
 
     public static final double DriveKs = 0;
     public static final double DriveKv = 0;
