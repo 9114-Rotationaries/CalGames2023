@@ -25,8 +25,7 @@ public class MoveToTag extends CommandBase {
 
     private final PIDController distanceController;
     private static final double DESIRED_DISTANCE = 5.0; // Replace with your desired distance
-    private static final double YOUR_DISTANCE_TOLERANCE = 0.2
-    ; // Replace with your tolerance value
+    private static final double YOUR_DISTANCE_TOLERANCE = 0.2; // Replace with your tolerance value
     
     public MoveToTag(Vision visionSubsystem, Drivetrain drivetrainSubsystem) {
         this.visionSubsystem = visionSubsystem;
