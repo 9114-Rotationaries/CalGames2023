@@ -62,8 +62,4 @@ public class Forklift extends SubsystemBase {
         SmartDashboard.putNumber("Right Encoder Position", getRightCounts());
         SmartDashboard.putNumber("Left Encoder Position", getLeftCounts());
     }
-
-
-
-
 }
