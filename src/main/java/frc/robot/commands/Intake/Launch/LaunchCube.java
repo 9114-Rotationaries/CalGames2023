@@ -4,7 +4,11 @@
 
 package frc.robot.commands.Intake.Launch;
 
+import java.sql.Time;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.Intake;
 
@@ -24,6 +28,8 @@ public class LaunchCube extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    intake.cubeIntake(-1);
+    Commands.runOnce(() -> new WaitCommand(.06));
     intake.cubeLaunch(IntakeConstants.cubeLaunchSpeed);
   }
 
