@@ -6,12 +6,14 @@ package frc.robot;
 
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Drivetrain.JoystickDrive;
 import frc.robot.commands.Drivetrain.MoveToTag;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Forklift;
 import frc.robot.subsystems.Vision;
 
 import frc.robot.Constants.ArmConstants;
@@ -40,6 +42,7 @@ public class RobotContainer {
 
   private final Arm arm = new Arm(ArmConstants.rightArmChannel, ArmConstants.leftArmChannel);
   private final Intake intake = new Intake(IntakeConstants.cubeIntakeChannel, IntakeConstants.coneIntakeChannel);
+  private final Forklift forklift = new Forklift();
 
 
 
@@ -59,6 +62,7 @@ public class RobotContainer {
     configureDrivetrainBindings();
     configureArmBindings();
     configureIntakeBindings();
+    configureForkliftBindings();
     drivetrain.setDefaultCommand(new JoystickDrive(m_controller, drivetrain, false));
   }
 
@@ -80,6 +84,10 @@ public class RobotContainer {
   private void configureArmBindings() {
     m_operatorController.rightTrigger().whileTrue(new RaiseArm(arm));
     m_operatorController.leftTrigger().whileTrue(new LowerArm(arm));
+  }
+
+  private void configureForkliftBindings() {
+    m_operatorController.a().whileTrue(Commands.runOnce( () -> forklift.moveForklift(0.25)));
   }
 
   /**
