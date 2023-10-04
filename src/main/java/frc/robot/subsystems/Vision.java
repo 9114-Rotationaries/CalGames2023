@@ -17,12 +17,14 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LimelightConstants;
+import frc.robot.Constants.VisionConstants;
 
 
 
 
 public class Vision extends SubsystemBase {
   /** Creates a new Vision. */
+
 
   public static NetworkTable limelightTable;
   private double tx;
@@ -62,9 +64,9 @@ public class Vision extends SubsystemBase {
   }
 
   public double getDistance(){
-    double horizontalOffset = limelightTable.getEntry("tx").getDouble(LimelightConstants.Angle);
-    double a1Radians = Math.toRadians(LimelightConstants.Angle);
-    double distance = LimelightConstants.CameraHeight/Math.tan(a1Radians+Math.toRadians(horizontalOffset));
+    double angle = Math.toRadians(VisionConstants.cameraAngle + ty);
+    double height = VisionConstants.targetHeight - VisionConstants.cameraHeight;
+    double distance = height / Math.tan(angle);
     return distance;
   }
 
@@ -111,6 +113,10 @@ public class Vision extends SubsystemBase {
     Mat image = Imgcodecs.imdecode(new MatOfByte(imageBytes),Imgcodecs.IMREAD_UNCHANGED); //flags???
 
     return detector.detect(image);
+  }
+
+  public NetworkTable getLimelightTable() {
+    return limelightTable;
   }
 
   @Override
