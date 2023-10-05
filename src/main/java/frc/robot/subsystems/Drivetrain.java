@@ -75,8 +75,8 @@ public class Drivetrain extends SubsystemBase{
     m_frontRight.setDesiredState(swerveModuleStates[1]);
     m_backLeft.setDesiredState(swerveModuleStates[2]);
     m_backRight.setDesiredState(swerveModuleStates[3]);
+
     
-    SmartDashboard.putNumber("Encodercounts", getEncoderCounts());
   }
 
   /** Updates the field relative position of the robot. */
@@ -96,7 +96,10 @@ public class Drivetrain extends SubsystemBase{
   }
 
   @Override
-  public void periodic(){}
+  public void periodic(){
+    SmartDashboard.putNumber("encoderstuff", (m_backRight.getDriveEncoderValues()/42));
+
+  }
     
   // public void resetPose(Pose2d pose) {
   //   m_odometry.resetPosition(ahrs.getRotation2d(), 
