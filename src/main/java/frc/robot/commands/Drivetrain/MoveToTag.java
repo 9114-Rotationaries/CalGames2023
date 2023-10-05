@@ -18,7 +18,7 @@ public class MoveToTag extends CommandBase {
     private PIDController horizontalOffsetController;
     private PIDController orientationController;
 
-    private static final double DESIRED_HORIZONTAL_OFFSET = 4.9; // Set your desired horizontal offset in degrees
+    private static final double DESIRED_HORIZONTAL_OFFSET = 13.5; // Set your desired horizontal offset in degrees
     private static final double DESIRED_ORIENTATION = 4.9; // Set your desired orientation in degrees
     private static final double HORIZONTAL_OFFSET_TOLERANCE = 1.0; // Set your horizontal offset tolerance in degrees
     private static final double ORIENTATION_TOLERANCE = 1.0; // Set your orientation tolerance in degrees
@@ -67,14 +67,11 @@ public class MoveToTag extends CommandBase {
         // Use control outputs to drive the robot
         
         
-        if (!distanceController.atSetpoint() && visionSubsystem.isTargetValid()) {
+        if (visionSubsystem.isTargetValid() == true){
           drivetrainSubsystem.drive(distanceOutput, 0, 0, false);
-        }
-        else {
+        } else {
           drivetrainSubsystem.drive(0,0,0,true);
         }
-        drivetrainSubsystem.drive(0,horizontalOffsetOutput,0,false);
-        
         // Optional: You can also check if you're close enough to the desired distance
         
 
