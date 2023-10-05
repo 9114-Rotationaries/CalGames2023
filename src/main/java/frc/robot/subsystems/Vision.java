@@ -4,6 +4,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
@@ -11,6 +12,8 @@ import frc.robot.Constants.VisionConstants;
 public class Vision extends SubsystemBase {
     private edu.wpi.first.cscore.UsbCamera limelightCamera;
     private NetworkTable limelightTable;
+
+    private CameraServer limelightStream;
 
     // Define constants for network table keys
     private static final String LIMELIGHT_TABLE_NAME = "limelight";
@@ -31,6 +34,9 @@ public class Vision extends SubsystemBase {
 
         // Set the Limelight LED mode to "off" initially
         limelightTable.getEntry("ledMode").setNumber(1); // 0: Off, 1: On, 2: Blinking
+
+        CameraServer.addCamera(limelightCamera);
+        Shuffleboard.getTab("SmartDashboard").add(limelightCamera);
     }
 
     // Check if Limelight has any valid targets (0 or 1)
