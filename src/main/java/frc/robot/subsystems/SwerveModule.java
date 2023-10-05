@@ -77,9 +77,10 @@ public class SwerveModule extends SubsystemBase{
     m_driveEncoder = m_driveMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     m_turningEncoder = new CANCoder(turningEncoderChannel);
 
+
     // Distance per pulse
-    m_driveEncoder.setPositionConversionFactor(6.75/2 * Math.PI * SwerveConstants.kWheelRadius);
-    m_driveEncoder.setVelocityConversionFactor(2 * Math.PI * SwerveConstants.kWheelRadius / 6.75 / 60); // 60 seconds per minute
+    m_driveEncoder.setPositionConversionFactor(.3286260747909546);
+    m_driveEncoder.setVelocityConversionFactor(.0004762696736); // 60 seconds per minute
 
     // Radians per pulse
      //m_turningEncoder.setDistancePerPulse(2 * Math.PI / SwerveConstants.kEncoderResolution);
@@ -167,6 +168,8 @@ public class SwerveModule extends SubsystemBase{
     
     
     final double driveFeedforward = m_driveFeedforward.calculate(state.speedMetersPerSecond);
+    SmartDashboard.putNumber("thign", m_driveEncoder.getVelocity());
+    SmartDashboard.putNumber("2thign", state.speedMetersPerSecond);
 
     // Calculate the turning motor output from the turning PID controller.
     final double turnOutput =
