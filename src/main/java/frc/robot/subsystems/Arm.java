@@ -51,18 +51,22 @@ public class Arm extends SubsystemBase {
 
   public void armUp(){
     timer.start();
-    while (timer.get() < 5){
-      m_rightMotor.set(.9);
-      m_leftMotor.set(-.9);     
+    while (timer.get() < .1){
+      m_rightMotor.set(-.9);
+      m_leftMotor.set(.9);     
     }
+    m_leftMotor.set(0);
+    m_rightMotor.set(0);
   }
 
   public void armDown(){
     timer.start();
-    while (timer.get() < 5){
-      m_rightMotor.set(-.9);
-      m_leftMotor.set(.9);     
+    while (timer.get() < .1){
+      m_rightMotor.set(.9);
+      m_leftMotor.set(-.9);     
     }
+    m_leftMotor.set(0);
+    m_rightMotor.set(0);
   }
 
   @Override

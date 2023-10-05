@@ -166,7 +166,7 @@ public class RobotContainer {
     eventMap.put("OutCube", new InstantCommand(intake::cOut, intake));
     eventMap.put("InCube", new InstantCommand(intake::cInt, intake)); //cInt = cubeIntake without needing parameter
     eventMap.put("ArmUp", new InstantCommand(arm::armUp, arm)); //cInt = cubeIntake without needing parameter
-    eventMap.put("ArmDown", new InstantCommand(arm::armDown, arm)); 
+    eventMap.put("ArmDown", new InstantCommand(arm::armDown, arm)); //down is up and up is down
 
 
     SmartDashboard.putData(autoChooser);

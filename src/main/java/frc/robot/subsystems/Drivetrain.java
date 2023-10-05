@@ -115,9 +115,10 @@ public class Drivetrain extends SubsystemBase{
   }
 
   public Pose2d getPose(){
+    //updateOdometry();
     return m_odometry.getPoseMeters();
   }
-
+  
   @Override
   public void periodic(){
     //SmartDashboard.putString("encodervalues", m_backRight.getDriveEncoderValues());

@@ -21,7 +21,7 @@ import frc.robot.Constants.SwerveConstants;
 
 public class SwerveModule extends SubsystemBase {
   private final CANSparkMax m_driveMotor;
-  private final CANSparkMax m_turningMotor;
+  private final CANSparkMax m_turningMotor; 
 
   private final RelativeEncoder m_driveEncoder;
   private final CANCoder m_turningEncoder;
@@ -66,9 +66,13 @@ public class SwerveModule extends SubsystemBase {
     m_turningEncoder = new CANCoder(turningEncoderChannel);
 
     // Distance per pulse
-//    m_driveEncoder.setPositionConversionFactor(((Math.PI * SwerveConstants.kWheelRadius *2)/(3*6.75*22.65)));//42/(6.75 * Math.PI * SwerveConstants.kWheelRadius * 2) and also that but change 42 to 1//((Math.PI * SwerveConstants.kWheelRadius * 2)/6.75)/5
-    m_driveEncoder.setPositionConversionFactor((Math.PI * SwerveConstants.kWheelRadius *2)/(6.75*1.0074*250));//42/(6.75 * Math.PI * SwerveConstants.kWheelRadius * 2) and also that but change 42 to 1//((Math.PI * SwerveConstants.kWheelRadius * 2)/6.75)/5
-    m_driveEncoder.setVelocityConversionFactor(((Math.PI * SwerveConstants.kWheelRadius *2)/(6.75*1.0074*250))/60);//((/ 60); // 60 seconds per minute
+    //m_driveEncoder.setPositionConversionFactor(((Math.PI * SwerveConstants.kWheelRadius *2)/(3*6.75*22.65)));//42/(6.75 * Math.PI * SwerveConstants.kWheelRadius * 2) and also that but change 42 to 1//((Math.PI * SwerveConstants.kWheelRadius * 2)/6.75)/5
+    
+    //m_driveEncoder.setPositionConversionFactor((Math.PI * SwerveConstants.kWheelRadius *2)/(6.75*1.0074*250));//42/(6.75 * Math.PI * SwerveConstants.kWheelRadius * 2) and also that but change 42 to 1//((Math.PI * SwerveConstants.kWheelRadius * 2)/6.75)/5
+    //m_driveEncoder.setVelocityConversionFactor(((Math.PI * SwerveConstants.kWheelRadius *2)/(6.75*1.0074*250))/60);//((/ 60); // 60 seconds per minute
+    
+    m_driveEncoder.setPositionConversionFactor(.3286260747909546);//42/(6.75 * Math.PI * SwerveConstants.kWheelRadius * 2) and also that but change 42 to 1//((Math.PI * SwerveConstants.kWheelRadius * 2)/6.75)/5
+    m_driveEncoder.setVelocityConversionFactor(.0004762696736);//((/ 60); // 60 seconds per minute
 
     // Radians per pulse
      //m_turningEncoder.setDistancePerPulse(2 * Math.PI / SwerveConstants.kEncoderResolution);
