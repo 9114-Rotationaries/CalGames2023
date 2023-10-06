@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -79,24 +80,12 @@ public class SwerveModule extends SubsystemBase {
 
     // Limit the PID Controller's input range between -pi and pi and set the input
     // to be continuous.
-    m_turningPIDController.enableContinuousInput(-Math.PI/2, Math.PI/2);
+    m_turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
+
+    m_turningEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
 
     m_turningEncoder.configMagnetOffset(-turningEncoderOffsetDegrees);
   }
-
-  public double getDesiredVelocity(){
-    return m_drivePIDController.getSetpoint();
-  }
-
-  public double getModuleVelocity(){
-    return m_driveEncoder.getVelocity();
-  }
-
-  public double getDesiredAngle() {
-    //return m_turningPIDController.getSetpoint();
-    return 0;
-  }
-
 
   /**
    * Returns the current state of the module.
@@ -111,11 +100,6 @@ public class SwerveModule extends SubsystemBase {
     return new SwerveModuleState(
         m_driveEncoder.getVelocity(), new Rotation2d(m_moduleAngleRadians));
   }
-
-  public double getModuleAngle() {
-    return m_turningEncoder.getAbsolutePosition() * 3;
-  }
-  
 
   /**
    * Returns the current position of the module.
@@ -168,23 +152,18 @@ public class SwerveModule extends SubsystemBase {
     m_driveMotor.set(driveOutput);
   }
 
-  public double getDriveEncoderValues() {
-    return m_driveEncoder.getPosition();
+
+  public double getDrivePosition(){
+    return m_driveEncoder.getPosition() * 2 * Math.PI * 0.0508 / (6.75*42);
   }
 
-  public double getTurnEncoderValues() {
-    return m_turningEncoder.getPosition();
+  public double getTurningPosition(){
+    double m_moduleAngleRadians = m_turningEncoder.getAbsolutePosition() * 2 * Math.PI / 360;
+    return m_moduleAngleRadians;
   }
-
-  public double getEncoderRate() {
-    return m_driveEncoder.getVelocity();
-  }
-
-  public SwerveModulePosition setPosition(int desiredPos) {
-    m_driveEncoder.setPosition(desiredPos);
-    m_turningEncoder.setPositionToAbsolute();
-
-    return new SwerveModulePosition(m_driveEncoder.getPosition(), 
-    new Rotation2d(m_turningEncoder.getPosition()));
-  } 
+  
+public SwerveModulePosition getModulePosition() {
+  SwerveModulePosition modulePosition = new SwerveModulePosition(getDrivePosition(), Rotation2d.fromRadians(getTurningPosition()));
+  return modulePosition;
+} 
 }
