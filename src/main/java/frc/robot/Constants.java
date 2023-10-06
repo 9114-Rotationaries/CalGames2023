@@ -74,14 +74,14 @@ public final class Constants {
     public static final double kModuleMaxAngularAcceleration = 5; // radians per second squared
 
     // drive PID constants
-    public static final double PIDp = 0.425;
+    public static final double PIDp = 0.225;
     public static final double PIDi = 0;
-    public static final double PIDd = 0.002225;
+    public static final double PIDd = 0.004225;
 
     // turning PID constants 
     public static final double ProfiledPIDp = 0.8;
     public static final double ProfiledPIDi = 0;
-    public static final double ProfiledPIDd = 0.01;
+    public static final double ProfiledPIDd = 0.02;
 
     public static final double DriveKs = 0;
     public static final double DriveKv = 0;
@@ -124,6 +124,16 @@ public final class Constants {
   public static class AutoConstants {
     public static final double maxVelocity = 4.5;
     public static final double maxAcceleration = 3;
+
+    // drive PID constants
+    public static final double PIDp = 0.225;
+    public static final double PIDi = 0;
+    public static final double PIDd = 0.004225;
+
+    // turning PID constants 
+    public static final double ProfiledPIDp = 0.8;
+    public static final double ProfiledPIDi = 0;
+    public static final double ProfiledPIDd = 0.02;
   }
 
 }

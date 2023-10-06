@@ -14,10 +14,11 @@ import frc.robot.subsystems.Drivetrain;
 
 public class Balance extends CommandBase {
   /** Creates a new Balance. */
-  Drivetrain m_drive=RobotContainer.drivetrain;;
+  Drivetrain m_drive;
   PIDController controller = new PIDController(0.05, 0, 0);
 
-  public Balance() {
+  public Balance(Drivetrain m_drive) {
+    this.m_drive = m_drive;
     addRequirements(m_drive);
     // Use addRequirements() here to declare subsystem dependencies.
   }

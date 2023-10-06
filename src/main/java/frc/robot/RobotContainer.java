@@ -61,7 +61,7 @@ public class RobotContainer {
   private final Arm arm = new Arm(ArmConstants.rightArmChannel, ArmConstants.leftArmChannel);
   private final static Intake intake = new Intake(IntakeConstants.cubeIntakeChannel, IntakeConstants.coneIntakeChannel);
 
-  final Balance balance = new Balance();
+  final Balance balance = new Balance(drivetrain);
   private static SwerveAutoBuilder builder;
   static SendableChooser<List<PathPlannerTrajectory>> autoChooser = new SendableChooser<>();
 
@@ -120,7 +120,7 @@ public class RobotContainer {
       drivetrain::getPose,
       drivetrain::resetOdometry,
       drivetrain.getKinematics(),
-      new PIDConstants(0.2, 0, 0),
+      new PIDConstants(0.2, 0, 0), //after testing balance, change these values to the pid constants in auto constants
       new PIDConstants(0, 0, 0),
       //drivetrain::setModuleStates,
       (desiredStates) -> {
