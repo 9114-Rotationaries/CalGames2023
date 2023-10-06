@@ -13,9 +13,13 @@ import javax.swing.plaf.TreeUI;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -37,6 +41,7 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.Balance;
 import frc.robot.commands.Arm.LowerArm;
 import frc.robot.commands.Arm.RaiseArm;
+import frc.robot.commands.Autos.Routines;
 import frc.robot.commands.Intake.Intake.IntakeCone;
 import frc.robot.commands.Intake.Intake.IntakeCube;
 import frc.robot.commands.Intake.Launch.LaunchCone;
@@ -64,9 +69,10 @@ public class RobotContainer {
   final Balance balance = new Balance(drivetrain);
   private static SwerveAutoBuilder builder;
   static SendableChooser<List<PathPlannerTrajectory>> autoChooser = new SendableChooser<>();
+  static SendableChooser<Command> autoChooserFix = new SendableChooser<>();
 
   private static HashMap<String, Command> eventMap = new HashMap<>();
-
+  private static PPSwerveControllerCommand swerveControllerCommand;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_operatorController =
@@ -74,13 +80,11 @@ public class RobotContainer {
 
   private final CommandXboxController m_controller = new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
+  private final static Routines routines = new Routines();
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the trigger bindings
-    //drivetrain.resetPose(drivetrain.getPose());
-    System.out.println(drivetrain.getModule().getPosition());
-
     configureDrivetrainBindings();
     drivetrain.setDefaultCommand(new JoystickDrive(m_controller, drivetrain, true));
 
@@ -109,57 +113,29 @@ public class RobotContainer {
     m_operatorController.leftTrigger().whileTrue(new LowerArm(arm));
   }
 
-  public static Command buildAuto(List<PathPlannerTrajectory> trajs) {
-        //print trajs
-        System.out.println("Selected Trajectory: " + autoChooser.getSelected());
-        //check initial odometry
-        System.out.println("Initial Odometry: " + drivetrain.getPose());
-    
-    builder = new SwerveAutoBuilder(
-      
-      drivetrain::getPose,
-      drivetrain::resetOdometry,
-      drivetrain.getKinematics(),
-      new PIDConstants(0.2, 0, 0), //after testing balance, change these values to the pid constants in auto constants
-      new PIDConstants(0, 0, 0),
-      //drivetrain::setModuleStates,
-      (desiredStates) -> {
-            // Print statement to check if setModuleStates is being called
-            System.out.println("setModuleStates method called");
-            drivetrain.setModuleStates(desiredStates); // Invoke the actual method
-      },
-      eventMap,
-      false,
-      drivetrain
-      
-    );
-    //check if odometry resetting properly
-    System.out.println("Odometry Reset to: " + drivetrain.getPose());
-      
-
-    
-    return builder.fullAuto(trajs);
-  }
+  
 
   public void setUpAutos(){
     //autoChooser.setDefaultOption("Do Nothing", new WaitCommand(15));
-    autoChooser.addOption("Go Forward", PathPlanner.loadPathGroup("Go Forward", new PathConstraints(1, 2)));   
-    autoChooser.addOption("1CO1CU-M", PathPlanner.loadPathGroup("1CO1CU-M", new PathConstraints(4, 3)));
-    autoChooser.addOption("1CO1CU-B", PathPlanner.loadPathGroup("1CO1CU-B", new PathConstraints(4, 3)));
-    autoChooser.addOption("1CO1CU-T", PathPlanner.loadPathGroup("1CO1CU-T", new PathConstraints(4, 3)));
-    autoChooser.addOption("2CO-B", PathPlanner.loadPathGroup("2CO-B", new PathConstraints(10, 6)));
-    autoChooser.addOption("2CO-M", PathPlanner.loadPathGroup("2CO-M", new PathConstraints(4, 3)));
-    autoChooser.addOption("2CO-T", PathPlanner.loadPathGroup("2CO-T", new PathConstraints(4, 3)));
-    autoChooser.addOption("2CO1CU-B", PathPlanner.loadPathGroup("2CO1CU-B", new PathConstraints(4, 3)));
-    autoChooser.addOption("2CO1CU-M", PathPlanner.loadPathGroup("2CO1CU-M", new PathConstraints(4, 3)));
-    autoChooser.addOption("2CO1CU-T", PathPlanner.loadPathGroup("2CO1CU-T", new PathConstraints(4, 3)));
-    autoChooser.addOption("2CU-B", PathPlanner.loadPathGroup("2CU-B", new PathConstraints(4, 3)));
-    autoChooser.addOption("2CU-M", PathPlanner.loadPathGroup("2CU-M", new PathConstraints(4, 3)));
-    autoChooser.addOption("2CU-T", PathPlanner.loadPathGroup("2CU-T", new PathConstraints(4, 3)));
-    autoChooser.addOption("test", PathPlanner.loadPathGroup("test", new PathConstraints(4, 3)));
-    autoChooser.addOption("PathWithStuff", PathPlanner.loadPathGroup("PathWithStuff", new PathConstraints(4, 3)));
-    autoChooser.addOption("SwerveTest", PathPlanner.loadPathGroup("TestingSwerve", new PathConstraints(4, 3)));
+    // autoChooser.addOption("Go Forward", PathPlanner.loadPathGroup("Go Forward", new PathConstraints(1, 2)));   
+    // autoChooser.addOption("1CO1CU-M", PathPlanner.loadPathGroup("1CO1CU-M", new PathConstraints(4, 3)));
+    // autoChooser.addOption("1CO1CU-B", PathPlanner.loadPathGroup("1CO1CU-B", new PathConstraints(4, 3)));
+    // autoChooser.addOption("1CO1CU-T", PathPlanner.loadPathGroup("1CO1CU-T", new PathConstraints(4, 3)));
+    // autoChooser.addOption("2CO-B", PathPlanner.loadPathGroup("2CO-B", new PathConstraints(10, 6)));
+    // autoChooser.addOption("2CO-M", PathPlanner.loadPathGroup("2CO-M", new PathConstraints(4, 3)));
+    // autoChooser.addOption("2CO-T", PathPlanner.loadPathGroup("2CO-T", new PathConstraints(4, 3)));
+    // autoChooser.addOption("2CO1CU-B", PathPlanner.loadPathGroup("2CO1CU-B", new PathConstraints(4, 3)));
+    // autoChooser.addOption("2CO1CU-M", PathPlanner.loadPathGroup("2CO1CU-M", new PathConstraints(4, 3)));
+    // autoChooser.addOption("2CO1CU-T", PathPlanner.loadPathGroup("2CO1CU-T", new PathConstraints(4, 3)));
+    // autoChooser.addOption("2CU-B", PathPlanner.loadPathGroup("2CU-B", new PathConstraints(4, 3)));
+    // autoChooser.addOption("2CU-M", PathPlanner.loadPathGroup("2CU-M", new PathConstraints(4, 3)));
+    // autoChooser.addOption("2CU-T", PathPlanner.loadPathGroup("2CU-T", new PathConstraints(4, 3)));
+    // autoChooser.addOption("test", PathPlanner.loadPathGroup("test", new PathConstraints(4, 3)));
+    // autoChooser.addOption("PathWithStuff", PathPlanner.loadPathGroup("PathWithStuff", new PathConstraints(4, 3)));
+    // autoChooser.addOption("SwerveTest", PathPlanner.loadPathGroup("TestingSwerve", new PathConstraints(4, 3)));
 
+
+    autoChooserFix.addOption("Go Forward Fix", routines.goForward());
 
     eventMap.put("event", new PrintCommand("Passed marker 1"));
     //eventMap.put("Balance",  balance);
@@ -178,7 +154,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return buildAuto(autoChooser.getSelected());
+    return autoChooserFix.getSelected();
     }
 
   public Command balanceCode(){
