@@ -24,6 +24,7 @@ import frc.robot.commands.Balance;
 import frc.robot.commands.Intake.Intake.IntakeCube;
 import frc.robot.commands.Intake.Launch.LaunchCube;
 import frc.robot.commands.Intake.Outtake.OuttakeCube;
+import frc.robot.commands.Intake.Outtake.OuttakeCubeAuto;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 
@@ -70,7 +71,7 @@ public class Routines {
     }
 
     public CommandBase goForward(Drivetrain drivetrain){
-      PathPlannerTrajectory trajectory = PathPlanner.loadPath("Mid180", 4, 3);
+      PathPlannerTrajectory trajectory = PathPlanner.loadPath("BackwardsPath", 4, 3);
 
       HashMap<String,Command> eventMap = new HashMap<>();
           eventMap.put("OutCube", new LaunchCube(intake));  
@@ -86,7 +87,7 @@ public class Routines {
         //grabCubeAndDock
         //new LaunchCube(intake),
         new IntakeCube(intake).withTimeout(0.4),
-        new OuttakeCube(intake).withTimeout(1),
+        new OuttakeCubeAuto(intake).withTimeout(1),
         baseSwerveCommand(trajectory, true)
        // new Balance(drivetrain).withTimeout(5)
       );
@@ -105,8 +106,8 @@ public class Routines {
           trajectory, 
           drivetrain::getPose, 
           drivetrain.getKinematics(), 
-          new PIDController(10, 0, 0.02), 
-          new PIDController(10, 0, 0.02), 
+          new PIDController(8, 0, 0.02), 
+          new PIDController(8, 0, 0.02), 
           new PIDController(0, 0, 0.02), 
           drivetrain::setModuleStates, 
           drivetrain);
