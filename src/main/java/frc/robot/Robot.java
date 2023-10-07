@@ -4,20 +4,18 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
+import com.pathplanner.lib.server.PathPlannerServer;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Drivetrain.JoystickDrive;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.commands.Balance;
 import frc.robot.subsystems.Vision;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
+  private Command m_balanceCode;
   //private Command joystickDrive;
 
   private RobotContainer m_robotContainer;
@@ -31,6 +29,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_robotContainer = new RobotContainer();
     limelight = new Vision();
+    m_robotContainer.setUpAutos();
+    PathPlannerServer.startServer(9114);
   }
 
   /**
@@ -44,7 +44,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-
   }
 
   @Override
@@ -57,10 +56,15 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_balanceCode = m_robotContainer.balanceCode();
 
     if (m_autonomousCommand != null) {
+      //Commands.sequence(m_autonomousCommand, m_balanceCode);
       m_autonomousCommand.schedule();
     }
+    //m_robotContainer.balance.execute();
+    //CommandScheduler.getInstance().schedule(m_robotContainer.balanceCode());
+  
   }
 
   @Override

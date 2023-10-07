@@ -7,8 +7,11 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class Intake extends SubsystemBase {
   private final CANSparkMax m_cubeIntake;
@@ -36,6 +39,16 @@ public class Intake extends SubsystemBase {
     return m_cubeIntake.get();
   }
 
+  public void cOut(){ 
+    m_cubeIntake.set(.4);  
+    Commands.runOnce(() -> new WaitCommand(.5)); 
+    m_cubeIntake.set(0); //test auton code
+  }
+
+  public void cInt(){
+    m_cubeIntake.set(-.4);
+  }
+
   // public void coneIntake(double coneIntakeSpeed){
   //   m_cubeIntake.set(coneIntakeSpeed);
   // }
@@ -60,7 +73,7 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Cube Intake Speed", getCubeIntakeSpeed());
+    //SmartDashboard.putNumber("Cube Intake Speed", getCubeIntakeSpeed());
     // SmartDashboard.putNumber("Cone Intake Speed", getConeIntakeSpeed());
     // This method will be called once per scheduler run
   }

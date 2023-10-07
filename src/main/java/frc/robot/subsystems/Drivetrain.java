@@ -12,6 +12,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -43,16 +44,20 @@ public class Drivetrain extends SubsystemBase{
   private final SwerveDriveOdometry m_odometry =
       new SwerveDriveOdometry(
           m_kinematics,
-          ahrs.getRotation2d(),
-          new SwerveModulePosition[] {
-            m_frontLeft.getPosition(),
-            m_frontRight.getPosition(),
-            m_backLeft.getPosition(),
-            m_backRight.getPosition()
-          });
+          new Rotation2d(0),
+          getModulePositions());
 
   public Drivetrain() {
     ahrs.reset();
+  }
+
+  public SwerveModulePosition[] getModulePositions(){
+    SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
+    modulePositions[1] = m_frontLeft.getModulePosition();
+    modulePositions[0] = m_frontRight.getModulePosition();
+    modulePositions[3] = m_backLeft.getModulePosition();
+    modulePositions[2] = m_backRight.getModulePosition();
+    return modulePositions;
   }
 
   /**
@@ -76,43 +81,69 @@ public class Drivetrain extends SubsystemBase{
     m_backLeft.setDesiredState(swerveModuleStates[2]);
     m_backRight.setDesiredState(swerveModuleStates[3]);
 
+
     
   }
 
   /** Updates the field relative position of the robot. */
   public void updateOdometry() {
-    m_odometry.update(
-        ahrs.getRotation2d(),
-        new SwerveModulePosition[] {
-          m_frontLeft.getPosition(),
-          m_frontRight.getPosition(),
-          m_backLeft.getPosition(),
-          m_backRight.getPosition()
-        });
-  }
+    m_odometry.update(getRotation2d(), getModulePositions());
+  } 
 
   public Pose2d getPose(){
+    //updateOdometry();
     return m_odometry.getPoseMeters();
   }
-
+  
   @Override
   public void periodic(){
-    SmartDashboard.putNumber("encoderstuff", (m_backRight.getDriveEncoderValues()/42));
-
+    updateOdometry();
   }
-    
-  // public void resetPose(Pose2d pose) {
-  //   m_odometry.resetPosition(ahrs.getRotation2d(), 
-  //   new SwerveModulePosition[] {
-  //     m_frontLeft.setPosition(0),
-  //     m_frontRight.setPosition(0),
-  //     m_backLeft.setPosition(0),
-  //     m_backRight.setPosition(0)
-  //   }, pose);
-  // }
 
-  public SwerveModule getModule() {
-    return m_frontLeft;
+  public void setModuleStates(SwerveModuleState[] desiredStates) {
+    SwerveDriveKinematics.desaturateWheelSpeeds(
+        desiredStates, DriveConstants.kMaxAngularSpeed);
+    m_frontLeft.setDesiredState(desiredStates[0]);
+    m_frontRight.setDesiredState(desiredStates[1]);
+    m_backLeft.setDesiredState(desiredStates[2]);
+    m_backRight.setDesiredState(desiredStates[3]);
+  }
+
+  public void resetOdometry(Pose2d pose) {
+    m_odometry.resetPosition(getRotation2d(), getModulePositions(), pose);
+    SmartDashboard.putNumber("encoderRotConverte", m_backRight.getDrivePosition());
+    SmartDashboard.putNumber("encoderRotRaw", m_backRight.getDriveEncoder());
+    SmartDashboard.putString("ModulePosition", m_backRight.getModulePosition().toString());
+  }
+
+  public SwerveDriveKinematics getKinematics(){
+    return m_kinematics;
+  }
+
+  public float getPitch(){
+    return ahrs.getPitch(); 
+  }
+
+  public float getYaw(){
+    return ahrs.getYaw(); 
+  }
+
+  public float getRoll(){
+    return ahrs.getRoll(); 
+  }
+
+  public double getHeading() {
+    double angle = ahrs.getYaw() % 360;
+    if (angle > 180) {
+      angle -= 360;
+    } else if (angle <= -180) {
+        angle += 360;
+    }
+    return angle;
+  }
+
+  public Rotation2d getRotation2d() {
+    return Rotation2d.fromDegrees(getHeading());
   }
 
   public double getDistancePerPulse() {

@@ -35,10 +35,10 @@ public final class Constants {
 
   public static class DriveConstants {
 
-    public static final Translation2d m_frontLeftLocation = new Translation2d(0.3429, 0.3429); //meters
-    public static final Translation2d m_frontRightLocation = new Translation2d(0.3429, -0.3429);
-    public static final Translation2d m_backLeftLocation = new Translation2d(-0.3429, 0.3429);
-    public static final Translation2d m_backRightLocation = new Translation2d(-0.3429, -0.3429);
+    public static final Translation2d m_frontLeftLocation = new Translation2d(-0.3429, 0.3429); //meters
+    public static final Translation2d m_frontRightLocation = new Translation2d(0.3429, 0.3429);
+    public static final Translation2d m_backLeftLocation = new Translation2d(-0.3429, -0.3429);
+    public static final Translation2d m_backRightLocation = new Translation2d(0.3429, -0.3429);
     
 
     public static final double kCommunitySpeed = 1;
@@ -77,12 +77,13 @@ public final class Constants {
     public static final double kModuleMaxAngularAcceleration = 50; // radians per second squared
 
     // drive PID constants
-    public static final double PIDp = 0.225; //0.425
-    public static final double PIDi = 0.0;
-    public static final double PIDd = 0.004225;//0.002
+    public static final double PIDp = 0.225;
+    public static final double PIDi = 0;
+    public static final double PIDd = 0.004225;
+
     // turning PID constants 
     public static final double ProfiledPIDp = 0.8;
-    public static final double ProfiledPIDi = 0.0000000;
+    public static final double ProfiledPIDi = 0;
     public static final double ProfiledPIDd = 0.02;
 
     public static final double DriveKs = 0;
@@ -122,6 +123,21 @@ public final class Constants {
     public static final double angleTolerance = 0.02;
     public static final double distanceTolerance = 0.02;
     public static final double rotTolerance = 0.02;
+  }
+
+  public static class AutoConstants {
+    public static final double maxVelocity = 4.5;
+    public static final double maxAcceleration = 3;
+
+    // drive PID constants
+    public static final double PIDp = 0.225;
+    public static final double PIDi = 0;
+    public static final double PIDd = 0.004225;
+
+    // turning PID constants 
+    public static final double ProfiledPIDp = 0.8;
+    public static final double ProfiledPIDi = 0;
+    public static final double ProfiledPIDd = 0.02;
   }
 
 }
