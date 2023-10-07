@@ -85,7 +85,7 @@ public class Routines {
         //new InstantCommand(intake::cInt, intake),
         //grabCubeAndDock
         //new LaunchCube(intake),
-        new IntakeCube(intake).withTimeout(0.5),
+        new IntakeCube(intake).withTimeout(0.2),
         new OuttakeCube(intake).withTimeout(1),
         baseSwerveCommand(trajectory, true)
        // new Balance(drivetrain).withTimeout(5)

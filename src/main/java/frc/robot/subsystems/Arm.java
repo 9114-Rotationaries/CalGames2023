@@ -26,6 +26,7 @@ public class Arm extends SubsystemBase {
     m_rightMotor = new CANSparkMax(rightArmChannel, MotorType.kBrushless);
     m_leftMotor = new CANSparkMax(leftArmChannel, MotorType.kBrushless);
     encoder1 = m_rightMotor.getEncoder();
+    
   }
 
   public void pivot(double pivotSpeed){
