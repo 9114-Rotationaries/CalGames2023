@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,16 +18,24 @@ public class Arm extends SubsystemBase {
   //intake pointing away from you
   private final CANSparkMax m_rightMotor;
   private final CANSparkMax m_leftMotor;
-  private final RelativeEncoder encoder1;
+  private final RelativeEncoder encoderRight;
+  private final RelativeEncoder encoderLeft;
   private final Timer timer = new Timer();
+  private final PIDController armPIDController;
+  private double desiredTicks;
+  private double errorTicks;
+  private double currentTicks;
+  private double errorOutput;
+
   // private final PIDController armPID = new PIDController(ArmConstants.p, ArmConstants.i, ArmConstants.d);
 
   /** Creates a new Arm. */
   public Arm(int rightArmChannel, int leftArmChannel) {
     m_rightMotor = new CANSparkMax(rightArmChannel, MotorType.kBrushless);
     m_leftMotor = new CANSparkMax(leftArmChannel, MotorType.kBrushless);
-    encoder1 = m_rightMotor.getEncoder();
-    
+    encoderRight = m_rightMotor.getEncoder();
+    encoderLeft = m_leftMotor.getEncoder();
+    armPIDController = new PIDController(ArmConstants.armPIDp, ArmConstants.armPIDi, ArmConstants.armPIDd);
   }
 
   public void pivot(double pivotSpeed){
@@ -41,8 +50,13 @@ public class Arm extends SubsystemBase {
   }
 
   public double getAngle(){
-    double angle = encoder1.getPosition() / ArmConstants.armRatio;
+    double angle = encoderLeft.getPosition() / ArmConstants.armRatio;
     return angle;
+  }
+
+  public double getTicks() {
+    currentTicks = getAngle()*5;
+    return currentTicks;
   }
 
   public double getSpeed(){
