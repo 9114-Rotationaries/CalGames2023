@@ -70,7 +70,7 @@ public class Routines {
     }
 
     public CommandBase goForward(Drivetrain drivetrain){
-      PathPlannerTrajectory trajectory = PathPlanner.loadPath("OutLeftBalance", 4, 3);
+      PathPlannerTrajectory trajectory = PathPlanner.loadPath("Mid180", 4, 3);
 
       HashMap<String,Command> eventMap = new HashMap<>();
           eventMap.put("OutCube", new LaunchCube(intake));  
