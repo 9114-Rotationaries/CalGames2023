@@ -132,18 +132,9 @@ public class Drivetrain extends SubsystemBase{
     return ahrs.getRoll(); 
   }
 
-  public double getHeading() {
-    double angle = ahrs.getYaw() % 360;
-    if (angle > 180) {
-      angle -= 360;
-    } else if (angle <= -180) {
-        angle += 360;
-    }
-    return angle;
-  }
 
   public Rotation2d getRotation2d() {
-    return Rotation2d.fromDegrees(getHeading());
+    return Rotation2d.fromDegrees(getYaw());
   }
 
   public double getDistancePerPulse() {
