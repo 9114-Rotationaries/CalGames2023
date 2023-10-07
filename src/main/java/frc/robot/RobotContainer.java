@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
@@ -54,12 +55,15 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    //drivetrain.getFR().
     // Configure the trigger bindings
     //drivetrain.resetPose(drivetrain.getPose());
     //System.out.println(drivetrain.getModule().getPosition());
 
     configureDrivetrainBindings();
-    drivetrain.setDefaultCommand(new JoystickDrive(m_controller, drivetrain, true));
+    configureArmBindings();
+    configureIntakeBindings();
+    drivetrain.setDefaultCommand(new JoystickDrive(m_controller, drivetrain, false));
   }
 
   private void configureDrivetrainBindings() {
