@@ -22,7 +22,6 @@ public class Robot extends TimedRobot {
   private Vision limelight;
 
   //private final Drivetrain m_swerve = new Drivetrain();
-  WaitCommand x = new WaitCommand(5);
   
 
   @Override
