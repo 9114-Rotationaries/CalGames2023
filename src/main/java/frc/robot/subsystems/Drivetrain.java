@@ -53,10 +53,10 @@ public class Drivetrain extends SubsystemBase{
 
   public SwerveModulePosition[] getModulePositions(){
     SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
-    modulePositions[1] = m_frontLeft.getModulePosition();
-    modulePositions[0] = m_frontRight.getModulePosition();
-    modulePositions[3] = m_backLeft.getModulePosition();
-    modulePositions[2] = m_backRight.getModulePosition();
+    modulePositions[0] = m_frontLeft.getModulePosition();
+    modulePositions[1] = m_frontRight.getModulePosition();
+    modulePositions[2] = m_backLeft.getModulePosition();
+    modulePositions[3] = m_backRight.getModulePosition();
     return modulePositions;
   }
 
@@ -151,23 +151,23 @@ public class Drivetrain extends SubsystemBase{
     return 4096 *6.75 /((2 * Math.PI * SwerveConstants.kWheelRadius / 1)*(2 * Math.PI * SwerveConstants.kWheelRadius / 1));//0.39
 }
 
-  public double getCountsPerRev(){
-    return m_backRight.getEncoderCountsPerRev();
-  }
+  // public double getCountsPerRev(){
+  //   return m_backRight.getEncoderCountsPerRev();
+  // }
 
-public double getEncoderCounts() {
-    // Implement code to get encoder counts (sum of counts from all modules)
-    // Return the total encoder counts
-    return m_backRight.getDriveEncoderValues();
-}
+// public double getEncoderCounts() {
+//     // Implement code to get encoder counts (sum of counts from all modules)
+//     // Return the total encoder counts
+//     return m_backRight.getDriveEncoderValues();
+// }
 
-public void resetEncoders() {
-  // Reset the encoders for all swerve modules
-  m_frontRight.resetDriveEncoder();
-  m_frontLeft.resetDriveEncoder();
-  m_backLeft.resetDriveEncoder();
-  m_backRight.resetDriveEncoder();
-}
+// public void resetEncoders() {
+//   // Reset the encoders for all swerve modules
+//   m_frontRight.resetDriveEncoder();
+//   m_frontLeft.resetDriveEncoder();
+//   m_backLeft.resetDriveEncoder();
+//   m_backRight.resetDriveEncoder();
+// }
 
 }
 

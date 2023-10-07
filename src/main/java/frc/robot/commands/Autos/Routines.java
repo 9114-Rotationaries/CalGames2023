@@ -16,25 +16,62 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.commands.Balance;
+import frc.robot.commands.Intake.Outtake.OuttakeCube;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
 
 /** Add your docs here. */
 public class Routines {
 
     private final Drivetrain drivetrain;
+    private final Intake intake;
 
-    public Routines(Drivetrain drive){
+    public Routines(Drivetrain drive, Intake intake){
+      this.intake = intake;
       this.drivetrain=drive;
     }
 
-    public CommandBase goForward(Drivetrain drivetrain){
-        PathPlannerTrajectory trajectory = PathPlanner.loadPath("Go Forward", 4, 3);
+    public CommandBase OutRightBalance(Drivetrain drivetrain){
+      PathPlannerTrajectory trajectory = PathPlanner.loadPath("OutRightBalance",4, 3);
+
+      return Commands.sequence(
+        new InstantCommand(intake::cInt, intake),
+        baseSwerveCommand(trajectory, true),
+        new Balance(drivetrain)
+      );
+    }
+
+    public CommandBase OutLeftBalance(Drivetrain drivetrain){
+      PathPlannerTrajectory trajectory = PathPlanner.loadPath("OutLeftBalance",4, 3);
+
+      return Commands.sequence(
+        new InstantCommand(intake::cOut, intake),
+        baseSwerveCommand(trajectory, true),
+        new Balance(drivetrain)
+      );
+    }
+    
+    public CommandBase OutMidBalance(Drivetrain drivetrain){
+        PathPlannerTrajectory trajectory = PathPlanner.loadPath("OutMidBalance", 4, 3);
 
         return Commands.sequence(
-            baseSwerveCommand(trajectory, true)
+          //new InstantCommand(intake::cOut, intake),
+          baseSwerveCommand(trajectory, true),
+          new Balance(drivetrain)
         );
 
     }
+
+    public CommandBase goForward(Drivetrain drivetrain){
+      PathPlannerTrajectory trajectory = PathPlanner.loadPath("OutMidBalance", 4, 3);
+
+      return Commands.sequence(
+        //new InstantCommand(intake::cInt, intake),
+        baseSwerveCommand(trajectory, true)
+      );
+
+  }
 
     public Command baseSwerveCommand(PathPlannerTrajectory trajectory, boolean isFirstPath) {
         InstantCommand resetOdom = new InstantCommand(() -> {
@@ -48,8 +85,8 @@ public class Routines {
           trajectory, 
           drivetrain::getPose, 
           drivetrain.getKinematics(), 
-          new PIDController(2.25, 0, 0.02), 
-          new PIDController(2.25, 0, 0.02), 
+          new PIDController(10, 0, 0.02), 
+          new PIDController(10, 0, 0.02), 
           new PIDController(0, 0, 0.02), 
           drivetrain::setModuleStates, 
           drivetrain);

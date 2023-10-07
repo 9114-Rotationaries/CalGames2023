@@ -32,7 +32,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.commands.Drivetrain.JoystickDrive;
-import frc.robot.commands.Drivetrain.MoveDistance;
+// import frc.robot.commands.Drivetrain.MoveDistance;
 import frc.robot.commands.Drivetrain.MoveToTag;
 import frc.robot.commands.Drivetrain.SlowDriveCommunity;
 import frc.robot.subsystems.Drivetrain;
@@ -82,7 +82,7 @@ public class RobotContainer {
 
   private final CommandXboxController m_controller = new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
-  private final static Routines routines = new Routines(drivetrain);
+  private final static Routines routines = new Routines(drivetrain, intake);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -90,7 +90,7 @@ public class RobotContainer {
     configureDrivetrainBindings();
     configureArmBindings();
     configureIntakeBindings();
-    drivetrain.setDefaultCommand(new JoystickDrive(m_controller, drivetrain, false));
+    drivetrain.setDefaultCommand(new JoystickDrive(m_controller, drivetrain, true));
   }
 
   private void configureDrivetrainBindings() {
@@ -140,7 +140,7 @@ public class RobotContainer {
     // autoChooser.addOption("SwerveTest", PathPlanner.loadPathGroup("TestingSwerve", new PathConstraints(4, 3)));
 
 
-    autoChooserFix.addOption("Go Forward Fix", routines.goForward(drivetrain));
+    autoChooserFix.addOption("Blue Out Mid", routines.OutMidBalance(drivetrain));
 
     eventMap.put("event", new PrintCommand("Passed marker 1"));
     //eventMap.put("Balance",  balance);
@@ -159,7 +159,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return routines.goForward(drivetrain);
+    return routines.OutMidBalance(drivetrain);
     }
 
   public Command balanceCode(){

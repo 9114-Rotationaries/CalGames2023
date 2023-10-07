@@ -30,7 +30,7 @@ public class Vision extends SubsystemBase {
         limelightCamera = CameraServer.startAutomaticCapture();
         
         // Set camera properties, e.g., brightness
-        limelightCamera.setBrightness(100); // Set brightness to 100 (maximum)
+        limelightCamera.setBrightness(0); // Set brightness to 100 (maximum)
 
         // Set the Limelight LED mode to "off" initially
         limelightTable.getEntry("ledMode").setNumber(1); // 0: Off, 1: On, 2: Blinking

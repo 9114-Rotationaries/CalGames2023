@@ -41,10 +41,10 @@ public final class Constants {
     public static final Translation2d m_backRightLocation = new Translation2d(0.3429, -0.3429);
     
 
-    public static final double kCommunitySpeed = 1;
-    public static final double kCommunityAngularSpeed = 3;
-    public static final double kMaxSpeed = 3; // 1 meters per second
-    public static final double kMaxAngularSpeed = 4; // 12 radians? per second
+    public static final double kCommunitySpeed = 7;
+    public static final double kCommunityAngularSpeed = 7;
+    public static final double kMaxSpeed = 7; // 1 meters per second
+    public static final double kMaxAngularSpeed = 7; // 12 radians? per second
 
     //FL-Front Left, DM-Driving Motor, TM-Turning Motor, TE-Turning Encoder
 

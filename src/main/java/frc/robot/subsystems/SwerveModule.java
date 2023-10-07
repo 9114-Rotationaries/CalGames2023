@@ -169,7 +169,7 @@ public class SwerveModule extends SubsystemBase {
 
 
   public double getDrivePosition(){
-    return m_driveEncoder.getPosition() * 2 * Math.PI * 0.0508 / (6.75);
+    return m_driveEncoder.getPosition();
   }
 
   public double getTurningPosition(){
