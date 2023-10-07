@@ -26,6 +26,7 @@ public class Arm extends SubsystemBase {
   private double errorTicks;
   private double currentTicks;
   private double errorOutput;
+
   // private final PIDController armPID = new PIDController(ArmConstants.p, ArmConstants.i, ArmConstants.d);
 
   /** Creates a new Arm. */
@@ -35,16 +36,6 @@ public class Arm extends SubsystemBase {
     encoderRight = m_rightMotor.getEncoder();
     encoderLeft = m_leftMotor.getEncoder();
     armPIDController = new PIDController(ArmConstants.armPIDp, ArmConstants.armPIDi, ArmConstants.armPIDd);
-    
-  }
-
-  public void goToSetpint(double degrees){
-    desiredTicks = 0; //convert degrees to ticks
-    armPIDController.setSetpoint(desiredTicks);
-    armPIDController.setTolerance(ArmConstants.armTolerance);
-    errorTicks = desiredTicks - currentTicks;
-    errorOutput = armPIDController.calculate(errorTicks);
-    pivot(errorOutput);
   }
 
   public void pivot(double pivotSpeed){

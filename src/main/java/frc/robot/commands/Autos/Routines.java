@@ -70,7 +70,7 @@ public class Routines {
     }
 
     public CommandBase goForward(Drivetrain drivetrain){
-      PathPlannerTrajectory trajectory = PathPlanner.loadPath("OutLeftBalance", 4, 3);
+      PathPlannerTrajectory trajectory = PathPlanner.loadPath("Mid180", 4, 3);
 
       HashMap<String,Command> eventMap = new HashMap<>();
           eventMap.put("OutCube", new LaunchCube(intake));  
@@ -85,7 +85,7 @@ public class Routines {
         //new InstantCommand(intake::cInt, intake),
         //grabCubeAndDock
         //new LaunchCube(intake),
-        new IntakeCube(intake).withTimeout(0.5),
+        new IntakeCube(intake).withTimeout(0.4),
         new OuttakeCube(intake).withTimeout(1),
         baseSwerveCommand(trajectory, true)
        // new Balance(drivetrain).withTimeout(5)
