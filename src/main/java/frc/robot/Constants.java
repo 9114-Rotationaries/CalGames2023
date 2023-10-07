@@ -35,16 +35,16 @@ public final class Constants {
 
   public static class DriveConstants {
 
-    public static final Translation2d m_frontLeftLocation = new Translation2d(-0.3429, 0.3429); //meters
-    public static final Translation2d m_frontRightLocation = new Translation2d(0.3429, 0.3429);
-    public static final Translation2d m_backLeftLocation = new Translation2d(-0.3429, -0.3429);
-    public static final Translation2d m_backRightLocation = new Translation2d(0.3429, -0.3429);
+    public static final Translation2d m_frontLeftLocation = new Translation2d(0.3429, 0.3429); //meters
+    public static final Translation2d m_frontRightLocation = new Translation2d(0.3429, -0.3429);
+    public static final Translation2d m_backLeftLocation = new Translation2d(-0.3429, 0.3429);
+    public static final Translation2d m_backRightLocation = new Translation2d(-0.3429, -0.3429);
     
 
     public static final double kCommunitySpeed = 7;
     public static final double kCommunityAngularSpeed = 7;
     public static final double kMaxSpeed = 7; // 1 meters per second
-    public static final double kMaxAngularSpeed = 7; // 12 radians? per second
+    public static final double kMaxAngularSpeed = 12; // 12 radians? per second
 
     //FL-Front Left, DM-Driving Motor, TM-Turning Motor, TE-Turning Encoder
 
@@ -82,7 +82,7 @@ public final class Constants {
     public static final double PIDd = 0.004225;
 
     // turning PID constants 
-    public static final double ProfiledPIDp = 0.8;
+    public static final double ProfiledPIDp = 0.6;
     public static final double ProfiledPIDi = 0;
     public static final double ProfiledPIDd = 0.02;
 
