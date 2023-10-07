@@ -4,9 +4,12 @@
 
 package frc.robot.commands.Autos;
 
+import java.util.HashMap;
+
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
+import com.pathplanner.lib.commands.FollowPathWithEvents;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -16,7 +19,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.commands.Balance;
+import frc.robot.commands.Intake.Intake.IntakeCube;
+import frc.robot.commands.Intake.Launch.LaunchCube;
 import frc.robot.commands.Intake.Outtake.OuttakeCube;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -64,11 +70,25 @@ public class Routines {
     }
 
     public CommandBase goForward(Drivetrain drivetrain){
-      PathPlannerTrajectory trajectory = PathPlanner.loadPath("OutMidBalance", 4, 3);
+      PathPlannerTrajectory trajectory = PathPlanner.loadPath("OutLeftBalance", 4, 3);
+
+      HashMap<String,Command> eventMap = new HashMap<>();
+          eventMap.put("OutCube", new LaunchCube(intake));  
+      
+      FollowPathWithEvents grabCubeAndDock = new FollowPathWithEvents(
+        baseSwerveCommand(trajectory, true), 
+        trajectory.getMarkers(), 
+        eventMap);
+          
 
       return Commands.sequence(
         //new InstantCommand(intake::cInt, intake),
+        //grabCubeAndDock
+        //new LaunchCube(intake),
+        new IntakeCube(intake).withTimeout(0.5),
+        new OuttakeCube(intake).withTimeout(1),
         baseSwerveCommand(trajectory, true)
+       // new Balance(drivetrain).withTimeout(5)
       );
 
   }
@@ -90,6 +110,8 @@ public class Routines {
           new PIDController(0, 0, 0.02), 
           drivetrain::setModuleStates, 
           drivetrain);
+
+          
     
         Timer timer = new Timer();
         SmartDashboard.putNumber("Desired X", 0);
