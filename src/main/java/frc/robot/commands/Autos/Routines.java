@@ -24,6 +24,7 @@ import frc.robot.commands.Balance;
 import frc.robot.commands.Intake.Intake.IntakeCube;
 import frc.robot.commands.Intake.Launch.LaunchCube;
 import frc.robot.commands.Intake.Outtake.OuttakeCube;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 
@@ -31,11 +32,15 @@ import frc.robot.subsystems.Intake;
 public class Routines {
 
     private final Drivetrain drivetrain;
+    private final Arm arm;
     private final Intake intake;
+    private final Macros macros;
 
-    public Routines(Drivetrain drive, Intake intake){
+    public Routines(Drivetrain drive, Intake intake, Arm ARM, Macros macros){
       this.intake = intake;
-      this.drivetrain=drive;
+      this.drivetrain = drive;
+      this.arm = ARM;
+      this.macros = macros;
     }
 
     public CommandBase OutRightBalance(Drivetrain drivetrain){
@@ -70,7 +75,7 @@ public class Routines {
     }
 
     public CommandBase goForward(Drivetrain drivetrain){
-      PathPlannerTrajectory trajectory = PathPlanner.loadPath("Mid180", 4, 3);
+      PathPlannerTrajectory trajectory = PathPlanner.loadPath("ShootPickup", 4, 3);
 
       HashMap<String,Command> eventMap = new HashMap<>();
           eventMap.put("OutCube", new LaunchCube(intake));  
@@ -80,14 +85,15 @@ public class Routines {
         trajectory.getMarkers(), 
         eventMap);
           
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
       return Commands.sequence(
         //new InstantCommand(intake::cInt, intake),
         //grabCubeAndDock
         //new LaunchCube(intake),
         new IntakeCube(intake).withTimeout(0.4),
         new OuttakeCube(intake).withTimeout(1),
-        baseSwerveCommand(trajectory, true)
+        baseSwerveCommand(trajectory, true),
+        macros.armIntake()
        // new Balance(drivetrain).withTimeout(5)
       );
 

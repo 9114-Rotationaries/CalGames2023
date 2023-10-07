@@ -43,6 +43,7 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.Balance;
 import frc.robot.commands.Arm.LowerArm;
 import frc.robot.commands.Arm.RaiseArm;
+import frc.robot.commands.Autos.Macros;
 import frc.robot.commands.Autos.Routines;
 import frc.robot.commands.Intake.Intake.IntakeCone;
 import frc.robot.commands.Intake.Intake.IntakeCube;
@@ -65,8 +66,10 @@ public class RobotContainer {
   public final static Drivetrain drivetrain = new Drivetrain();
   private final Vision vision = new Vision();
 
-  private final Arm arm = new Arm(ArmConstants.rightArmChannel, ArmConstants.leftArmChannel);
+  private final static Arm arm = new Arm(ArmConstants.rightArmChannel, ArmConstants.leftArmChannel);
   private final static Intake intake = new Intake(IntakeConstants.cubeIntakeChannel, IntakeConstants.coneIntakeChannel);
+
+  private final static Macros macros = new Macros(arm, intake);
 
   final Balance balance = new Balance(drivetrain);
   private static SwerveAutoBuilder builder;
@@ -82,7 +85,7 @@ public class RobotContainer {
 
   private final CommandXboxController m_controller = new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
-  private final static Routines routines = new Routines(drivetrain, intake);
+  private final static Routines routines = new Routines(drivetrain, intake, arm, macros);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
