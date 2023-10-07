@@ -140,17 +140,12 @@ public class RobotContainer {
     // autoChooser.addOption("SwerveTest", PathPlanner.loadPathGroup("TestingSwerve", new PathConstraints(4, 3)));
 
 
-    autoChooserFix.addOption("Blue Out Mid", routines.OutMidBalance(drivetrain));
-
-    eventMap.put("event", new PrintCommand("Passed marker 1"));
-    //eventMap.put("Balance",  balance);
-    eventMap.put("OutCube", new InstantCommand(intake::cOut, intake));
-    eventMap.put("InCube", new InstantCommand(intake::cInt, intake)); //cInt = cubeIntake without needing parameter
-    eventMap.put("ArmUp", new InstantCommand(arm::armUp, arm)); //cInt = cubeIntake without needing parameter
-    eventMap.put("ArmDown", new InstantCommand(arm::armDown, arm)); //down is up and up is down
+    autoChooserFix.addOption("Blue Out Mid", routines.goForward(drivetrain));
+    autoChooserFix.addOption("Blue Out Left", routines.OutLeftBalance(drivetrain));
+    autoChooserFix.addOption("Blue Out Right", routines.OutRightBalance(drivetrain));
 
 
-    SmartDashboard.putData(autoChooser);
+    SmartDashboard.putData(autoChooserFix);
   }
 
   /**
@@ -159,7 +154,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return routines.OutMidBalance(drivetrain);
+    //return autoChooserFix.getSelected();
+    return routines.goForward(drivetrain);
     }
 
   public Command balanceCode(){
