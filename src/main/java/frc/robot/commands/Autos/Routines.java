@@ -21,11 +21,13 @@ import frc.robot.subsystems.Drivetrain;
 /** Add your docs here. */
 public class Routines {
 
-    private final Drivetrain drivetrain = new Drivetrain();
+    private final Drivetrain drivetrain;
 
-    public Routines(){}
+    public Routines(Drivetrain drive){
+      this.drivetrain=drive;
+    }
 
-    public CommandBase goForward(){
+    public CommandBase goForward(Drivetrain drivetrain){
         PathPlannerTrajectory trajectory = PathPlanner.loadPath("Go Forward", 4, 3);
 
         return Commands.sequence(
@@ -46,9 +48,9 @@ public class Routines {
           trajectory, 
           drivetrain::getPose, 
           drivetrain.getKinematics(), 
-          new PIDController(0.225, 0, 0.004225), 
-          new PIDController(0.255, 0, 0.004225), 
-          new PIDController(0.6, 0, 0), 
+          new PIDController(2.25, 0, 0.02), 
+          new PIDController(2.25, 0, 0.02), 
+          new PIDController(0, 0, 0.02), 
           drivetrain::setModuleStates, 
           drivetrain);
     
@@ -72,10 +74,13 @@ public class Routines {
               PathPlannerState state = (PathPlannerState) trajectory.sample(t);
               SmartDashboard.putNumber("Desired X", state.poseMeters.getX());
               SmartDashboard.putNumber("Desired Y", state.poseMeters.getY());
-              SmartDashboard.putNumber("Desired R", state.poseMeters.getRotation().getRadians());
+              SmartDashboard.putNumber("Desired R", state.poseMeters.getRotation().getDegrees());
               SmartDashboard.putNumber("Error X", state.poseMeters.getX() - drivetrain.getPose().getX());
               SmartDashboard.putNumber("Error Y", state.poseMeters.getY() - drivetrain.getPose().getY());
-              SmartDashboard.putNumber("Error R", state.poseMeters.getRotation().getRadians() - drivetrain.getPose().getRotation().getRadians());
+              SmartDashboard.putNumber("Error R", state.poseMeters.getRotation().getDegrees() - drivetrain.getPose().getRotation().getDegrees());
+              SmartDashboard.putNumber("currentXPose",drivetrain.getPose().getX() );
+              SmartDashboard.putNumber("currentDegrees",drivetrain.getPose().getRotation().getDegrees());
+
             })
           ), 
           Commands.runOnce(() -> SmartDashboard.putString("Path Ended", "yes")));

@@ -59,8 +59,8 @@ public class Robot extends TimedRobot {
     m_balanceCode = m_robotContainer.balanceCode();
 
     if (m_autonomousCommand != null) {
-      Commands.sequence(m_autonomousCommand, m_balanceCode);
-      //m_autonomousCommand.schedule();
+      //Commands.sequence(m_autonomousCommand, m_balanceCode);
+      m_autonomousCommand.schedule();
     }
     //m_robotContainer.balance.execute();
     //CommandScheduler.getInstance().schedule(m_robotContainer.balanceCode());

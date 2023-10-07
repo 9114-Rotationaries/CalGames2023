@@ -2,15 +2,15 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 1.0,
-        "y": 3.0
+        "x": 2.2066782595103653,
+        "y": 4.716116440779891
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.0120260897456097,
-        "y": 2.9744015692410946
+        "x": 2.1952590913728836,
+        "y": 3.9510321755686264
       },
-      "holonomicAngle": 0.0,
+      "holonomicAngle": -178.75463573323165,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -24,18 +24,18 @@
     },
     {
       "anchorPoint": {
-        "x": 2.0,
-        "y": 3.0
+        "x": 2.1838399232354018,
+        "y": 3.04891789270758
       },
       "prevControl": {
-        "x": 1.1146511944884638,
-        "y": 3.009623356581647
+        "x": 2.1838399232354018,
+        "y": 3.3343970961446203
       },
       "nextControl": {
-        "x": 2.885348805511536,
-        "y": 2.990376643418353
+        "x": 2.1838399232354018,
+        "y": 2.76343868927054
       },
-      "holonomicAngle": 0.0,
+      "holonomicAngle": 180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -49,41 +49,26 @@
     },
     {
       "anchorPoint": {
-        "x": 3.0,
-        "y": 3.0
+        "x": 3.6112359404205985,
+        "y": 3.1288520696699518
       },
       "prevControl": {
-        "x": 2.432221961682819,
-        "y": 3.009623356581647
+        "x": 2.800475002659407,
+        "y": 3.014660388295136
       },
       "nextControl": null,
-      "holonomicAngle": 0,
+      "holonomicAngle": -177.91743472026914,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [
-          "OutCube"
-        ],
+        "names": [],
         "executionBehavior": "parallel",
-        "waitBehavior": "before",
-        "waitTime": 2.0
+        "waitBehavior": "none",
+        "waitTime": 0
       }
     }
   ],
-  "markers": [
-    {
-      "position": 1.96,
-      "names": [
-        "InCube"
-      ]
-    },
-    {
-      "position": 1.9,
-      "names": [
-        "ArmDown"
-      ]
-    }
-  ]
+  "markers": []
 }

@@ -72,8 +72,8 @@ public class SwerveModule extends SubsystemBase {
     //m_driveEncoder.setPositionConversionFactor((Math.PI * SwerveConstants.kWheelRadius *2)/(6.75*1.0074*250));//42/(6.75 * Math.PI * SwerveConstants.kWheelRadius * 2) and also that but change 42 to 1//((Math.PI * SwerveConstants.kWheelRadius * 2)/6.75)/5
     //m_driveEncoder.setVelocityConversionFactor(((Math.PI * SwerveConstants.kWheelRadius *2)/(6.75*1.0074*250))/60);//((/ 60); // 60 seconds per minute
     
-    m_driveEncoder.setPositionConversionFactor(.3286260747909546);//42/(6.75 * Math.PI * SwerveConstants.kWheelRadius * 2) and also that but change 42 to 1//((Math.PI * SwerveConstants.kWheelRadius * 2)/6.75)/5
-    m_driveEncoder.setVelocityConversionFactor(.0004762696736);//((/ 60); // 60 seconds per minute
+    m_driveEncoder.setPositionConversionFactor(2*Math.PI*0.0508/6.75);//42/(6.75 * Math.PI * SwerveConstants.kWheelRadius * 2) and also that but change 42 to 1//((Math.PI * SwerveConstants.kWheelRadius * 2)/6.75)/5
+    m_driveEncoder.setVelocityConversionFactor(2*Math.PI*0.0508/6.75/60);//((/ 60); // 60 seconds per minute
 
     // Radians per pulse
      //m_turningEncoder.setDistancePerPulse(2 * Math.PI / SwerveConstants.kEncoderResolution);
@@ -154,12 +154,16 @@ public class SwerveModule extends SubsystemBase {
 
 
   public double getDrivePosition(){
-    return m_driveEncoder.getPosition() * 2 * Math.PI * 0.0508 / (6.75*42);
+    return m_driveEncoder.getPosition() * 2 * Math.PI * 0.0508 / (6.75);
   }
 
   public double getTurningPosition(){
     double m_moduleAngleRadians = m_turningEncoder.getAbsolutePosition() * 2 * Math.PI / 360;
     return m_moduleAngleRadians;
+  }
+
+  public double getDriveEncoder(){
+    return m_driveEncoder.getPosition();
   }
   
 public SwerveModulePosition getModulePosition() {

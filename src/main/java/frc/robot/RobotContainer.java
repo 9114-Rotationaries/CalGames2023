@@ -80,7 +80,7 @@ public class RobotContainer {
 
   private final CommandXboxController m_controller = new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
-  private final static Routines routines = new Routines();
+  private final static Routines routines = new Routines(drivetrain);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -135,7 +135,7 @@ public class RobotContainer {
     // autoChooser.addOption("SwerveTest", PathPlanner.loadPathGroup("TestingSwerve", new PathConstraints(4, 3)));
 
 
-    autoChooserFix.addOption("Go Forward Fix", routines.goForward());
+    autoChooserFix.addOption("Go Forward Fix", routines.goForward(drivetrain));
 
     eventMap.put("event", new PrintCommand("Passed marker 1"));
     //eventMap.put("Balance",  balance);
@@ -154,7 +154,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return autoChooserFix.getSelected();
+    return routines.goForward(drivetrain);
     }
 
   public Command balanceCode(){
