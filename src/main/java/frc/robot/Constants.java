@@ -31,6 +31,12 @@ public final class Constants {
     public static final int leftArmChannel = 51;
     public static final double pivotSpeed = 0.5; //pivot speed based on right motor
     public static final double armRatio = 108;
+
+    public static final double armPIDp = 0.0;
+    public static final double armPIDi = 0.0;
+    public static final double armPIDd = 0.0;
+
+    public static final double armTolerance = 0.0;
   }
 
   public static class DriveConstants {
