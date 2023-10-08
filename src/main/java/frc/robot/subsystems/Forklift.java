@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxRelativeEncoder;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -39,8 +40,8 @@ public class Forklift extends ProfiledPIDSubsystem {
         m_leftForkliftMotor = new CANSparkMax(ForkliftConstants.leftForkliftChannel, MotorType.kBrushless);
  
         //Defining encoders
-        m_rightEncoder = m_rightForkliftMotor.getEncoder();
-        m_leftEncoder = m_leftForkliftMotor.getEncoder();
+        m_rightEncoder = m_rightForkliftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+        m_leftEncoder = m_leftForkliftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     }
 
     //Stops motor
@@ -88,7 +89,7 @@ public class Forklift extends ProfiledPIDSubsystem {
     }
 
     public double getMeasurement() {
-        return getRightCounts();
+        return getRightCounts()*360;
     }
 
     public void useOutput(double output, State setpoint) {
