@@ -26,9 +26,9 @@ public class Macros {
 
     public CommandBase armIntake(){
         return Commands.sequence(
-            new LowerArm(arm).withTimeout(3),
-            new IntakeCube(intake).withTimeout(2),
-            new RaiseArm(arm).withTimeout(3)
+            new LowerArm(arm).withTimeout(1),
+            new IntakeCube(intake).withTimeout(1),
+            new RaiseArm(arm).withTimeout(1)
         );
     }
 

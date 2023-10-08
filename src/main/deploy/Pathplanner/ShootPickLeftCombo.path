@@ -2,13 +2,13 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 1.9487567204301077,
-        "y": 2.755124107470437
+        "x": 2.0775479866931956,
+        "y": 4.403895865083396
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9487567204301077,
-        "y": 2.732285771195474
+        "x": 3.1961937847486803,
+        "y": 4.605462025160161
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
@@ -24,15 +24,15 @@
     },
     {
       "anchorPoint": {
-        "x": 3.8738768075826755,
-        "y": 2.76
+        "x": 7.044275022577823,
+        "y": 5.398447421894843
       },
       "prevControl": {
-        "x": 3.8677825538557067,
-        "y": 2.7520195211330596
+        "x": 6.044275022577823,
+        "y": 5.398447421894843
       },
       "nextControl": null,
-      "holonomicAngle": -178.9409541302328,
+      "holonomicAngle": 180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -45,12 +45,5 @@
       }
     }
   ],
-  "markers": [
-    {
-      "position": 0.0,
-      "names": [
-        "OutCube"
-      ]
-    }
-  ]
+  "markers": []
 }

@@ -20,10 +20,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
-import frc.robot.commands.Balance;
 import frc.robot.commands.Intake.Intake.IntakeCube;
 import frc.robot.commands.Intake.Launch.LaunchCube;
 import frc.robot.commands.Intake.Outtake.OuttakeCube;
+import frc.robot.commands.Intake.Outtake.OuttakeCubeAuto;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -43,58 +43,99 @@ public class Routines {
       this.macros = macros;
     }
 
-    public CommandBase OutRightBalance(Drivetrain drivetrain){
-      PathPlannerTrajectory trajectory = PathPlanner.loadPath("OutRightBalance",4, 3);
+    public CommandBase MidDock(Drivetrain drivetrain){
+      PathPlannerTrajectory trajectory = PathPlanner.loadPath("MidDock",4, 3);
 
       return Commands.sequence(
-        new InstantCommand(intake::cInt, intake),
+        new IntakeCube(intake).withTimeout(0.4),
+        new OuttakeCubeAuto(intake).withTimeout(1),
         baseSwerveCommand(trajectory, true),
         new Balance(drivetrain)
       );
     }
 
-    public CommandBase OutLeftBalance(Drivetrain drivetrain){
-      PathPlannerTrajectory trajectory = PathPlanner.loadPath("OutLeftBalance",4, 3);
+    public CommandBase backwardsStraight(Drivetrain drivetrain){
+      PathPlannerTrajectory trajectory = PathPlanner.loadPath("BackwardsStraight", 4, 3);
+  
+      return Commands.sequence(
+        new IntakeCube(intake).withTimeout(0.4),
+        new OuttakeCubeAuto(intake).withTimeout(1),
+        baseSwerveCommand(trajectory, true)
+      );
+  }
+
+    //FIX TURNING BEFORE USING (CLEAR CHARGE STATION TRAJ)
+    public CommandBase backwardsLeftClear(Drivetrain drivetrain){
+      PathPlannerTrajectory trajectory = PathPlanner.loadPath("BackwardsPathLeft",4, 3);
 
       return Commands.sequence(
-        new InstantCommand(intake::cOut, intake),
-        baseSwerveCommand(trajectory, true),
-        new Balance(drivetrain)
+        new IntakeCube(intake).withTimeout(0.4),
+        new OuttakeCubeAuto(intake).withTimeout(1),
+        baseSwerveCommand(trajectory, true)
+      );
+    }
+
+    //FIX TURNING BEFORE USING (CLEAR CHARGE STATION TRAJ)
+    public CommandBase backwardsRightClear(Drivetrain drivetrain){
+      PathPlannerTrajectory trajectory = PathPlanner.loadPath("BackwardsPathRight",4, 3);
+
+      return Commands.sequence(
+        new IntakeCube(intake).withTimeout(0.4),
+        new OuttakeCubeAuto(intake).withTimeout(1),
+        baseSwerveCommand(trajectory, true)
       );
     }
     
-    public CommandBase OutMidBalance(Drivetrain drivetrain){
-        PathPlannerTrajectory trajectory = PathPlanner.loadPath("OutMidBalance", 4, 3);
+    public CommandBase shootPickLeft(Drivetrain drivetrain){
+      PathPlannerTrajectory trajectory = PathPlanner.loadPath("ShootPickupLeft", 4, 3);
 
-        return Commands.sequence(
-          //new InstantCommand(intake::cOut, intake),
-          baseSwerveCommand(trajectory, true),
-          new Balance(drivetrain)
-        );
+      return Commands.sequence(
+        new IntakeCube(intake).withTimeout(0.4),
+        new OuttakeCubeAuto(intake).withTimeout(1),
+        baseSwerveCommand(trajectory, true)
+      );
+  }
 
-    }
+    public CommandBase shootPickRight(Drivetrain drivetrain){
+      PathPlannerTrajectory trajectory = PathPlanner.loadPath("ShootPickupRight", 4, 3);
+
+      return Commands.sequence(
+        new IntakeCube(intake).withTimeout(0.4),
+        new OuttakeCubeAuto(intake).withTimeout(1),
+        baseSwerveCommand(trajectory, true)
+      );
+  }
+    public CommandBase shootPickRightCombo(Drivetrain drivetrain){
+      PathPlannerTrajectory trajectory1 = PathPlanner.loadPath("ShootPickRightCombo", 4, 3);
+      PathPlannerTrajectory trajectory2 = PathPlanner.loadPath("Turn90Counter", 1, 0.5);
+
+      return Commands.sequence(
+        new IntakeCube(intake).withTimeout(0.4),
+        new OuttakeCubeAuto(intake).withTimeout(1),
+        baseSwerveCommand(trajectory1, true),
+        baseSwerveCommand(trajectory2, false),
+        macros.armIntake()
+      );
+  }
+
+  public CommandBase shootPickLeftCombo(Drivetrain drivetrain){
+    PathPlannerTrajectory trajectory1 = PathPlanner.loadPath("ShootPickLeftCombo", 4, 3);
+    PathPlannerTrajectory trajectory2 = PathPlanner.loadPath("Turn90Counter", 1, 0.5);
+
+    return Commands.sequence(
+      new IntakeCube(intake).withTimeout(0.4),
+      new OuttakeCubeAuto(intake).withTimeout(1),
+      baseSwerveCommand(trajectory1, true),
+      baseSwerveCommand(trajectory2, false),
+      macros.armIntake()
+    );
+}
 
     public CommandBase goForward(Drivetrain drivetrain){
-      PathPlannerTrajectory trajectory = PathPlanner.loadPath("ShootPickup", 4, 3);
-
-      HashMap<String,Command> eventMap = new HashMap<>();
-          eventMap.put("OutCube", new LaunchCube(intake));  
-      
-      FollowPathWithEvents grabCubeAndDock = new FollowPathWithEvents(
-        baseSwerveCommand(trajectory, true), 
-        trajectory.getMarkers(), 
-        eventMap);
-          
+      PathPlannerTrajectory trajectory = PathPlanner.loadPath("GoForwardTwo", 4, 3);
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
       return Commands.sequence(
-        //new InstantCommand(intake::cInt, intake),
-        //grabCubeAndDock
-        //new LaunchCube(intake),
-        new IntakeCube(intake).withTimeout(0.4),
-        new OuttakeCube(intake).withTimeout(1),
-        baseSwerveCommand(trajectory, true),
-        macros.armIntake()
-       // new Balance(drivetrain).withTimeout(5)
+        baseSwerveCommand(trajectory, true)
       );
 
   }
@@ -111,14 +152,11 @@ public class Routines {
           trajectory, 
           drivetrain::getPose, 
           drivetrain.getKinematics(), 
-          new PIDController(10, 0, 0.02), 
-          new PIDController(10, 0, 0.02), 
-          new PIDController(0, 0, 0.02), 
+          new PIDController(4, 0, 0.02),
+          new PIDController(6.8, 0, 0.02), 
+          new PIDController(0.7, 0, 0.02), 
           drivetrain::setModuleStates, 
           drivetrain);
-
-          
-    
         Timer timer = new Timer();
         SmartDashboard.putNumber("Desired X", 0);
               SmartDashboard.putNumber("Desired Y", 0);

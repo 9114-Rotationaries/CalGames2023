@@ -20,14 +20,7 @@ public class Arm extends SubsystemBase {
   private final CANSparkMax m_leftMotor;
   private final RelativeEncoder encoderRight;
   private final RelativeEncoder encoderLeft;
-  private final Timer timer = new Timer();
   private final PIDController armPIDController;
-  private double desiredTicks;
-  private double errorTicks;
-  private double currentTicks;
-  private double errorOutput;
-
-  // private final PIDController armPID = new PIDController(ArmConstants.p, ArmConstants.i, ArmConstants.d);
 
   /** Creates a new Arm. */
   public Arm(int rightArmChannel, int leftArmChannel) {
@@ -49,45 +42,7 @@ public class Arm extends SubsystemBase {
     m_leftMotor.set(0);
   }
 
-  public double getAngle(){
-    double angle = encoderLeft.getPosition() / ArmConstants.armRatio;
-    return angle;
-  }
-
-  public double getTicks(){
-    currentTicks = getAngle() * 5; //ADD CONVERSION FACTOR
-    return currentTicks;
-  }
-
-  public double getSpeed(){
-    double speed = m_rightMotor.get();
-    return speed;
-  }
-
-  public void armUp(){
-    timer.start();
-    while (timer.get() < .1){
-      m_rightMotor.set(-.9);
-      m_leftMotor.set(.9);     
-    }
-    m_leftMotor.set(0);
-    m_rightMotor.set(0);
-  }
-
-  public void armDown(){
-    timer.start();
-    while (timer.get() < .1){
-      m_rightMotor.set(.9);
-      m_leftMotor.set(-.9);     
-    }
-    m_leftMotor.set(0);
-    m_rightMotor.set(0);
-  }
-
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-//    SmartDashboard.putNumber("Arm Angle", getAngle());
-//    SmartDashboard.putNumber("Arm Speed (positive = down, negative = up)", getSpeed());
   }
 }
