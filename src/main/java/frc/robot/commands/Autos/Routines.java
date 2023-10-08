@@ -42,6 +42,12 @@ public class Routines {
       this.arm = ARM;
       this.macros = macros;
     }
+    
+    public CommandBase Balance(Drivetrain drivetrain){
+      return Commands.sequence(
+        new Balance(drivetrain)
+      );
+    }
 
     public CommandBase MidDock(Drivetrain drivetrain){
       PathPlannerTrajectory trajectory = PathPlanner.loadPath("MidDock",4, 3);
