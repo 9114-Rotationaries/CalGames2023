@@ -15,7 +15,7 @@ import frc.robot.subsystems.Drivetrain;
 public class Balance extends CommandBase {
   /** Creates a new Balance. */
   Drivetrain m_drive;
-  PIDController controller = new PIDController(0.05, 0, 0);
+  PIDController controller = new PIDController(0.1, 0, 0);
 
   public Balance(Drivetrain m_drive) {
     this.m_drive = m_drive;
@@ -32,8 +32,8 @@ public class Balance extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double xOutput = controller.calculate(m_drive.getRoll());
-    xOutput = MathUtil.clamp(xOutput, -1, 1);
+    double xOutput = controller.calculate(m_drive.getPitch());
+    xOutput = -MathUtil.clamp(xOutput, -1, 1);
     m_drive.drive(xOutput, 0, 0, false);
   }
 
