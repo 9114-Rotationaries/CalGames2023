@@ -49,7 +49,7 @@ public final class Constants {
 
     public static final double kCommunitySpeed = 7;
     public static final double kCommunityAngularSpeed = 7;
-    public static final double kMaxSpeed = 7; // 1 meters per second
+    public static final double kMaxSpeed = 5.5; // 1 meters per second
     public static final double kMaxAngularSpeed = 12; // 12 radians? per second
 
     //FL-Front Left, DM-Driving Motor, TM-Turning Motor, TE-Turning Encoder

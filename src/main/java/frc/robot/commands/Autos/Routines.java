@@ -20,11 +20,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Balance;
 import frc.robot.commands.Intake.Intake.IntakeCube;
 import frc.robot.commands.Intake.Launch.LaunchCube;
 import frc.robot.commands.Intake.Outtake.OuttakeCube;
 import frc.robot.commands.Intake.Outtake.OuttakeCubeAuto;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 
@@ -32,11 +34,15 @@ import frc.robot.subsystems.Intake;
 public class Routines {
 
     private final Drivetrain drivetrain;
+    private final Arm arm;
     private final Intake intake;
+    private final Macros macros;
 
-    public Routines(Drivetrain drive, Intake intake){
+    public Routines(Drivetrain drive, Intake intake, Arm ARM, Macros macros){
       this.intake = intake;
-      this.drivetrain=drive;
+      this.drivetrain = drive;
+      this.arm = ARM;
+      this.macros = macros;
     }
 
     public CommandBase OutRightBalance(Drivetrain drivetrain){
@@ -71,7 +77,7 @@ public class Routines {
     }
 
     public CommandBase goForward(Drivetrain drivetrain){
-      PathPlannerTrajectory trajectory = PathPlanner.loadPath("BackwardsPath", 4, 3);
+      PathPlannerTrajectory trajectory = PathPlanner.loadPath("ShootPickup", 4, 3);
 
       HashMap<String,Command> eventMap = new HashMap<>();
           eventMap.put("OutCube", new LaunchCube(intake));  
@@ -81,14 +87,16 @@ public class Routines {
         trajectory.getMarkers(), 
         eventMap);
           
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
       return Commands.sequence(
         //new InstantCommand(intake::cInt, intake),
         //grabCubeAndDock
         //new LaunchCube(intake),
         new IntakeCube(intake).withTimeout(0.4),
         new OuttakeCubeAuto(intake).withTimeout(1),
-        baseSwerveCommand(trajectory, true)
+        baseSwerveCommand(trajectory, true),
+        //new WaitCommand(3),
+        macros.armIntake()
        // new Balance(drivetrain).withTimeout(5)
       );
 
@@ -106,9 +114,9 @@ public class Routines {
           trajectory, 
           drivetrain::getPose, 
           drivetrain.getKinematics(), 
-          new PIDController(8, 0, 0.02), 
-          new PIDController(8, 0, 0.02), 
-          new PIDController(0, 0, 0.02), 
+          new PIDController(4, 0, 0.02), 
+          new PIDController(6.8, 0, 0.02), 
+          new PIDController(0.7, 0, 0.02), 
           drivetrain::setModuleStates, 
           drivetrain);
 
