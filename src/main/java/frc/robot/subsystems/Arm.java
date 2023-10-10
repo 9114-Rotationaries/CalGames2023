@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
@@ -66,8 +62,8 @@ public class Arm extends SubsystemBase {
   public void armUp(){
     timer.start();
     while (timer.get() < .1){
-      m_rightMotor.set(-.9);
-      m_leftMotor.set(.9);     
+      m_rightMotor.set(ArmConstants.pivotSpeed);
+      m_leftMotor.set(-ArmConstants.pivotSpeed);     
     }
     m_leftMotor.set(0);
     m_rightMotor.set(0);
@@ -76,8 +72,8 @@ public class Arm extends SubsystemBase {
   public void armDown(){
     timer.start();
     while (timer.get() < .1){
-      m_rightMotor.set(.9);
-      m_leftMotor.set(-.9);     
+      m_rightMotor.set(-ArmConstants.pivotSpeed);
+      m_leftMotor.set(ArmConstants.pivotSpeed);     
     }
     m_leftMotor.set(0);
     m_rightMotor.set(0);

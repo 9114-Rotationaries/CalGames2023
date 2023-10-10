@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
@@ -30,7 +26,7 @@ public final class Constants {
   public static class ArmConstants {
     public static final int rightArmChannel = 50;
     public static final int leftArmChannel = 51;
-    public static final double pivotSpeed = 0.5; //pivot speed based on right motor
+    public static final double pivotSpeed = -0.9; //pivot speed based on right motor
     public static final double armRatio = 108;
 
     public static final double armPIDp = 0.0;
