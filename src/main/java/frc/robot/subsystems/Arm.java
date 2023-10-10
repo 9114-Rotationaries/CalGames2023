@@ -10,7 +10,6 @@ import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 
@@ -85,9 +84,5 @@ public class Arm extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-//    SmartDashboard.putNumber("Arm Angle", getAngle());
-//    SmartDashboard.putNumber("Arm Speed (positive = down, negative = up)", getSpeed());
-  }
+  public void periodic() {}
 }

@@ -59,15 +59,6 @@ public class Drivetrain extends SubsystemBase{
     modulePositions[3] = m_backRight.getModulePosition();
     return modulePositions;
   }
-
-  /**
-   * Method to drive the robot using joystick info.
-   *
-   * @param xSpeed Speed of the robot in the x direction (forward).
-   * @param ySpeed Speed of the robot in the y direction (sideways).
-   * @param rot Angular rate of the robot.
-   * @param fieldRelative Whether the provided x and y speeds are relative to the field.
-   */
   
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     var swerveModuleStates =
@@ -91,7 +82,6 @@ public class Drivetrain extends SubsystemBase{
   } 
 
   public Pose2d getPose(){
-    //updateOdometry();
     return m_odometry.getPoseMeters();
   }
   
@@ -141,24 +131,6 @@ public class Drivetrain extends SubsystemBase{
     // Return the conversion factor for distance per pulse
     return 4096 *6.75 /((2 * Math.PI * SwerveConstants.kWheelRadius / 1)*(2 * Math.PI * SwerveConstants.kWheelRadius / 1));//0.39
 }
-
-  // public double getCountsPerRev(){
-  //   return m_backRight.getEncoderCountsPerRev();
-  // }
-
-// public double getEncoderCounts() {
-//     // Implement code to get encoder counts (sum of counts from all modules)
-//     // Return the total encoder counts
-//     return m_backRight.getDriveEncoderValues();
-// }
-
-// public void resetEncoders() {
-//   // Reset the encoders for all swerve modules
-//   m_frontRight.resetDriveEncoder();
-//   m_frontLeft.resetDriveEncoder();
-//   m_backLeft.resetDriveEncoder();
-//   m_backRight.resetDriveEncoder();
-// }
 
 }
 

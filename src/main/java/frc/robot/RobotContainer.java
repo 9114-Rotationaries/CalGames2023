@@ -5,28 +5,15 @@
 package frc.robot;
 
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 
-import javax.swing.plaf.TreeUI;
-
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
-import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.Constants.OperatorConstants;
@@ -43,28 +30,24 @@ import frc.robot.subsystems.Vision;
 
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Balance;
 import frc.robot.commands.Arm.LowerArm;
 import frc.robot.commands.Arm.RaiseArm;
 import frc.robot.commands.Autos.Macros;
 import frc.robot.commands.Autos.Routines;
-import frc.robot.commands.Intake.Intake.IntakeCone;
+import frc.robot.commands.Drivetrain.JoystickDrive;
+import frc.robot.commands.Drivetrain.MoveToTag;
+import frc.robot.commands.Drivetrain.SlowDriveCommunity;
 import frc.robot.commands.Intake.Intake.IntakeCube;
-import frc.robot.commands.Intake.Launch.LaunchCone;
-import frc.robot.commands.Intake.Launch.LaunchCube;
 import frc.robot.commands.Intake.Outtake.OuttakeCube;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Vision;
 
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and trigger mappings) should be declared here.
- */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
 
   public final static Drivetrain drivetrain = new Drivetrain();
   private final Vision vision = new Vision();
@@ -83,7 +66,6 @@ public class RobotContainer {
   private static HashMap<String, Command> eventMap = new HashMap<>();
   private static PPSwerveControllerCommand swerveControllerCommand;
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_operatorController =
       new CommandXboxController(OperatorConstants.kOperatorControllerPort);
 
@@ -113,10 +95,6 @@ public class RobotContainer {
     m_controller.rightTrigger().whileTrue(new IntakeCube(intake));
     m_controller.leftTrigger().whileTrue(new OuttakeCube(intake));
     m_operatorController.rightBumper().whileTrue(new OuttakeCube(intake));
-    //m_operatorControllr.rightBumper().whileTrue(new LaunchCube(intake));
-    // m_operatorController.a().whileTrue(new IntakeCone(intake));
-    // m_operatorController.b().whileTrue(new OuttakeCone(intake));
-    //m_operatorController.leftBumper().whileTrue(new LaunchCone(intake));
   }
 
   private void configureArmBindings() {
@@ -169,15 +147,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    //return autoChooserFix.getSelected();
     return routines.goForward(drivetrain);
-    }
+  }
 
   public Command balanceCode(){
-  return balance;
-    //CommandScheduler.getInstance().schedule(balance); 
+    return balance;
   }
-  // public void resetPose() {
-  //   drivetrain.resetPose(drivetrain.getPose());
-  // }
 }

@@ -20,6 +20,7 @@ public final class Constants {
     public static final double coneIntakeSpeed = .3;
 
     public static final double cubeOuttakeSpeed = 0.3;
+    public static final double autoCubeOuttakeSpeed = 0.4;
     public static final double coneOuttakeSpeed = -1;
 
     public static final double cubeLaunchSpeed = -1;

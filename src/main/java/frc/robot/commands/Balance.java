@@ -4,12 +4,9 @@
 
 package frc.robot.commands;
 
-import com.revrobotics.SparkMaxPIDController;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.Drivetrain;
 
 public class Balance extends CommandBase {
@@ -20,7 +17,6 @@ public class Balance extends CommandBase {
   public Balance(Drivetrain m_drive) {
     this.m_drive = m_drive;
     addRequirements(m_drive);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.

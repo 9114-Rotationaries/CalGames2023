@@ -1,15 +1,10 @@
 package frc.robot.commands.Drivetrain;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import frc.robot.subsystems.Vision;
-import frc.robot.Constants.SwerveConstants;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Vision;
 
 public class MoveToTag extends CommandBase {
     private Vision visionSubsystem;
@@ -85,20 +80,10 @@ public class MoveToTag extends CommandBase {
         SmartDashboard.putNumber("Horizontal Offset", horizontalOffsetController.getPositionError());
         SmartDashboard.putNumber("Curent Horizontal", currentHorizontalOffset);
         SmartDashboard.putNumber("cDistance", currentDistance);
-
-        // System.out.println("Horizontal Offset Error: " + horizontalOffsetController.getPositionError());
-        // System.out.println("Orientation Error: " + orientationController.getPositionError());
-        // System.out.println("Distance Error: " + distanceError);
-
-        // Optional: You can also add code to handle this condition, e.g., shooter setup
-        if (allConditionsMet) {
-            // Add code to handle this condition, e.g., shooter setup
-        }
     }
 
     @Override
     public boolean isFinished() {
         return horizontalOffsetController.atSetpoint() && orientationController.atSetpoint() && distanceController.atSetpoint();
-        //return false;
     }
 }
