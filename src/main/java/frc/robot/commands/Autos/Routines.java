@@ -77,7 +77,7 @@ public class Routines {
     }
 
     public CommandBase goForward(Drivetrain drivetrain){
-      PathPlannerTrajectory trajectory = PathPlanner.loadPath("ShootPickup", 4, 3);
+      PathPlannerTrajectory trajectory = PathPlanner.loadPath("New New Path", 4, 3); //
 
       HashMap<String,Command> eventMap = new HashMap<>();
           eventMap.put("OutCube", new LaunchCube(intake));  
@@ -92,12 +92,12 @@ public class Routines {
         //new InstantCommand(intake::cInt, intake),
         //grabCubeAndDock
         //new LaunchCube(intake),
-        new IntakeCube(intake).withTimeout(0.4),
-        new OuttakeCubeAuto(intake).withTimeout(1),
-        baseSwerveCommand(trajectory, true),
+        //new IntakeCube(intake).withTimeout(0.4),
+        //new OuttakeCubeAuto(intake).withTimeout(1),
+        baseSwerveCommand(trajectory, true)
         //new WaitCommand(3),
-        macros.armIntake()
-       // new Balance(drivetrain).withTimeout(5)
+        //macros.armIntake()
+        // new Balance(drivetrain)
       );
 
   }

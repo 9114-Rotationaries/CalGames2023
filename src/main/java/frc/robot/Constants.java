@@ -16,10 +16,10 @@ public final class Constants {
     public static final int cubeIntakeChannel = 60;
     public static final int coneIntakeChannel = 61;
 
-    public static final double cubeIntakeSpeed = -0.54;
-    public static final double coneIntakeSpeed = .6;
+    public static final double cubeIntakeSpeed = -0.3;
+    public static final double coneIntakeSpeed = .3;
 
-    public static final double cubeOuttakeSpeed = 0.84;
+    public static final double cubeOuttakeSpeed = 0.3;
     public static final double coneOuttakeSpeed = -1;
 
     public static final double cubeLaunchSpeed = -1;
@@ -88,7 +88,7 @@ public final class Constants {
     public static final double PIDd = 0.004225;
 
     // turning PID constants 
-    public static final double ProfiledPIDp = 0.6;
+    public static final double ProfiledPIDp = 0.6; //0.6
     public static final double ProfiledPIDi = 0;
     public static final double ProfiledPIDd = 0.02;
 
@@ -144,6 +144,19 @@ public final class Constants {
     public static final double ProfiledPIDp = 0.8;
     public static final double ProfiledPIDi = 0;
     public static final double ProfiledPIDd = 0.02;
+  }
+
+  public static class ForkliftConstants{
+    public static final int rightForkliftChannel = 61;
+    public static final int leftForkliftChannel = 62;
+    
+    public static final double forkliftRatio = 251;
+
+    public static final double ProfiledPIDp = 0.1;
+    public static final double ProfiledPIDi = 0;
+    public static final double ProfiledPIDd = 0;
+    public static final double kForkliftMaxVelocity = 1;
+    public static final double kForkliftMaxAcceleration = 2;
   }
 
 }

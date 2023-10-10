@@ -35,7 +35,10 @@ import frc.robot.commands.Drivetrain.JoystickDrive;
 // import frc.robot.commands.Drivetrain.MoveDistance;
 import frc.robot.commands.Drivetrain.MoveToTag;
 import frc.robot.commands.Drivetrain.SlowDriveCommunity;
+import frc.robot.commands.Forklift.LowerForklift;
+import frc.robot.commands.Forklift.RaiseForklift;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Forklift;
 import frc.robot.subsystems.Vision;                            
 
 import frc.robot.Constants.ArmConstants;
@@ -68,6 +71,7 @@ public class RobotContainer {
 
   private final static Arm arm = new Arm(ArmConstants.rightArmChannel, ArmConstants.leftArmChannel);
   private final static Intake intake = new Intake(IntakeConstants.cubeIntakeChannel, IntakeConstants.coneIntakeChannel);
+  private final static Forklift forklift = new Forklift();
 
   private final static Macros macros = new Macros(arm, intake);
 
@@ -93,6 +97,7 @@ public class RobotContainer {
     configureDrivetrainBindings();
     configureArmBindings();
     configureIntakeBindings();
+    configureForkliftBindings();
     drivetrain.setDefaultCommand(new JoystickDrive(m_controller, drivetrain, true));
   }
 
@@ -108,7 +113,7 @@ public class RobotContainer {
     m_controller.rightTrigger().whileTrue(new IntakeCube(intake));
     m_controller.leftTrigger().whileTrue(new OuttakeCube(intake));
     m_operatorController.rightBumper().whileTrue(new OuttakeCube(intake));
-    //m_operatorController.rightBumper().whileTrue(new LaunchCube(intake));
+    //m_operatorControllr.rightBumper().whileTrue(new LaunchCube(intake));
     // m_operatorController.a().whileTrue(new IntakeCone(intake));
     // m_operatorController.b().whileTrue(new OuttakeCone(intake));
     //m_operatorController.leftBumper().whileTrue(new LaunchCone(intake));
@@ -119,6 +124,13 @@ public class RobotContainer {
     m_operatorController.leftTrigger().whileTrue(new LowerArm(arm));
     m_controller.leftBumper().whileTrue(new LowerArm(arm));
     m_controller.rightBumper().whileTrue(new RaiseArm(arm));
+  }
+
+  private void configureForkliftBindings(){
+    m_operatorController.x().whileTrue(new LowerForklift(forklift));
+    m_operatorController.y().whileTrue(new RaiseForklift(forklift));
+    m_controller.x().whileTrue(new LowerForklift(forklift));
+    m_controller.y().whileTrue(new RaiseForklift(forklift));
   }
 
   

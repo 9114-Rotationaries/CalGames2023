@@ -34,11 +34,7 @@ public class Balance extends CommandBase {
   public void execute() {
     double xSpeed = controller.calculate(m_drive.getPitch());
     xSpeed = -MathUtil.clamp(xSpeed,-1,1);
-
-    double ySpeed = controller.calculate(m_drive.getYaw());
-    ySpeed = -MathUtil.clamp(ySpeed, -1, 1);
-
-    m_drive.drive(xSpeed, ySpeed, 0, false);
+    m_drive.drive(xSpeed, 0, 0, false);
   }
 
   // Called once the command ends or is interrupted.
