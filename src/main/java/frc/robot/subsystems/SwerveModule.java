@@ -20,7 +20,6 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.SwerveConstants;
 
 public class SwerveModule extends SubsystemBase {
@@ -30,20 +29,8 @@ public class SwerveModule extends SubsystemBase {
   private final RelativeEncoder m_driveEncoder;
   private final CANCoder m_turningEncoder;
 
-  // Gains are for example purposes only - must be determined for your own robot!
   private final PIDController m_drivePIDController = new PIDController(SwerveConstants.PIDp, SwerveConstants.PIDi, SwerveConstants.PIDd);
 
-  // private final ProfiledPIDController m_drivePIDController = 
-  //   new ProfiledPIDController(
-  //             SwerveConstants.PIDp,
-  //             SwerveConstants.PIDi,
-  //             SwerveConstants.PIDd,
-  //             new TrapezoidProfile.Constraints(
-  //                 DriveConstants.kMaxSpeed, DriveConstants.kMaxAngularSpeed));
-
-//  private final PIDController m_turningPIDController = new PIDController(SwerveConstants.ProfiledPIDd, SwerveConstants.ProfiledPIDi, SwerveConstants.ProfiledPIDd);
-
-  // Gains are for example purposes only - must be determined for your own robot!
   private final ProfiledPIDController m_turningPIDController =
       new ProfiledPIDController(
           SwerveConstants.ProfiledPIDp,
@@ -72,39 +59,21 @@ public class SwerveModule extends SubsystemBase {
       double turningEncoderOffsetDegrees) {
     m_driveMotor = new CANSparkMax(driveMotorChannel, MotorType.kBrushless);
     m_turningMotor = new CANSparkMax(turningMotorChannel, MotorType.kBrushless);
-    //m_driveMotor.setInverted(true);
     m_turningMotor.setInverted(true);
 
     m_driveEncoder = m_driveMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     m_turningEncoder = new CANCoder(turningEncoderChannel);
 
-
-    // Distance per pulse
-    //m_driveEncoder.setPositionConversionFactor(((Math.PI * SwerveConstants.kWheelRadius *2)/(3*6.75*22.65)));//42/(6.75 * Math.PI * SwerveConstants.kWheelRadius * 2) and also that but change 42 to 1//((Math.PI * SwerveConstants.kWheelRadius * 2)/6.75)/5
-    
-    //m_driveEncoder.setPositionConversionFactor((Math.PI * SwerveConstants.kWheelRadius *2)/(6.75*1.0074*250));//42/(6.75 * Math.PI * SwerveConstants.kWheelRadius * 2) and also that but change 42 to 1//((Math.PI * SwerveConstants.kWheelRadius * 2)/6.75)/5
-    //m_driveEncoder.setVelocityConversionFactor(((Math.PI * SwerveConstants.kWheelRadius *2)/(6.75*1.0074*250))/60);//((/ 60); // 60 seconds per minute
     
     m_driveEncoder.setPositionConversionFactor(2*Math.PI*0.0508/6.75);//42/(6.75 * Math.PI * SwerveConstants.kWheelRadius * 2) and also that but change 42 to 1//((Math.PI * SwerveConstants.kWheelRadius * 2)/6.75)/5
     m_driveEncoder.setVelocityConversionFactor(2*Math.PI*0.0508/6.75/60);//((/ 60); // 60 seconds per minute
 
-    // Radians per pulse
-     //m_turningEncoder.setDistancePerPulse(2 * Math.PI / SwerveConstants.kEncoderResolution);
-
-    // Limit the PID Controller's input range between -pi and pi and set the input
-    // to be continuous.
     m_turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
 
     m_turningEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
 
     m_turningEncoder.configMagnetOffset(-turningEncoderOffsetDegrees);
   }
-
-  /**
-   * Returns the current state of the module.
-   *
-   * @return The current state of the module.
-   */
 
   public SwerveModuleState getState() {
 
@@ -113,12 +82,6 @@ public class SwerveModule extends SubsystemBase {
     return new SwerveModuleState(
         m_driveEncoder.getVelocity(), new Rotation2d(m_moduleAngleRadians));
   }
-
-  /**
-   * Returns the current position of the module.
-   *
-   * @return The current position of the module.
-   */
 
   public SwerveModulePosition getPosition() {
 
@@ -132,12 +95,6 @@ public class SwerveModule extends SubsystemBase {
     
     return desiredState.angle.getRadians();
   }
-
-  /**
-   * Sets the desired state for the module.
-   *
-   * @param desiredState Desired state with speed and angle.
-   */
   
   public void setDesiredState(SwerveModuleState desiredState) {
     double m_moduleAngleRadians = m_turningEncoder.getAbsolutePosition() * 2 * Math.PI / 360;
