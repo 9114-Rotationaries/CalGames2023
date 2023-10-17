@@ -45,8 +45,8 @@ public class JoystickDrive extends CommandBase {
             * DriveConstants.kMaxAngularSpeed;
   
       
-      SmartDashboard.putNumber("xSpeed", xSpeed);
-      SmartDashboard.putNumber("ySpeed", ySpeed);
+      //SmartDashboard.putNumber("xSpeed", xSpeed);
+      //SmartDashboard.putNumber("ySpeed", ySpeed);
       SmartDashboard.putNumber("Rotation", rot);
 
     drive.drive(xSpeed, ySpeed, rot, fieldRelative);

@@ -106,8 +106,8 @@ public class SwerveModule extends SubsystemBase {
     
     
     final double driveFeedforward = m_driveFeedforward.calculate(state.speedMetersPerSecond);
-    SmartDashboard.putNumber("thign", m_driveEncoder.getVelocity());
-    SmartDashboard.putNumber("2thign", state.speedMetersPerSecond);
+    //SmartDashboard.putNumber("thign", m_driveEncoder.getVelocity());
+    //SmartDashboard.putNumber("2thign", state.speedMetersPerSecond);
 
     // Calculate the turning motor output from the turning PID controller.
     final double turnOutput =

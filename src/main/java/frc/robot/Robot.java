@@ -17,7 +17,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_robotContainer = new RobotContainer();
     m_robotContainer.setUpAutos();
-    PathPlannerServer.startServer(9114);
+    PathPlannerServer.startServer(5811);
   }
   
   @Override

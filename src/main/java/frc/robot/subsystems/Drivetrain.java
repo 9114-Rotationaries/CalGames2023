@@ -97,9 +97,9 @@ public class Drivetrain extends SubsystemBase{
 
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(getRotation2d(), getModulePositions(), pose);
-    SmartDashboard.putNumber("encoderRotConverte", m_backRight.getDrivePosition());
-    SmartDashboard.putNumber("encoderRotRaw", m_backRight.getDriveEncoder());
-    SmartDashboard.putString("ModulePosition", m_backRight.getModulePosition().toString());
+    //SmartDashboard.putNumber("encoderRotConverte", m_backRight.getDrivePosition());
+    //SmartDashboard.putNumber("encoderRotRaw", m_backRight.getDriveEncoder());
+    //SmartDashboard.putString("ModulePosition", m_backRight.getModulePosition().toString());
   }
 
   public SwerveDriveKinematics getKinematics(){
