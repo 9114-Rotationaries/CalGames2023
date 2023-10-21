@@ -22,6 +22,7 @@ import frc.robot.commands.Autos.Routines;
 import frc.robot.commands.Drivetrain.JoystickDrive;
 import frc.robot.commands.Drivetrain.MoveToTag;
 import frc.robot.commands.Drivetrain.SlowDriveCommunity;
+import frc.robot.commands.Drivetrain.TurnToAngle;
 import frc.robot.commands.Intake.Intake.IntakeCube;
 import frc.robot.commands.Intake.Outtake.OuttakeCube;
 import frc.robot.subsystems.Arm;
@@ -59,7 +60,7 @@ public class RobotContainer {
     configureDrivetrainBindings();
     configureArmBindings();
     configureIntakeBindings();
-    drivetrain.setDefaultCommand(new JoystickDrive(m_controller, drivetrain, true));
+    drivetrain.setDefaultCommand(new JoystickDrive(m_controller, drivetrain, false));
   }
 
   private void configureDrivetrainBindings() {
@@ -114,7 +115,8 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return routines.goForward(drivetrain);
+    //return routines.goForward(drivetrain);
+    return new TurnToAngle(drivetrain, 90);
   }
 
   public Command balanceCode(){
