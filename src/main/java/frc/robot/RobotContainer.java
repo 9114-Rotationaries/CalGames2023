@@ -14,18 +14,21 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.RobotConstants;
 import frc.robot.commands.Balance;
 import frc.robot.commands.Arm.LowerArm;
 import frc.robot.commands.Arm.RaiseArm;
 import frc.robot.commands.Autos.Macros;
 import frc.robot.commands.Autos.Routines;
 import frc.robot.commands.Drivetrain.JoystickDrive;
+import frc.robot.commands.Drivetrain.JoystickDriveSim;
 import frc.robot.commands.Drivetrain.MoveToTag;
 import frc.robot.commands.Drivetrain.SlowDriveCommunity;
 import frc.robot.commands.Intake.Intake.IntakeCube;
 import frc.robot.commands.Intake.Outtake.OuttakeCube;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.DrivetrainSim;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Vision;
 
@@ -33,6 +36,7 @@ import frc.robot.subsystems.Vision;
 public class RobotContainer {
 
   public final static Drivetrain drivetrain = new Drivetrain();
+  public final static DrivetrainSim driveSim = new DrivetrainSim();
   private final Vision vision = new Vision();
 
   private final static Arm arm = new Arm(ArmConstants.rightArmChannel, ArmConstants.leftArmChannel);
@@ -59,9 +63,14 @@ public class RobotContainer {
     configureDrivetrainBindings();
     configureArmBindings();
     configureIntakeBindings();
-    drivetrain.setDefaultCommand(new JoystickDrive(m_controller, drivetrain, true));
+    switch(RobotConstants.getRobot()){
+      case ROBOT_2023Cal:
+        drivetrain.setDefaultCommand(new JoystickDrive(m_controller, drivetrain, true));
+      case ROBOT_SIMBOT:
+        driveSim.setDefaultCommand(new JoystickDriveSim(m_controller, driveSim, false));
+    }
   }
-
+  
   private void configureDrivetrainBindings() {
     m_controller.b().whileTrue(new MoveToTag(vision, drivetrain));
     configureIntakeBindings();
