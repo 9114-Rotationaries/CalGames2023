@@ -1,8 +1,35 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.RobotBase;
 
 public final class Constants {
+
+  public static class RobotConstants{
+    public static enum RobotType {
+      ROBOT_2023Cal,
+      ROBOT_SIMBOT
+    }
+
+    private static final RobotType robot = RobotType.ROBOT_SIMBOT;
+
+    public static RobotType getRobot() {
+      if (!disableHAL && RobotBase.isReal()) {
+        if (robot == RobotType.ROBOT_SIMBOT) { // Invalid robot selected
+          return RobotType.ROBOT_2023Cal;
+        } else {
+          return robot;
+        }
+      } else {
+        return robot;
+      }
+    }
+
+    public static boolean disableHAL = false;
+    public static void disableHAL() {
+      disableHAL = true;
+    }
+}
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
     public static final int kOperatorControllerPort = 1;
@@ -141,6 +168,27 @@ public final class Constants {
     public static final double ProfiledPIDp = 0.8;
     public static final double ProfiledPIDi = 0;
     public static final double ProfiledPIDd = 0.02;
+  }
+
+  public static class SimConstants {
+    public static final double loopPeriodSecs = 0.02;
+
+    public static final Translation2d m_frontLeftLocation = new Translation2d(0.3429, 0.3429); //meters
+    public static final Translation2d m_frontRightLocation = new Translation2d(0.3429, -0.3429);
+    public static final Translation2d m_backLeftLocation = new Translation2d(-0.3429, 0.3429);
+    public static final Translation2d m_backRightLocation = new Translation2d(-0.3429, -0.3429);
+
+    public static final double DrivePIDp = 0.0;
+    public static final double DrivePIDi = 0.0;
+    public static final double DrivePIDd = 0.0;
+
+    public static final double TurnPIDp = 0.0;
+    public static final double TurnPIDi = 0.0;
+    public static final double TurnPIDd = 0.0;
+
+    public static final double kMaxSpeed = 4;
+    public static final double kMaxAngularSpeed = 3;
+
   }
 
 }
