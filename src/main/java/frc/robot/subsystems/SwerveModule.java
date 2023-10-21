@@ -27,13 +27,15 @@ public class SwerveModule extends SubsystemBase {
 
   private final PIDController m_drivePIDController = new PIDController(SwerveConstants.PIDp, SwerveConstants.PIDi, SwerveConstants.PIDd);
 
-  private final ProfiledPIDController m_turningPIDController =
-      new ProfiledPIDController(
-          SwerveConstants.ProfiledPIDp,
-          SwerveConstants.ProfiledPIDi,
-          SwerveConstants.ProfiledPIDd,
-          new TrapezoidProfile.Constraints(
-              SwerveConstants.kModuleMaxAngularVelocity, SwerveConstants.kModuleMaxAngularAcceleration));
+  private final PIDController m_turningPIDController = new PIDController(SwerveConstants.turningPIDp, SwerveConstants.turningPIDi, SwerveConstants.turningPIDd);
+
+  // private final ProfiledPIDController m_turningPIDController =
+  //     new ProfiledPIDController(
+  //         SwerveConstants.ProfiledPIDp,
+  //         SwerveConstants.ProfiledPIDi,
+  //         SwerveConstants.ProfiledPIDd,
+  //         new TrapezoidProfile.Constraints(
+  //             SwerveConstants.kModuleMaxAngularVelocity, SwerveConstants.kModuleMaxAngularAcceleration));
 
   // Gains are for example purposes only - must be determined for your own robot!
   private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(SwerveConstants.DriveKs, SwerveConstants.DriveKv);
@@ -112,9 +114,6 @@ public class SwerveModule extends SubsystemBase {
     // Calculate the turning motor output from the turning PID controller.
     final double turnOutput =
         m_turningPIDController.calculate(m_moduleAngleRadians, state.angle.getRadians());
-
-    final double turnFeedforward =
-        m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
 
     m_turningMotor.set(turnOutput);
     m_driveMotor.set(driveOutput);
