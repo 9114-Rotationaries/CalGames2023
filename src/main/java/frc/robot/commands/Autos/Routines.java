@@ -7,6 +7,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 import com.pathplanner.lib.commands.FollowPathWithEvents;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+import com.pathplanner.lib.server.PathPlannerServer;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
@@ -70,7 +71,7 @@ public class Routines {
     }
 
     public CommandBase goForward(Drivetrain drivetrain){
-      PathPlannerTrajectory trajectory = PathPlanner.loadPath("ShootPickup", 4, 3);
+      PathPlannerTrajectory trajectory = PathPlanner.loadPath("Test", 8, 6);
 
       HashMap<String,Command> eventMap = new HashMap<>();
           eventMap.put("OutCube", new LaunchCube(intake));  
@@ -85,11 +86,11 @@ public class Routines {
         //new InstantCommand(intake::cInt, intake),
         //grabCubeAndDock
         //new LaunchCube(intake),
-        new IntakeCube(intake).withTimeout(0.4),
-        new OuttakeCubeAuto(intake).withTimeout(1),
-        baseSwerveCommand(trajectory, true),
+        //new IntakeCube(intake).withTimeout(0.4),
+        //new OuttakeCubeAuto(intake).withTimeout(1),
+        baseSwerveCommand(trajectory, true)
         //new WaitCommand(3),
-        macros.armIntake()
+        //macros.armIntake()
        // new Balance(drivetrain).withTimeout(5)
       );
 
@@ -110,17 +111,17 @@ public class Routines {
           new PIDController(4, 0, 0.02), 
           new PIDController(6.8, 0, 0.02), 
           new PIDController(0.7, 0, 0.02), 
-          drivetrain::setModuleStates, 
+          drivetrain::setModuleStates,
           drivetrain);
 
           
     
         Timer timer = new Timer();
-        SmartDashboard.putNumber("Desired X", 0);
-              SmartDashboard.putNumber("Desired Y", 0);
+        //SmartDashboard.putNumber("Desired X", 0);
+              //SmartDashboard.putNumber("Desired Y", 0);
               SmartDashboard.putNumber("Desired R", 0);
-              SmartDashboard.putNumber("Error X", 0);
-              SmartDashboard.putNumber("Error Y", 0);
+              //SmartDashboard.putNumber("Error X", 0);
+              //SmartDashboard.putNumber("Error Y", 0);
               SmartDashboard.putNumber("Error R", 0);
     
         return Commands.sequence(
@@ -133,14 +134,15 @@ public class Routines {
             Commands.run(() -> {
               double t = timer.get();
               PathPlannerState state = (PathPlannerState) trajectory.sample(t);
-              SmartDashboard.putNumber("Desired X", state.poseMeters.getX());
-              SmartDashboard.putNumber("Desired Y", state.poseMeters.getY());
+              //SmartDashboard.putNumber("Desired X", state.poseMeters.getX());
+              //SmartDashboard.putNumber("Desired Y", state.poseMeters.getY());
               SmartDashboard.putNumber("Desired R", state.poseMeters.getRotation().getDegrees());
-              SmartDashboard.putNumber("Error X", state.poseMeters.getX() - drivetrain.getPose().getX());
-              SmartDashboard.putNumber("Error Y", state.poseMeters.getY() - drivetrain.getPose().getY());
+              //SmartDashboard.putNumber("Error X", state.poseMeters.getX() - drivetrain.getPose().getX());
+              //SmartDashboard.putNumber("Error Y", state.poseMeters.getY() - drivetrain.getPose().getY());
               SmartDashboard.putNumber("Error R", state.poseMeters.getRotation().getDegrees() - drivetrain.getPose().getRotation().getDegrees());
-              SmartDashboard.putNumber("currentXPose",drivetrain.getPose().getX() );
+              //SmartDashboard.putNumber("currentXPose",drivetrain.getPose().getX() );
               SmartDashboard.putNumber("currentDegrees",drivetrain.getPose().getRotation().getDegrees());
+              PathPlannerServer.sendPathFollowingData(state.poseMeters, drivetrain.getPose());
 
             })
           ), 
