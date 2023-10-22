@@ -24,6 +24,7 @@ import frc.robot.commands.Drivetrain.JoystickDrive;
 import frc.robot.commands.Drivetrain.JoystickDriveSim;
 import frc.robot.commands.Drivetrain.MoveToTag;
 import frc.robot.commands.Drivetrain.SlowDriveCommunity;
+import frc.robot.commands.Drivetrain.TurnToAngle;
 import frc.robot.commands.Intake.Intake.IntakeCube;
 import frc.robot.commands.Intake.Outtake.OuttakeCube;
 import frc.robot.subsystems.Arm;
@@ -65,7 +66,7 @@ public class RobotContainer {
     configureIntakeBindings();
     switch(RobotConstants.getRobot()){
       case ROBOT_2023Cal:
-        drivetrain.setDefaultCommand(new JoystickDrive(m_controller, drivetrain, true));
+        drivetrain.setDefaultCommand(new JoystickDrive(m_controller, drivetrain, false));
       case ROBOT_SIMBOT:
         driveSim.setDefaultCommand(new JoystickDriveSim(m_controller, driveSim, false));
     }
@@ -123,7 +124,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return routines.goForward(drivetrain);
+    return new TurnToAngle(drivetrain, 90);
   }
 
   public Command balanceCode(){

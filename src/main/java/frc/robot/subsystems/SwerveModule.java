@@ -26,14 +26,7 @@ public class SwerveModule extends SubsystemBase {
   private final CANCoder m_turningEncoder;
 
   private final PIDController m_drivePIDController = new PIDController(SwerveConstants.PIDp, SwerveConstants.PIDi, SwerveConstants.PIDd);
-
-  private final ProfiledPIDController m_turningPIDController =
-      new ProfiledPIDController(
-          SwerveConstants.ProfiledPIDp,
-          SwerveConstants.ProfiledPIDi,
-          SwerveConstants.ProfiledPIDd,
-          new TrapezoidProfile.Constraints(
-              SwerveConstants.kModuleMaxAngularVelocity, SwerveConstants.kModuleMaxAngularAcceleration));
+  private final PIDController m_turningPIDController = new PIDController(SwerveConstants.turningPIDp, SwerveConstants.turningPIDi, SwerveConstants.turningPIDd);
 
   // Gains are for example purposes only - must be determined for your own robot!
   private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(SwerveConstants.DriveKs, SwerveConstants.DriveKv);
@@ -105,7 +98,7 @@ public class SwerveModule extends SubsystemBase {
         m_drivePIDController.calculate(m_driveEncoder.getVelocity(), state.speedMetersPerSecond);
     
     
-    final double driveFeedforward = m_driveFeedforward.calculate(state.speedMetersPerSecond);
+  //  final double driveFeedforward = m_driveFeedforward.calculate(state.speedMetersPerSecond);
     //SmartDashboard.putNumber("thign", m_driveEncoder.getVelocity());
     //SmartDashboard.putNumber("2thign", state.speedMetersPerSecond);
 
@@ -113,8 +106,8 @@ public class SwerveModule extends SubsystemBase {
     final double turnOutput =
         m_turningPIDController.calculate(m_moduleAngleRadians, state.angle.getRadians());
 
-    final double turnFeedforward =
-        m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
+    // final double turnFeedforward =
+    //     m_turnFeedforward.calculate(m_turningPIDController.getSetpoint());
 
     m_turningMotor.set(turnOutput);
     m_driveMotor.set(driveOutput);
@@ -125,9 +118,14 @@ public class SwerveModule extends SubsystemBase {
     return m_driveEncoder.getPosition();
   }
 
-  public double getTurningPosition(){
+  public double getTurningPositionRadians(){
     double m_moduleAngleRadians = m_turningEncoder.getAbsolutePosition() * 2 * Math.PI / 360;
     return m_moduleAngleRadians;
+  }
+
+  public double getTurningPositionDegrees(){
+    double m_moduleAngleDegrees = m_turningEncoder.getAbsolutePosition();
+    return m_moduleAngleDegrees;
   }
 
   public double getDriveEncoder(){
@@ -135,7 +133,7 @@ public class SwerveModule extends SubsystemBase {
   }
   
 public SwerveModulePosition getModulePosition() {
-  SwerveModulePosition modulePosition = new SwerveModulePosition(getDrivePosition(), Rotation2d.fromRadians(getTurningPosition()));
+  SwerveModulePosition modulePosition = new SwerveModulePosition(getDrivePosition(), Rotation2d.fromRadians(getTurningPositionRadians()));
   return modulePosition;
 } 
 }

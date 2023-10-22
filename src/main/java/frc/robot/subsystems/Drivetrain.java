@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -29,7 +31,8 @@ public class Drivetrain extends SubsystemBase{
   private final SwerveModule m_backRight = new SwerveModule(
     DriveConstants.BRDMChannel, DriveConstants.BRTMChannel, 
     DriveConstants.BRTEChannel, DriveConstants.BRTEOffsetDegrees);
-  
+
+  private final SwerveModule[] modules = new SwerveModule[4];
 
   private final AHRS ahrs = new AHRS(SPI.Port.kMXP);
 
@@ -45,6 +48,11 @@ public class Drivetrain extends SubsystemBase{
 
   public Drivetrain() {
     ahrs.reset();
+
+    modules[0] = m_frontLeft;
+    modules[1] = m_frontRight;
+    modules[2] = m_backLeft;
+    modules[3] = m_backRight;
   }
 
   public SwerveModulePosition[] getModulePositions(){
@@ -84,6 +92,14 @@ public class Drivetrain extends SubsystemBase{
   @Override
   public void periodic(){
     updateOdometry();
+    SmartDashboard.putNumber("YAW", ahrs.getYaw());
+    SwerveModuleState[] mesasuredStates = new SwerveModuleState[4];
+    for (int i = 0; i < 4; i++){
+      mesasuredStates[i] = modules[i].getState();
+    }
+
+    Logger.getInstance().recordOutput("SwerveModuleStates", mesasuredStates);
+    Logger.getInstance().recordOutput("SwerveOdometry", getPose());
   }
 
   public void setModuleStates(SwerveModuleState[] desiredStates) {
@@ -121,6 +137,10 @@ public class Drivetrain extends SubsystemBase{
 
   public Rotation2d getRotation2d() {
     return Rotation2d.fromDegrees(getYaw());
+  }
+
+  public double getBRDegrees(){
+    return m_backRight.getTurningPositionDegrees();
   }
 
   public double getDistancePerPulse() {

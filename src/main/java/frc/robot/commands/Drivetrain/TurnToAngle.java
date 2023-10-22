@@ -19,7 +19,7 @@ public class TurnToAngle extends CommandBase {
   private final Drivetrain drivetrain;
 
   
-  private final PIDController m_turningPIDController = new PIDController(SwerveConstants.ProfiledPIDp, SwerveConstants.ProfiledPIDi, SwerveConstants.ProfiledPIDd);
+  private final PIDController m_turningPIDController = new PIDController(SwerveConstants.turningPIDp, SwerveConstants.turningPIDi, SwerveConstants.turningPIDd);
 
   // private final ProfiledPIDController m_turningPIDController =
   // new ProfiledPIDController(
