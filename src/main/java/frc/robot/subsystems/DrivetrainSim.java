@@ -43,6 +43,7 @@ public class DrivetrainSim extends SubsystemBase {
   /** Creates a new DrivetrainSim. */
   public DrivetrainSim() {
     ahrs.reset();
+    SmartDashboard.putData("Field", field);
   }
 
   public SwerveModulePosition[] getModulePositions(){
@@ -80,7 +81,8 @@ public class DrivetrainSim extends SubsystemBase {
   @Override
   public void periodic(){
     updateOdometry();
-    SmartDashboard.putData(field);
+    field.setRobotPose(m_odometry.getPoseMeters());
+    //SmartDashboard.putData(field);
   }
 
   public void setModuleStates(SwerveModuleState[] desiredStates) {

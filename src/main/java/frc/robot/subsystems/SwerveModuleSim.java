@@ -7,20 +7,26 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.RelativeEncoder;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import frc.robot.Constants.SimConstants;
+import frc.robot.Constants.SwerveConstants;
 import frc.robot.subsystems.SwerveModuleIO.ModuleIOInputs;
 
 
-public class SwerveModuleSim{
+public class SwerveModuleSim implements SwerveModuleIO {
   private FlywheelSim driveSim = new FlywheelSim(DCMotor.getNEO(1), 6.75, 0.025);
   private FlywheelSim turnSim = new FlywheelSim(DCMotor.getNEO(1), 150.0 / 7.0, 0.004);
+
+
 
   private double turnRelativePositionRad = 0.0;
   private double turnAbsolutePositionRad = Math.random() * 2.0 * Math.PI;
@@ -102,9 +108,9 @@ public class SwerveModuleSim{
     driveSim.setInputVoltage(driveOutput*12);
   } 
 
-
+  //rpm --> rps --> rotations --> distance
   public double getDrivePosition(){
-    return driveSim.getAngularVelocityRPM();
+    return driveSim.getAngularVelocityRPM()/60*SimConstants.loopPeriodSecs*2*Math.PI*SwerveConstants.kWheelRadius;
   }
 
   public double getTurningPosition(){
