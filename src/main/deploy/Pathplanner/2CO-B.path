@@ -39,11 +39,13 @@
       "isReversal": true,
       "velOverride": null,
       "isLocked": false,
-      "isStopPoint": false,
+      "isStopPoint": true,
       "stopEvent": {
-        "names": [],
-        "executionBehavior": "parallel",
-        "waitBehavior": "none",
+        "names": [
+          "Intake"
+        ],
+        "executionBehavior": "sequential",
+        "waitBehavior": "after",
         "waitTime": 0
       }
     },
@@ -120,5 +122,24 @@
       }
     }
   ],
-  "markers": []
+  "markers": [
+    {
+      "position": 2.9672727272725785,
+      "names": [
+        "Outtake"
+      ]
+    },
+    {
+      "position": 0.9890909090908274,
+      "names": [
+        "Stop"
+      ]
+    },
+    {
+      "position": 1.0763636363635831,
+      "names": [
+        "Intake"
+      ]
+    }
+  ]
 }

@@ -3,6 +3,8 @@ package frc.robot;
 import java.util.HashMap;
 import java.util.List;
 
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
@@ -20,6 +22,7 @@ import frc.robot.commands.Arm.LowerArm;
 import frc.robot.commands.Arm.RaiseArm;
 import frc.robot.commands.Autos.Macros;
 import frc.robot.commands.Autos.Routines;
+import frc.robot.commands.Drivetrain.FollowTag;
 import frc.robot.commands.Drivetrain.JoystickDrive;
 import frc.robot.commands.Drivetrain.JoystickDriveSim;
 import frc.robot.commands.Drivetrain.MoveToTag;
@@ -48,7 +51,8 @@ public class RobotContainer {
   final Balance balance = new Balance(drivetrain);
   private static SwerveAutoBuilder builder;
   static SendableChooser<List<PathPlannerTrajectory>> autoChooser = new SendableChooser<>();
-  static SendableChooser<Command> autoChooserFix = new SendableChooser<>();
+  static SendableChooser<List<PathPlannerTrajectory>> autoChooserFix = new SendableChooser<>();
+  static SendableChooser<Command> autoChooserCommand = new SendableChooser<>();
 
   private static HashMap<String, Command> eventMap = new HashMap<>();
   private static PPSwerveControllerCommand swerveControllerCommand;
@@ -73,10 +77,12 @@ public class RobotContainer {
   }
   
   private void configureDrivetrainBindings() {
+    //
     m_controller.b().whileTrue(new MoveToTag(vision, drivetrain));
+    m_controller.b().whileTrue(new FollowTag(drivetrain, vision));
     configureIntakeBindings();
     configureArmBindings();
-    m_controller.button(9).whileTrue(new SlowDriveCommunity(m_controller, drivetrain, true));
+    //m_controller.b().whileTrue(new SlowDriveCommunity(m_controller, drivetrain, true));
   }
 
   private void configureIntakeBindings() {
@@ -114,17 +120,18 @@ public class RobotContainer {
     // autoChooser.addOption("PathWithStuff", PathPlanner.loadPathGroup("PathWithStuff", new PathConstraints(4, 3)));
     // autoChooser.addOption("SwerveTest", PathPlanner.loadPathGroup("TestingSwerve", new PathConstraints(4, 3)));
 
-
-    autoChooserFix.addOption("Blue Out Mid", routines.goForward(drivetrain));
-    autoChooserFix.addOption("Blue Out Left", routines.OutLeftBalance(drivetrain));
-    autoChooserFix.addOption("Blue Out Right", routines.OutRightBalance(drivetrain));
-
+    autoChooserFix.addOption("MidDock", PathPlanner.loadPathGroup("MidDock", new PathConstraints(4, 3)));
+    autoChooserCommand.addOption("Mid Dock", routines.goForward(drivetrain));
+    autoChooserCommand.addOption("OutLeftBalance", routines.OutLeftBalance(drivetrain));
 
     SmartDashboard.putData(autoChooserFix);
   }
 
   public Command getAutonomousCommand() {
-    return new TurnToAngle(drivetrain, 90);
+    // PathPlannerTrajectory traj = PathPlanner.loadPath("MidDock",4, 3);
+    // return routines.baseSwerveCommand(traj, true)
+   //return autoChooserCommand.getSelected();
+   return routines.goForward(drivetrain);
   }
 
   public Command balanceCode(){

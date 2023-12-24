@@ -73,8 +73,8 @@ public final class Constants {
 
     public static final double kCommunitySpeed = 7;
     public static final double kCommunityAngularSpeed = 7;
-    public static final double kMaxSpeed = 5.5; // 1 meters per second
-    public static final double kMaxAngularSpeed = 12; // 12 radians? per second
+    public static final double kMaxSpeed = 4; // 1 meters per second
+    public static final double kMaxAngularSpeed = 3; // 12 radians? per second
 
     //FL-Front Left, DM-Driving Motor, TM-Turning Motor, TE-Turning Encoder
 
@@ -112,9 +112,9 @@ public final class Constants {
     public static final double PIDd = 0.004225;
 
     // turning PID constants 
-    public static final double turningPIDp = 0.0;
+    public static final double turningPIDp = 0.6; //.6
     public static final double turningPIDi = 0;
-    public static final double turningPIDd = 0.2;
+    public static final double turningPIDd = 0.02; //.02
 
     public static final double DriveKs = 0;
     public static final double DriveKv = 0;

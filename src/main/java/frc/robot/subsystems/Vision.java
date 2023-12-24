@@ -26,15 +26,14 @@ public class Vision extends SubsystemBase {
         // Initialize the Limelight network table
         limelightTable = NetworkTableInstance.getDefault().getTable(LIMELIGHT_TABLE_NAME);
 
+        
         // Create a new USB camera instance for the Limelight
         limelightCamera = CameraServer.startAutomaticCapture();
         
         // Set camera properties, e.g., brightness
-        limelightCamera.setBrightness(0); // Set brightness to 100 (maximum)
+        limelightCamera.setBrightness(100); // Set brightness to 100 (maximum)
 
         // Set the Limelight LED mode to "off" initially
-        limelightTable.getEntry("ledMode").setNumber(1); // 0: Off, 1: On, 2: Blinking
-
         CameraServer.addCamera(limelightCamera);
         Shuffleboard.getTab("SmartDashboard").add(limelightCamera);
     }

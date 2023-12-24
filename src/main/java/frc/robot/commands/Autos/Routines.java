@@ -1,10 +1,14 @@
 package frc.robot.commands.Autos;
 
 import java.util.HashMap;
+import java.util.List;
 
+import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
+import com.pathplanner.lib.auto.PIDConstants;
+import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import com.pathplanner.lib.commands.FollowPathWithEvents;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import com.pathplanner.lib.server.PathPlannerServer;
@@ -16,9 +20,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Balance;
 import frc.robot.commands.Intake.Intake.IntakeCube;
 import frc.robot.commands.Intake.Launch.LaunchCube;
+import frc.robot.commands.Intake.Outtake.OuttakeCube;
 import frc.robot.commands.Intake.Outtake.OuttakeCubeAuto;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
@@ -31,6 +38,7 @@ public class Routines {
     private final Arm arm;
     private final Intake intake;
     private final Macros macros;
+    private static SwerveAutoBuilder buildAuto;
 
     public Routines(Drivetrain drive, Intake intake, Arm ARM, Macros macros){
       this.intake = intake;
@@ -70,31 +78,69 @@ public class Routines {
 
     }
 
+    public CommandBase test(Drivetrain drivetrain) {
+      List<PathPlannerTrajectory> traj = PathPlanner.loadPathGroup("1CU", new PathConstraints(4, 3));
+
+      PathPlannerTrajectory traj1 = PathPlanner.loadPath("1CU", new PathConstraints(4, 3));
+      PathPlannerTrajectory traj2 = PathPlanner.loadPath("TestingSwerve", new PathConstraints(4, 3));
+
+      return Commands.sequence(
+          baseSwerveCommand(traj1, true),
+          //Commands.waitSeconds(5),
+          new IntakeCube(intake).withTimeout(4),
+          baseSwerveCommand(traj2, false)
+      );
+    }
+
     public CommandBase goForward(Drivetrain drivetrain){
-      PathPlannerTrajectory trajectory = PathPlanner.loadPath("Test", 8, 6);
+      PathPlannerTrajectory trajectory = PathPlanner.loadPath("2CO-B", 4, 3);
 
       HashMap<String,Command> eventMap = new HashMap<>();
-          eventMap.put("OutCube", new LaunchCube(intake));  
-      
-      FollowPathWithEvents grabCubeAndDock = new FollowPathWithEvents(
-        baseSwerveCommand(trajectory, true), 
-        trajectory.getMarkers(), 
-        eventMap);
-          
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+
+      eventMap.put("Intake", new IntakeCube(intake).withTimeout(4));
+      eventMap.put("Stop", Commands.runOnce(() -> drivetrain.resetMotors()).withTimeout(5));
+      eventMap.put("Outtake", new OuttakeCubeAuto(intake).withTimeout(1));
+      //eventMap.put("wait", );
+
+      FollowPathWithEvents twoCones = new FollowPathWithEvents(
+        baseSwerveCommand(trajectory, true), trajectory.getMarkers(), eventMap);
+
       return Commands.sequence(
         //new InstantCommand(intake::cInt, intake),
         //grabCubeAndDock
         //new LaunchCube(intake),
-        //new IntakeCube(intake).withTimeout(0.4),
-        //new OuttakeCubeAuto(intake).withTimeout(1),
-        baseSwerveCommand(trajectory, true)
+        new IntakeCube(intake).withTimeout(0.4),
+        new OuttakeCubeAuto(intake).withTimeout(1),
+        twoCones
+        //baseSwerveCommand(trajectory, true)
         //new WaitCommand(3),
         //macros.armIntake()
        // new Balance(drivetrain).withTimeout(5)
       );
 
   }
+
+  // public static CommandBase buildAutoBase(Drivetrain drivetrain){
+
+  //   final HashMap<String, Command> eventMap = new HashMap<>();
+
+  //   eventMap.put("Intake", new IntakeCube(intake).withTimeout(1));
+
+  //   PathPlannerTrajectory trajectory = PathPlanner.loadPath("2CO-B", 4, 3);
+
+  //   buildAuto = new SwerveAutoBuilder(
+  //     drivetrain::getPose, 
+  //     drivetrain::resetOdometry, 
+  //     drivetrain.getKinematics(),
+  //     new PIDConstants(8,0,0.02), 
+  //     new PIDConstants(9,0,0.02),
+  //     drivetrain::setModuleStates,
+  //     eventMap,
+  //     true,
+  //     drivetrain);
+
+  //   return buildAuto.fullAuto(trajectory);
+  // }
 
     public Command baseSwerveCommand(PathPlannerTrajectory trajectory, boolean isFirstPath) {
         InstantCommand resetOdom = new InstantCommand(() -> {
@@ -108,9 +154,9 @@ public class Routines {
           trajectory, 
           drivetrain::getPose, 
           drivetrain.getKinematics(), 
-          new PIDController(4, 0, 0.02), 
-          new PIDController(6.8, 0, 0.02), 
-          new PIDController(0.7, 0, 0.02), 
+          new PIDController(7, 0, 0.02), 
+          new PIDController(9, 0, 0.02), 
+          new PIDController(9, 0, 0.02), //0.35, 0, 0.02
           drivetrain::setModuleStates,
           drivetrain);
 
@@ -136,12 +182,14 @@ public class Routines {
               PathPlannerState state = (PathPlannerState) trajectory.sample(t);
               //SmartDashboard.putNumber("Desired X", state.poseMeters.getX());
               //SmartDashboard.putNumber("Desired Y", state.poseMeters.getY());
-              SmartDashboard.putNumber("Desired R", state.poseMeters.getRotation().getDegrees());
+              SmartDashboard.putNumber("desiredstate", state.holonomicRotation.getDegrees());
+              SmartDashboard.putNumber("Desired R", state.holonomicRotation.getDegrees());
               //SmartDashboard.putNumber("Error X", state.poseMeters.getX() - drivetrain.getPose().getX());
               //SmartDashboard.putNumber("Error Y", state.poseMeters.getY() - drivetrain.getPose().getY());
-              SmartDashboard.putNumber("Error R", state.poseMeters.getRotation().getDegrees() - drivetrain.getPose().getRotation().getDegrees());
+              SmartDashboard.putNumber("Error R", state.holonomicRotation.getDegrees() - drivetrain.getPose().getRotation().getDegrees());
               //SmartDashboard.putNumber("currentXPose",drivetrain.getPose().getX() );
               SmartDashboard.putNumber("currentDegrees",drivetrain.getPose().getRotation().getDegrees());
+              SmartDashboard.putNumber("initialpose", trajectory.getInitialHolonomicPose().getRotation().getDegrees());
               PathPlannerServer.sendPathFollowingData(state.poseMeters, drivetrain.getPose());
 
             })

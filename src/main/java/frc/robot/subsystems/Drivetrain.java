@@ -36,6 +36,8 @@ public class Drivetrain extends SubsystemBase{
 
   private final AHRS ahrs = new AHRS(SPI.Port.kMXP);
 
+  private double yawANGLE;
+
   private final SwerveDriveKinematics m_kinematics =
       new SwerveDriveKinematics(
           DriveConstants.m_frontLeftLocation, DriveConstants.m_frontRightLocation, DriveConstants.m_backLeftLocation, DriveConstants.m_backRightLocation);
@@ -92,7 +94,7 @@ public class Drivetrain extends SubsystemBase{
   @Override
   public void periodic(){
     updateOdometry();
-    SmartDashboard.putNumber("YAW", ahrs.getYaw());
+    SmartDashboard.putNumber("YAW", getPose().getRotation().getDegrees());
     SwerveModuleState[] mesasuredStates = new SwerveModuleState[4];
     for (int i = 0; i < 4; i++){
       mesasuredStates[i] = modules[i].getState();
@@ -136,7 +138,7 @@ public class Drivetrain extends SubsystemBase{
 
 
   public Rotation2d getRotation2d() {
-    return Rotation2d.fromDegrees(getYaw());
+    return Rotation2d.fromDegrees(-getYaw());
   }
 
   public double getBRDegrees(){
@@ -147,6 +149,13 @@ public class Drivetrain extends SubsystemBase{
     // Return the conversion factor for distance per pulse
     return 4096 *6.75 /((2 * Math.PI * SwerveConstants.kWheelRadius / 1)*(2 * Math.PI * SwerveConstants.kWheelRadius / 1));//0.39
 }
+
+  public void resetMotors() {
+    m_frontLeft.resetMotors();
+    m_frontRight.resetMotors();
+    m_backLeft.resetMotors();
+    m_backRight.resetMotors();
+  }
 
 }
 

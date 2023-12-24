@@ -136,4 +136,9 @@ public SwerveModulePosition getModulePosition() {
   SwerveModulePosition modulePosition = new SwerveModulePosition(getDrivePosition(), Rotation2d.fromRadians(getTurningPositionRadians()));
   return modulePosition;
 } 
+
+public void resetMotors() {
+  m_driveMotor.set(0);
+  m_turningMotor.set(0);
+}
 }
